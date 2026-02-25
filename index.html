@@ -7,20 +7,49 @@
   <title>Keerthi Ginuga - Portfolio V2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=23">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=58">
 </head>
 
 <body class="v2-home">
-  <a class="v2-logo" href="#" aria-label="Keerthi home">K</a>
+  <!-- Static SVG filter for nav bar liquid glass effect -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+    <defs>
+      <filter id="nav-glass-filter" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65 0.65" numOctaves="4" seed="2" stitchTiles="stitch"
+          result="noise" />
+        <feColorMatrix type="saturate" values="18" in="noise" result="saturatedNoise" />
+        <feDisplacementMap in="SourceGraphic" in2="saturatedNoise" scale="6" xChannelSelector="R" yChannelSelector="G"
+          result="displaced" />
+      </filter>
+    </defs>
+  </svg>
+  <a class="v2-logo" id="mainLogo" href="#" aria-label="Keerthi home">
+    <svg width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M7.23146e-05 0.299998L2.28621e-05 8.95236C1.02357e-05 11.1615 1.79035 12.9524 3.9995 12.9524H16.4226C18.6266 12.9524 20.653 11.744 21.7009 9.80509L26.8405 0.295096C26.9125 0.161842 26.816 6.16361e-06 26.6646 6.0685e-06L17.9519 0C17.3709 0 16.8421 0.335564 16.5947 0.861302L12.4287 9.71399C11.61 11.4537 9.00001 10.8703 9.00002 8.94755L9.00006 1.50001C9.00007 0.671578 8.3285 0 7.50006 0H0.300072C0.134388 0 7.32616e-05 0.134313 7.23146e-05 0.299998Z"
+        fill="white" />
+      <path
+        d="M7.24429e-05 28.7L2.11513e-05 19C9.46977e-06 16.7908 1.79035 15 3.9995 15H16.292C18.5646 15 20.642 16.284 21.6583 18.3167L26.8553 28.7106C26.9218 28.8435 26.8251 29 26.6764 29L17.9682 29C17.3788 29 16.844 28.6548 16.6013 28.1177L12.3696 18.7533C11.5685 16.9805 8.91488 17.5626 8.92937 19.5079L8.98882 27.4888C8.99502 28.3216 8.32165 29 7.48886 29H0.300072C0.134388 29 7.33191e-05 28.8657 7.24429e-05 28.7Z"
+        fill="white" />
+    </svg>
+  </a>
 
   <nav class="v2-nav" aria-label="Primary">
-    <ul class="v2-nav-links">
-      <li><a class="v2-nav-link is-active" href="#">Home</a></li>
-      <li><a class="v2-nav-link" href="#">Works</a></li>
-      <li><a class="v2-nav-link" href="#">Playground</a></li>
-      <li><a class="v2-nav-link" href="#">About Me</a></li>
-    </ul>
+    <div class="v2-nav-inner">
+      <ul class="v2-nav-links">
+        <li><a class="v2-nav-link is-active" href="index.html">Home</a></li>
+        <li><a class="v2-nav-link" href="works.html">Works</a></li>
+        <li><a class="v2-nav-link" href="#">Playground</a></li>
+        <li><a class="v2-nav-link" href="about.html">About Me</a></li>
+      </ul>
+      <button class="v2-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="v2-hamburger-line"></span>
+        <span class="v2-hamburger-line"></span>
+        <span class="v2-hamburger-line"></span>
+      </button>
+    </div>
   </nav>
 
   <main>
@@ -28,15 +57,24 @@
       <div class="v2-hero-bg" aria-hidden="true"></div>
 
       <div class="v2-hero-cards" data-parallax-group="hero">
-        <article class="v2-hero-card" data-depth="0.7"><img src="assets/images/sync.jpg" alt="Sync project preview"></article>
-        <article class="v2-hero-card" data-depth="0.45"><img src="assets/images/7west.jpg" alt="7WEST project preview"></article>
-        <article class="v2-hero-card" data-depth="0.55"><img src="assets/images/word-clock.jpg" alt="Word Clock project preview"></article>
-        <article class="v2-hero-card" data-depth="0.4"><img src="assets/images/zillow.jpg" alt="Zillow project preview"></article>
-        <article class="v2-hero-card" data-depth="0.5"><img src="assets/images/sea-love.jpg" alt="SeaLove project preview"></article>
-        <article class="v2-hero-card" data-depth="0.6"><img src="assets/images/google-nest.jpg" alt="Google Nest project preview"></article>
-        <article class="v2-hero-card" data-depth="0.65"><img src="assets/images/autonomous-vehicle.jpg" alt="SONIX project preview"></article>
-        <article class="v2-hero-card" data-depth="0.35"><img src="assets/images/kohler-scadpro.jpg" alt="Kohler project preview"></article>
-        <article class="v2-hero-card" data-depth="0.52"><img src="assets/images/kroger.jpg" alt="Kroger project preview"></article>
+        <article class="v2-hero-card" data-depth="0.7"><img src="assets/images/sync.jpg" alt="Sync project preview">
+        </article>
+        <article class="v2-hero-card" data-depth="0.45"><img src="assets/images/7west.jpg" alt="7WEST project preview">
+        </article>
+        <article class="v2-hero-card" data-depth="0.55"><img src="assets/images/word-clock.jpg"
+            alt="Word Clock project preview"></article>
+        <article class="v2-hero-card" data-depth="0.4"><img src="assets/images/zillow.jpg" alt="Zillow project preview">
+        </article>
+        <article class="v2-hero-card" data-depth="0.5"><img src="assets/images/sea-love.jpg"
+            alt="SeaLove project preview"></article>
+        <article class="v2-hero-card" data-depth="0.6"><img src="assets/images/google-nest.jpg"
+            alt="Google Nest project preview"></article>
+        <article class="v2-hero-card" data-depth="0.65"><img src="assets/images/autonomous-vehicle.jpg"
+            alt="SONIX project preview"></article>
+        <article class="v2-hero-card" data-depth="0.35"><img src="assets/images/kohler-scadpro.jpg"
+            alt="Kohler project preview"></article>
+        <article class="v2-hero-card" data-depth="0.52"><img src="assets/images/kroger.jpg"
+            alt="Kroger project preview"></article>
       </div>
 
       <div class="v2-hero-content">
@@ -46,54 +84,50 @@
 
       <div class="v2-selected-works-cue">
         <span class="v2-cue-line" aria-hidden="true"></span>
-        <span>Select Works</span>
+        <span>SELECTED WORKS</span>
       </div>
     </section>
 
     <section class="v2-select-works" id="select-works">
       <div class="v2-select-works-sticky">
         <div class="v2-select-works-panel">
-        <div class="v2-select-works-marquee" aria-hidden="true">
-          <div class="v2-select-works-marquee-track">
-            <span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span>
+          <div class="v2-select-works-marquee" aria-hidden="true">
+            <div class="v2-select-works-marquee-track">
+              <span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span>
+            </div>
           </div>
-          <div class="v2-select-works-marquee-track">
-            <span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span>
-          </div>
-        </div>
 
-        <header class="v2-select-works-header">
-          <h2 class="v2-select-works-title">
-            <span>Selected</span>
-            <span>Works</span>
-            <span class="v2-select-works-quote">”</span>
-          </h2>
-          <p class="v2-select-works-intro">I love to learn by making and experimenting.<br>/here's some of my works</p>
-        </header>
+          <header class="v2-select-works-header">
+            <h2 class="v2-select-works-title">
+              <span>Selected</span>
+              <span>Works</span>
+            </h2>
+            <p class="v2-select-works-intro">I love to learn by making and experimenting.<br>/here's some of my works
+            </p>
+          </header>
 
-        <div class="v2-sonix-card-wrap" data-card-wrap>
-          <article class="v2-sonix-card" data-parallax-card>
-            <div class="v2-sonix-content" data-card-content>
-              <div class="v2-sonix-glare" data-card-glare></div>
-              <div class="v2-sonix-media v2-sonix-3d-stage" data-card-stage>
-                <img data-layer="0" src="assets/images/autonomous-vehicle.jpg" alt="SONIX feature mockup 1">
-                <img data-layer="1" src="assets/images/sync.jpg" alt="SONIX feature mockup 2">
-                <img data-layer="2" src="assets/images/google-nest.jpg" alt="SONIX feature mockup 3">
-                <img data-layer="3" src="assets/images/7west.jpg" alt="SONIX feature mockup 4">
-              </div>
-              <div class="v2-sonix-copy">
-                <h3 data-project-title>SONIX — Your Personal Space On Wheels</h3>
-                <div class="v2-sonix-tags" data-project-tags>
-                  <span>UXD</span>
-                  <span>UXR</span>
-                  <span>Branding</span>
+          <div class="v2-sonix-card-wrap" data-card-wrap>
+            <article class="v2-sonix-card" data-parallax-card>
+              <div class="v2-sonix-content" data-card-content>
+                <div class="v2-sonix-glare" data-card-glare></div>
+                <div class="v2-sonix-media v2-sonix-3d-stage" data-card-stage>
+                  <img data-layer="0" src="assets/images/autonomous-vehicle.jpg" alt="SONIX feature mockup 1">
+                  <img data-layer="1" src="assets/images/sync.jpg" alt="SONIX feature mockup 2">
+                  <img data-layer="2" src="assets/images/google-nest.jpg" alt="SONIX feature mockup 3">
+                  <img data-layer="3" src="assets/images/7west.jpg" alt="SONIX feature mockup 4">
+                </div>
+                <div class="v2-sonix-copy">
+                  <h3 data-project-title>SONIX — Your Personal Space On Wheels</h3>
+                  <div class="v2-sonix-tags" data-project-tags>
+                    <span>UXD</span>
+                    <span>UXR</span>
+                    <span>Branding</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
-        </div>
+            </article>
+          </div>
 
-        <a href="#" class="v2-see-all-works">See All Works</a>
         </div>
       </div>
       <div class="v2-select-works-mid-snap" aria-hidden="true"></div>
@@ -101,9 +135,200 @@
       <div class="v2-select-works-hold-snap" aria-hidden="true"></div>
       <div class="v2-select-works-rotation-track" aria-hidden="true"></div>
     </section>
+
+    <!-- ── See All Works Link & Divider ── -->
+    <div class="v2-see-all-container">
+      <div class="v2-see-all-link-mask">
+        <a href="works.html" class="v2-see-all-link">SEE ALL WORKS</a>
+      </div>
+      <div class="v2-section-divider" aria-hidden="true"></div>
+    </div>
+
+    <!-- ── Section A: What I'm Good At ── -->
+    <section class="v2-skills" id="skills">
+      <div class="v2-skills-accordion">
+        <p class="v2-skills-eyebrow">What I'm Good At *</p>
+
+        <!-- 1 — expanded by default -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb">
+                <img src="assets/images/kohler-scadpro.jpg" alt="">
+              </div>
+              <span class="v2-skills-heading">Brand Thinking</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">1</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I craft cohesive brand systems that communicate who you are with clarity and intention, from the core
+                idea to every visual expression.</p>
+              <div class="v2-skills-pills">
+                <span>Brand Strategy</span>
+                <span>Visual Identity</span>
+                <span>Typography</span>
+                <span>Design Systems</span>
+                <span>Art Direction</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/sync.jpg" alt=""></div>
+              <span class="v2-skills-heading">Human-Centered Strategy</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">2</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I uncover real user pain points through research and translate insights into strategies that put people
+                at the center of every design decision.</p>
+              <div class="v2-skills-pills">
+                <span>User Research</span><span>Personas</span>
+                <span>Journey Mapping</span><span>Usability Testing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/google-nest.jpg" alt=""></div>
+              <span class="v2-skills-heading">Interaction Design</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">3</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I design interfaces and micro-interactions that feel intuitive and alive, bridging functionality with
+                delight at every touchpoint.</p>
+              <div class="v2-skills-pills">
+                <span>Prototyping</span><span>Motion Design</span>
+                <span>UI Systems</span><span>Responsive Design</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/sea-love.jpg" alt=""></div>
+              <span class="v2-skills-heading">Insight to Impact</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">4</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I turn raw data and user feedback into actionable design improvements, measuring outcomes to ensure
+                every iteration drives real value.</p>
+              <div class="v2-skills-pills">
+                <span>Analytics</span><span>A/B Testing</span>
+                <span>Heuristic Review</span><span>KPI Tracking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/7west.jpg" alt=""></div>
+              <span class="v2-skills-heading">Collaboration &amp; Facilitation</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">5</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I thrive in cross-functional teams, facilitating workshops and design sprints that align stakeholders
+                and accelerate decision-making.</p>
+              <div class="v2-skills-pills">
+                <span>Design Sprints</span><span>Workshops</span>
+                <span>Stakeholder Mgmt</span><span>Agile / Scrum</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Section B: Quote / Bio ── -->
+    <section class="v2-quote" id="about">
+      <div class="v2-quote-sticky">
+        <div class="v2-quote-inner">
+          <p class="v2-quote-text" id="quoteText">
+            <span class="v2-quote-word">I</span>
+            <span class="v2-quote-word">love</span>
+            <span class="v2-quote-word">to</span>
+            <span class="v2-quote-word v2-quote-word--italic">inspire,</span>
+            <span class="v2-quote-word">because</span>
+            <span class="v2-quote-word">I</span>
+            <span class="v2-quote-word">know</span>
+            <span class="v2-quote-word">what</span>
+            <span class="v2-quote-word">it's</span>
+            <span class="v2-quote-word">like</span>
+            <span class="v2-quote-word">to</span>
+            <span class="v2-quote-word">be</span>
+            <span class="v2-quote-word">inspired.</span>
+          </p>
+          <div class="v2-quote-photo" id="quotePhoto">
+            <a href="about.html" class="v2-quote-photo-link" aria-label="About Keerthi">
+              <img src="assets/images/my-quote-photo.jpg" alt="Keerthi Ginuga Quote Photo"
+                onerror="this.closest('.v2-quote-photo').classList.add('v2-quote-photo--placeholder')">
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section C: CTA / Footer ── -->
+    <footer class="v2-footer" id="contact">
+      <div class="v2-footer-inner">
+        <h2 class="v2-footer-headline">
+          <span>LET'S CREATE</span>
+          <span>WHAT'S NEXT,</span>
+          <em>Together.</em>
+        </h2>
+      </div>
+      <nav class="v2-footer-links" aria-label="Footer">
+        <a href="https://linkedin.com/in/keerthiginuga" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="#" target="_blank" rel="noopener">Résumé</a>
+        <a href="mailto:keerthi@example.com">Email</a>
+      </nav>
+    </footer>
+
   </main>
 
-  <script src="script.js?v=23"></script>
+  <div class="v2-quote-cursor" id="quoteCursor" aria-hidden="true">
+    <span>• About me</span>
+  </div>
+
+  <script src="script.js?v=58"></script>
 </body>
 
 </html>

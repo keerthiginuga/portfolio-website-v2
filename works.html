@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Works — Keerthi Ginuga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=60">
+</head>
+
+<body class="v2-home v2-works-page">
+
+    <a class="v2-logo" id="mainLogo" href="index.html" aria-label="Keerthi home">
+        <svg width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M7.23146e-05 0.299998L2.28621e-05 8.95236C1.02357e-05 11.1615 1.79035 12.9524 3.9995 12.9524H16.4226C18.6266 12.9524 20.653 11.744 21.7009 9.80509L26.8405 0.295096C26.9125 0.161842 26.816 6.16361e-06 26.6646 6.0685e-06L17.9519 0C17.3709 0 16.8421 0.335564 16.5947 0.861302L12.4287 9.71399C11.61 11.4537 9.00001 10.8703 9.00002 8.94755L9.00006 1.50001C9.00007 0.671578 8.3285 0 7.50006 0H0.300072C0.134388 0 7.32616e-05 0.134313 7.23146e-05 0.299998Z"
+                fill="white" />
+            <path
+                d="M7.24429e-05 28.7L2.11513e-05 19C9.46977e-06 16.7908 1.79035 15 3.9995 15H16.292C18.5646 15 20.642 16.284 21.6583 18.3167L26.8553 28.7106C26.9218 28.8435 26.8251 29 26.6764 29L17.9682 29C17.3788 29 16.844 28.6548 16.6013 28.1177L12.3696 18.7533C11.5685 16.9805 8.91488 17.5626 8.92937 19.5079L8.98882 27.4888C8.99502 28.3216 8.32165 29 7.48886 29H0.300072C0.134388 29 7.33191e-05 28.8657 7.24429e-05 28.7Z"
+                fill="white" />
+        </svg>
+    </a>
+
+    <nav class="v2-nav" aria-label="Primary">
+        <div class="v2-nav-inner">
+            <ul class="v2-nav-links">
+                <li><a class="v2-nav-link" href="index.html">Home</a></li>
+                <li><a class="v2-nav-link is-active" href="works.html">Works</a></li>
+                <li><a class="v2-nav-link" href="#">Playground</a></li>
+                <li><a class="v2-nav-link" href="about.html">About Me</a></li>
+            </ul>
+            <button class="v2-hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span class="v2-hamburger-line"></span>
+                <span class="v2-hamburger-line"></span>
+                <span class="v2-hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="v2-view-cursor" id="viewCursor" aria-hidden="true">/VIEW</div>
+
+    <main class="v2-works-main" id="worksMain">
+
+        <!-- This wrapper is what GSAP will pin at its current bottom position -->
+        <div class="v2-works-sticky" id="worksSticky">
+
+            <header class="v2-works-header">
+                <span class="v2-works-header-text">ALL WORKS<sup>"</sup></span>
+            </header>
+
+            <div class="v2-works-row">
+
+                <!-- Left: All project images stacked in the same space -->
+                <div class="v2-works-img-stack" id="imgStack">
+                    <div class="v2-stack-slide" data-slide="0">
+                        <img class="v2-stack-img" src="assets/images/autonomous-vehicle.jpg" alt="SONIX">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="1">
+                        <img class="v2-stack-img" src="assets/images/7west.jpg" alt="7WEST">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="2">
+                        <img class="v2-stack-img" src="assets/images/sea-love.jpg" alt="SeaLove">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="3">
+                        <img class="v2-stack-img" src="assets/images/google-nest.jpg" alt="Google Nest">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="4">
+                        <img class="v2-stack-img" src="assets/images/kroger.jpg" alt="Kroger">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="5">
+                        <img class="v2-stack-img" src="assets/images/kohler-scadpro.jpg" alt="Kohler">
+                    </div>
+                </div>
+
+                <!-- Right: Info panel — one item per project, absolute-stacked, JS controls active -->
+                <div class="v2-works-info" id="worksInfo">
+
+                    <div class="v2-stack-info-item is-active" data-info="0">
+                        <div class="v2-works-info-top" id="infoTop0">
+                            <h2 class="v2-works-title">SONIX <span class="v2-works-year">/ 2025</span></h2>
+                            <p class="v2-works-desc">Sonix reimagines urban mobility through fully autonomous vehicles
+                                that deliver hyper-personalized, luxury-grade experiences for everyone.</p>
+                        </div>
+                        <p class="v2-works-categories">UX Research / UX Design / UI Design / Branding / Service Design /
+                            Information Architecture / User Testing</p>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="1">
+                        <div class="v2-works-info-top" id="infoTop1">
+                            <h2 class="v2-works-title">7WEST <span class="v2-works-year">/ 2024</span></h2>
+                            <p class="v2-works-desc">An all-in-one student ecosystem designed to simplify campus life —
+                                from housing to social connection — under one digital roof.</p>
+                        </div>
+                        <p class="v2-works-categories">Co-Founder / Design Lead / UX Design</p>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="2">
+                        <div class="v2-works-info-top" id="infoTop2">
+                            <h2 class="v2-works-title">SEALOVE <span class="v2-works-year">/ 2023</span></h2>
+                            <p class="v2-works-desc">A holistic brand and digital experience redesign for SeaLove Candle
+                                Bar, reimagining the customer journey from discovery to checkout.</p>
+                        </div>
+                        <p class="v2-works-categories">UX Design / UX Research / Information Architecture / Branding</p>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="3">
+                        <div class="v2-works-info-top" id="infoTop3">
+                            <h2 class="v2-works-title">GOOGLE NEST <span class="v2-works-year">/ 2023</span></h2>
+                            <p class="v2-works-desc">Redesigning the Google Nest Thermostat experience for enterprise
+                                office spaces, balancing individual comfort with collective efficiency.</p>
+                        </div>
+                        <p class="v2-works-categories">UX Design / UX Research / Branding</p>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="4">
+                        <div class="v2-works-info-top" id="infoTop4">
+                            <h2 class="v2-works-title">KROGER <span class="v2-works-year">/ 2023</span></h2>
+                            <p class="v2-works-desc">Rethinking the self-checkout experience at Kroger to reduce
+                                friction, errors, and frustration through empathetic service design.</p>
+                        </div>
+                        <p class="v2-works-categories">UX Research / Service Design</p>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="5">
+                        <div class="v2-works-info-top" id="infoTop5">
+                            <h2 class="v2-works-title">KOHLER × SCAD <span class="v2-works-year">/ 2022</span></h2>
+                            <p class="v2-works-desc">A future-forward hydrotherapy concept developed with Kohler and
+                                SCADpro, exploring immersive wellness through connected spaces.</p>
+                        </div>
+                        <p class="v2-works-categories">Lead UX Design / UX Research / Product Design</p>
+                    </div>
+
+                </div>
+
+            </div><!-- .v2-works-row -->
+        </div><!-- .v2-works-sticky -->
+    </main>
+
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="works-script.js?v=4"></script>
+
+</body>
+
+</html>
