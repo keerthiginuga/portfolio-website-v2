@@ -1,17 +1,45 @@
-const v2MotionConfig = {
+/* ══════════════════════════════════════
+   HOME PAGE — Main Script
+   ══════════════════════════════════════
+   Depends on: js/utils.js, js/data.js, js/nav.js, js/components.js
+   Each section is a self-contained init function. A single
+   DOMContentLoaded listener bootstraps everything.
+*/
+
+/* ── Configuration constants ──────────────────────────────────────────── */
+
+const HERO_CONFIG = {
   pointerStrength: 26,
   scrollStrength: 0.06,
   smoothing: 0.08,
-  touchScale: 0.45,
-  reducedMotionScale: 0
+  touchScale: 0.45
 };
 
-let v2Pointer = { x: 0, y: 0 };
-let v2Current = { x: 0, y: 0 };
-let v2ScrollOffset = 0;
-let v2HeroCards = [];
-let v2MotionScale = 1;
-let v2AnimationFrame = null;
+const SELECT_WORKS_CONFIG = {
+  tiltRange: 15,
+  spring: 0.08,
+  touchScale: 0.45,
+  drift: 8,
+  leadSegments: 2,
+  holdSegments: 1,
+  exitSegments: 1
+};
+
+const QUOTE_CURSOR_CONFIG = {
+  size: 120,
+  lerp: 0.14
+};
+
+/* ── Hero parallax state ──────────────────────────────────────────────── */
+
+let heroPointer = { x: 0, y: 0 };
+let heroCurrent = { x: 0, y: 0 };
+let heroScrollOffset = 0;
+let heroCards = [];
+let heroMotionScale = 1;
+let heroAnimFrame = null;
+
+/* ── Scroll restoration ───────────────────────────────────────────────── */
 
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
@@ -23,118 +51,92 @@ window.addEventListener('beforeunload', () => {
   }
 });
 
-function applyV2ResponsiveMotion() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+/* ══════════════════════════════════════
+   1. HERO PARALLAX
+   ══════════════════════════════════════ */
 
-  if (prefersReducedMotion) {
-    v2MotionScale = v2MotionConfig.reducedMotionScale;
-    return;
-  }
-
-  v2MotionScale = isTouch ? v2MotionConfig.touchScale : 1;
-}
-
-function initV2HeroParallax() {
-  if (!v2HeroCards.length) return;
+function initHeroParallax() {
+  if (!heroCards.length) return;
 
   const animate = () => {
-    v2Current.x += (v2Pointer.x - v2Current.x) * v2MotionConfig.smoothing;
-    v2Current.y += (v2Pointer.y - v2Current.y) * v2MotionConfig.smoothing;
+    heroCurrent.x += (heroPointer.x - heroCurrent.x) * HERO_CONFIG.smoothing;
+    heroCurrent.y += (heroPointer.y - heroCurrent.y) * HERO_CONFIG.smoothing;
 
-    v2HeroCards.forEach((card) => {
+    heroCards.forEach(card => {
       const depth = Number(card.dataset.depth || 0.5);
-      const x = v2Current.x * depth * v2MotionScale;
-      const y = (v2Current.y * depth + v2ScrollOffset * depth) * v2MotionScale;
+      const x = heroCurrent.x * depth * heroMotionScale;
+      const y = (heroCurrent.y * depth + heroScrollOffset * depth) * heroMotionScale;
       card.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     });
 
-    v2AnimationFrame = window.requestAnimationFrame(animate);
+    heroAnimFrame = requestAnimationFrame(animate);
   };
 
-  if (v2AnimationFrame) {
-    window.cancelAnimationFrame(v2AnimationFrame);
-  }
-
-  v2AnimationFrame = window.requestAnimationFrame(animate);
+  if (heroAnimFrame) cancelAnimationFrame(heroAnimFrame);
+  heroAnimFrame = requestAnimationFrame(animate);
 }
 
-function initV2Hero() {
-  const v2Hero = document.querySelector('.v2-hero');
-  const v2ParallaxGroup = document.querySelector('[data-parallax-group="hero"]');
-  if (!v2Hero || !v2ParallaxGroup) return;
+function initHero() {
+  const hero = document.querySelector('.v2-hero');
+  const group = document.querySelector('[data-parallax-group="hero"]');
+  if (!hero || !group) return;
 
-  v2HeroCards = Array.from(v2ParallaxGroup.querySelectorAll('.v2-hero-card'));
-  if (!v2HeroCards.length) return;
+  heroCards = Array.from(group.querySelectorAll('.v2-hero-card'));
+  if (!heroCards.length) return;
 
-  applyV2ResponsiveMotion();
+  heroMotionScale = getMotionScale(HERO_CONFIG.touchScale);
 
-  const onMouseMove = (event) => {
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    v2Pointer.x = ((event.clientX - centerX) / centerX) * v2MotionConfig.pointerStrength;
-    v2Pointer.y = ((event.clientY - centerY) / centerY) * v2MotionConfig.pointerStrength;
-  };
+  document.addEventListener('mousemove', e => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    heroPointer.x = ((e.clientX - cx) / cx) * HERO_CONFIG.pointerStrength;
+    heroPointer.y = ((e.clientY - cy) / cy) * HERO_CONFIG.pointerStrength;
+  });
 
-  const onMouseLeave = () => {
-    v2Pointer.x = 0;
-    v2Pointer.y = 0;
-  };
+  document.addEventListener('mouseleave', () => {
+    heroPointer.x = 0;
+    heroPointer.y = 0;
+  });
 
-  const onScroll = () => {
-    const rect = v2Hero.getBoundingClientRect();
-    const progress = Math.max(0, Math.min(1, -rect.top / Math.max(rect.height, 1)));
-    v2ScrollOffset = progress * (window.innerHeight * v2MotionConfig.scrollStrength);
-  };
+  window.addEventListener('scroll', () => {
+    const rect = hero.getBoundingClientRect();
+    const progress = clampValue(-rect.top / Math.max(rect.height, 1), 0, 1);
+    heroScrollOffset = progress * (window.innerHeight * HERO_CONFIG.scrollStrength);
+  }, { passive: true });
 
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseleave', onMouseLeave);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', applyV2ResponsiveMotion);
+  window.addEventListener('resize', () => {
+    heroMotionScale = getMotionScale(HERO_CONFIG.touchScale);
+  });
 
-  onScroll();
-  initV2HeroParallax();
+  initHeroParallax();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.body.classList.contains('v2-home')) {
-    window.scrollTo(0, 0);
-  }
-  initV2Hero();
-  initV2LogoRotation();
-});
+/* ══════════════════════════════════════
+   2. LOGO ROTATION ON SCROLL
+   ══════════════════════════════════════ */
 
-/* ── Logo Rotation on Scroll ── */
-function initV2LogoRotation() {
+function initLogoRotation() {
   const logo = document.getElementById('mainLogo');
   if (!logo) return;
 
   let rafId = null;
 
-  const onScroll = () => {
+  window.addEventListener('scroll', () => {
     if (rafId) return;
     rafId = requestAnimationFrame(() => {
-      // Calculate scroll progress (0 at top, 1 at very bottom)
       const scrollableDist = document.documentElement.scrollHeight - window.innerHeight;
       const progress = scrollableDist > 0 ? (window.scrollY / scrollableDist) : 0;
-      // Map progress to 0-360 degrees
-      const angle = progress * 360;
-      logo.style.transform = `rotate(${angle.toFixed(1)}deg)`;
+      logo.style.transform = `rotate(${(progress * 360).toFixed(1)}deg)`;
       rafId = null;
     });
-  };
-
-  window.addEventListener('scroll', onScroll, { passive: true });
+  }, { passive: true });
 }
 
-const v2SelectWorksConfig = {
-  tiltRange: 15,
-  spring: 0.08,
-  touchScale: 0.45,
-  drift: 8
-};
+/* ══════════════════════════════════════
+   3. SELECT WORKS — Flip Card
+   ══════════════════════════════════════ */
 
-function initV2SelectWorksCard() {
+function initSelectWorksCard() {
   const section = document.querySelector('.v2-select-works');
   const card = document.querySelector('[data-parallax-card]');
   const content = document.querySelector('[data-card-content]');
@@ -142,7 +144,7 @@ function initV2SelectWorksCard() {
   if (!section || !card || !content) return;
   if (card.querySelector('[data-card-flip]')) return;
 
-  // Layering model: perspective(card) -> tilt -> flip -> front/back faces.
+  /* ── Build flip DOM ── */
   const tilt = document.createElement('div');
   tilt.className = 'v2-sonix-tilt';
 
@@ -163,6 +165,7 @@ function initV2SelectWorksCard() {
   tilt.appendChild(flip);
   card.appendChild(tilt);
 
+  /* ── Face references ── */
   const getFaceRefs = (faceNode) => ({
     stage: faceNode.querySelector('[data-card-stage]'),
     title: faceNode.querySelector('[data-project-title]'),
@@ -174,94 +177,46 @@ function initV2SelectWorksCard() {
   const back = getFaceRefs(backFace);
   if (!front.stage || !front.title || !front.tags || !front.layers.length) return;
   if (!back.stage || !back.title || !back.tags || !back.layers.length) return;
+
   const glareEl = frontFace.querySelector('[data-card-glare]');
   const marqueeEl = section.querySelector('.v2-select-works-marquee');
 
-  const projects = [
-    {
-      title: 'Sonix — Your Personal Space On Wheels',
-      marqueeKey: 'SONIX',
-      tags: ['UXD', 'UXR', 'Branding'],
-      images: [
-        'assets/images/autonomous-vehicle.jpg',
-        'assets/images/sync.jpg',
-        'assets/images/google-nest.jpg',
-        'assets/images/7west.jpg'
-      ]
-    },
-    {
-      title: 'SeaLove Candle Bar Re-Design',
-      marqueeKey: 'SEALOVE',
-      tags: ['UXD', 'UXR', 'IA', 'Branding'],
-      images: [
-        'assets/images/sea-love.jpg',
-        'assets/images/kroger.jpg',
-        'assets/images/word-clock.jpg',
-        'assets/images/zillow.jpg'
-      ]
-    },
-    {
-      title: 'Google Nest Thermostat for Office Space',
-      marqueeKey: 'GOOGLE NEST',
-      tags: ['UXD', 'UXR', 'Branding'],
-      images: [
-        'assets/images/google-nest.jpg',
-        'assets/images/autonomous-vehicle.jpg',
-        'assets/images/sync.jpg',
-        'assets/images/sea-love.jpg'
-      ]
-    },
-    {
-      title: 'Kohler × SCADpro — Future of Hydrotherapy',
-      marqueeKey: 'KOHLER',
-      tags: ['Lead UXD', 'UXR', 'Product Design'],
-      images: [
-        'assets/images/kohler-scadpro.jpg',
-        'assets/images/7west.jpg',
-        'assets/images/google-nest.jpg',
-        'assets/images/word-clock.jpg'
-      ]
-    }
-  ];
+  /* ── Project data from shared source ── */
+  const projects = getSelectWorksProjects();
 
-  const leadSegments = 2;
-  const holdSegments = 1;
+  const { leadSegments, holdSegments, exitSegments } = SELECT_WORKS_CONFIG;
   section.style.setProperty('--v2-project-count', String(projects.length));
   section.style.setProperty('--v2-lead-segments', String(leadSegments));
   section.style.setProperty('--v2-hold-segments', String(holdSegments));
+  section.style.setProperty('--v2-exit-segments', String(exitSegments));
 
+  /* ── State ── */
   let angle = 0;
   let scrollProgress = 0;
-  let targetX = 0;
-  let targetY = 0;
-  let currentX = 0;
-  let currentY = 0;
+  let targetX = 0, targetY = 0;
+  let currentX = 0, currentY = 0;
   let activeFrontKey = '';
   let activeBackKey = '';
   let activeMarqueeKey = '';
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-  const motionScale = prefersReducedMotion ? 0 : (isTouch ? v2SelectWorksConfig.touchScale : 1);
+  const isReducedMotion = prefersReducedMotion();
+  const motionScale = getMotionScale(SELECT_WORKS_CONFIG.touchScale);
   let sectionTop = section.offsetTop;
 
+  /* ── Apply project to a card face ── */
   const applyProjectToFace = (refs, index, side = 'front') => {
     const project = projects[index];
     if (!project) return false;
-    const projectKey = `${project.title}`;
-    if (side === 'front' && projectKey === activeFrontKey) {
-      return false;
-    }
-    if (side === 'back' && projectKey === activeBackKey) {
-      return false;
-    }
-    if (side === 'front') activeFrontKey = projectKey;
-    if (side === 'back') activeBackKey = projectKey;
+    const key = project.title;
+
+    if (side === 'front' && key === activeFrontKey) return false;
+    if (side === 'back' && key === activeBackKey) return false;
+    if (side === 'front') activeFrontKey = key;
+    if (side === 'back') activeBackKey = key;
 
     refs.title.textContent = project.title;
-
     refs.tags.innerHTML = '';
-    project.tags.forEach((tag) => {
+    project.tags.forEach(tag => {
       const chip = document.createElement('span');
       chip.textContent = tag;
       refs.tags.appendChild(chip);
@@ -281,13 +236,7 @@ function initV2SelectWorksCard() {
   applyProjectToFace(front, 0, 'front');
   applyProjectToFace(back, 1 % projects.length, 'back');
 
-  const escapeHtml = (value) => String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-
+  /* ── Marquee helpers ── */
   const marqueeMarkup = (key) => {
     const safe = escapeHtml(key.trim().toUpperCase());
     return Array.from({ length: 8 }, () =>
@@ -301,12 +250,12 @@ function initV2SelectWorksCard() {
     if (key === activeMarqueeKey) return;
     activeMarqueeKey = key;
     const markup = marqueeMarkup(key);
-    marqueeTracks.forEach((track) => { track.innerHTML = markup; });
+    marqueeTracks.forEach(track => { track.innerHTML = markup; });
   };
 
-  // Immediately seed the marquee so it's correct on first paint
   setMarquee(0);
 
+  /* ── Layout sync ── */
   const syncFlipHeight = () => {
     const height = Math.ceil(frontFace.getBoundingClientRect().height);
     if (!height) return;
@@ -314,12 +263,13 @@ function initV2SelectWorksCard() {
     tilt.style.height = `${height}px`;
   };
 
-  card.addEventListener('mousemove', (event) => {
+  /* ── Mouse tilt ── */
+  card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-    targetY = ((x - 0.5) * 2) * v2SelectWorksConfig.tiltRange * motionScale;
-    targetX = ((0.5 - y) * 2) * v2SelectWorksConfig.tiltRange * motionScale;
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    targetY = ((x - 0.5) * 2) * SELECT_WORKS_CONFIG.tiltRange * motionScale;
+    targetX = ((0.5 - y) * 2) * SELECT_WORKS_CONFIG.tiltRange * motionScale;
     if (glareEl) {
       card.style.setProperty('--glare-x', `${(x * 100).toFixed(2)}%`);
       card.style.setProperty('--glare-y', `${(y * 100).toFixed(2)}%`);
@@ -335,60 +285,48 @@ function initV2SelectWorksCard() {
     card.style.setProperty('--glare-opacity', '0.7');
   });
 
-  const exitSegments = 1;
-  section.style.setProperty('--v2-exit-segments', String(exitSegments));
-
+  /* ── Scroll progress ── */
   const updateScrollProgress = () => {
     sectionTop = section.offsetTop;
     const vh = Math.max(1, window.innerHeight);
     const rawSteps = (window.scrollY - sectionTop) / vh;
-    // +exitSegments to allow the scroll to continue into the exit phase
     const maxSteps = leadSegments + holdSegments + projects.length + exitSegments;
-    scrollProgress = Math.max(0, Math.min(maxSteps, rawSteps));
+    scrollProgress = clampValue(rawSteps, 0, maxSteps);
   };
 
+  /* ── Animation loop ── */
   const animate = () => {
-    // Timeline segments:
-    // [0..1) heading-focused intro -> heading + most of card
-    // [1..2) heading fades -> card-only centered (no flipping)
-    // [2..3) hold centered card (no flipping)
-    // [3..] flipping project segments (180deg each)
-    const timelineFloat = scrollProgress;
-
+    const t = scrollProgress;
     let segmentIndex = 0;
     let localProgress = 0;
     let rotationStarted = false;
 
-    if (timelineFloat < 1) {
-      const introProgress = timelineFloat;
+    if (t < 1) {
+      /* Intro: heading visible, card rises */
       section.style.setProperty('--v2-header-opacity', '1');
       section.style.setProperty('--v2-header-shift', '0px');
       section.style.setProperty('--v2-header-max-h', '420px');
       section.style.setProperty('--v2-header-gap', '54px');
-      // Panel shift: starts at 0 so heading is immediately visible on entry
-      const panelShiftPx = 0;
-      section.style.setProperty('--v2-panel-shift', `${panelShiftPx.toFixed(2)}px`);
-      // Card starts just 10% below so it's visible but below heading, then rises
-      const revealShiftPx = (1 - introProgress) * (window.innerHeight * 0.10);
-      section.style.setProperty('--v2-card-shift', `${revealShiftPx.toFixed(2)}px`);
+      section.style.setProperty('--v2-panel-shift', '0px');
+      const revealPx = (1 - t) * (window.innerHeight * 0.10);
+      section.style.setProperty('--v2-card-shift', `${revealPx.toFixed(2)}px`);
       section.style.setProperty('--v2-card-opacity', '1');
       section.style.setProperty('--v2-card-scale', '1');
       angle = 0;
-    } else if (timelineFloat < 2) {
-      const midProgress = timelineFloat - 1;
-      const headerOpacity = Math.max(0, 1 - midProgress);
-      section.style.setProperty('--v2-header-opacity', headerOpacity.toFixed(3));
-      section.style.setProperty('--v2-header-shift', `${(-36 * midProgress).toFixed(2)}px`);
-      section.style.setProperty('--v2-header-max-h', `${Math.max(0, 420 * (1 - midProgress)).toFixed(2)}px`);
-      section.style.setProperty('--v2-header-gap', `${Math.max(0, 54 * (1 - midProgress)).toFixed(2)}px`);
-      const panelShiftPx = (1 - midProgress) * (window.innerHeight * 0.03);
-      section.style.setProperty('--v2-panel-shift', `${panelShiftPx.toFixed(2)}px`);
-      const midShiftPx = (1 - midProgress) * (window.innerHeight * 0.04);
-      section.style.setProperty('--v2-card-shift', `${midShiftPx.toFixed(2)}px`);
+    } else if (t < 2) {
+      /* Mid: heading fades, card centers */
+      const p = t - 1;
+      section.style.setProperty('--v2-header-opacity', Math.max(0, 1 - p).toFixed(3));
+      section.style.setProperty('--v2-header-shift', `${(-36 * p).toFixed(2)}px`);
+      section.style.setProperty('--v2-header-max-h', `${Math.max(0, 420 * (1 - p)).toFixed(2)}px`);
+      section.style.setProperty('--v2-header-gap', `${Math.max(0, 54 * (1 - p)).toFixed(2)}px`);
+      section.style.setProperty('--v2-panel-shift', `${((1 - p) * window.innerHeight * 0.03).toFixed(2)}px`);
+      section.style.setProperty('--v2-card-shift', `${((1 - p) * window.innerHeight * 0.04).toFixed(2)}px`);
       section.style.setProperty('--v2-card-opacity', '1');
       section.style.setProperty('--v2-card-scale', '1');
       angle = 0;
-    } else if (timelineFloat < leadSegments + holdSegments) {
+    } else if (t < leadSegments + holdSegments) {
+      /* Hold: card centered, no flip */
       section.style.setProperty('--v2-header-opacity', '0');
       section.style.setProperty('--v2-header-shift', '-36px');
       section.style.setProperty('--v2-header-max-h', '0px');
@@ -399,6 +337,7 @@ function initV2SelectWorksCard() {
       section.style.setProperty('--v2-card-scale', '1');
       angle = 0;
     } else {
+      /* Rotation phase */
       rotationStarted = true;
       section.style.setProperty('--v2-header-opacity', '0');
       section.style.setProperty('--v2-header-shift', '-36px');
@@ -407,19 +346,15 @@ function initV2SelectWorksCard() {
       section.style.setProperty('--v2-panel-shift', '0px');
       section.style.setProperty('--v2-card-shift', '0px');
 
-      const rotationFloat = timelineFloat - leadSegments - holdSegments;
+      const rotationFloat = t - leadSegments - holdSegments;
 
-      // ── Exit phase: after all cards have flipped ──
       if (rotationFloat >= projects.length) {
+        /* Exit: shrink + fade */
         const exitProgress = Math.min(1, rotationFloat - projects.length);
-        // Ease: smoothstep for a natural feel
-        const t = exitProgress * exitProgress * (3 - 2 * exitProgress);
-        const exitScale = 1 - t * 0.18;      // 1 → 0.82
-        const exitOpacity = 1 - t;           // 1 → 0
-        section.style.setProperty('--v2-card-scale', exitScale.toFixed(4));
-        section.style.setProperty('--v2-card-opacity', exitOpacity.toFixed(4));
-        section.style.setProperty('--v2-marquee-opacity', exitOpacity.toFixed(4));
-        // Keep angle at 0 (card face showing the last project)
+        const eased = exitProgress * exitProgress * (3 - 2 * exitProgress);
+        section.style.setProperty('--v2-card-scale', (1 - eased * 0.18).toFixed(4));
+        section.style.setProperty('--v2-card-opacity', (1 - eased).toFixed(4));
+        section.style.setProperty('--v2-marquee-opacity', (1 - eased).toFixed(4));
         angle = 0;
         segmentIndex = projects.length - 1;
         localProgress = 1;
@@ -433,72 +368,67 @@ function initV2SelectWorksCard() {
       }
     }
 
-    currentX += (targetX - currentX) * v2SelectWorksConfig.spring;
-    currentY += (targetY - currentY) * v2SelectWorksConfig.spring;
+    /* ── Tilt spring ── */
+    currentX += (targetX - currentX) * SELECT_WORKS_CONFIG.spring;
+    currentY += (targetY - currentY) * SELECT_WORKS_CONFIG.spring;
 
+    /* ── Project face management ── */
     let visibleProjectIndex = 0;
     let nextProjectIndex = 1 % projects.length;
     let didUpdateFront = false;
     let didUpdateBack = false;
+
     if (rotationStarted) {
-      const currentProjectIndex = segmentIndex % projects.length;
-      nextProjectIndex = (currentProjectIndex + 1) % projects.length;
-      // Swap project at half-turn so the back face shows the next project.
-      visibleProjectIndex = localProgress >= 0.5 ? nextProjectIndex : currentProjectIndex;
-      didUpdateFront = applyProjectToFace(front, currentProjectIndex, 'front');
+      const curIdx = segmentIndex % projects.length;
+      nextProjectIndex = (curIdx + 1) % projects.length;
+      visibleProjectIndex = localProgress >= 0.5 ? nextProjectIndex : curIdx;
+      didUpdateFront = applyProjectToFace(front, curIdx, 'front');
       didUpdateBack = applyProjectToFace(back, nextProjectIndex, 'back');
     } else {
       didUpdateFront = applyProjectToFace(front, 0, 'front');
       didUpdateBack = applyProjectToFace(back, 1 % projects.length, 'back');
     }
-    if (didUpdateFront || didUpdateBack) {
-      syncFlipHeight();
-    }
-    if (marqueeTracks.length) {
-      setMarquee(visibleProjectIndex);
-    }
 
-    const effectiveAngle = (prefersReducedMotion || !rotationStarted) ? 0 : angle;
+    if (didUpdateFront || didUpdateBack) syncFlipHeight();
+    if (marqueeTracks.length) setMarquee(visibleProjectIndex);
+
+    /* ── Flip geometry ── */
+    const effectiveAngle = (isReducedMotion || !rotationStarted) ? 0 : angle;
     const angleRad = (effectiveAngle * Math.PI) / 180;
     const openFactor = Math.abs(Math.sin(angleRad));
     const openPx = Math.min(92, openFactor * 92);
     section.style.setProperty('--v2-marquee-open', `${openPx.toFixed(2)}px`);
     section.style.setProperty('--v2-marquee-opacity', '1');
 
-    // ── 5-state Y-fold animation mapped to flip angle ──
-    // State 1 (0°):       scaleY=1, translateY=0   → at rest
-    // State 2 (0°→90°):  scaleY 1→0, moves UP     → flattens toward top
-    // State 3 (90°):     scaleY=0                 → invisible
-    // State 4 (just>90°): jumps to below center    → still invisible
-    // State 5 (90°→180°): scaleY 0→1, moves UP    → unfolds from bottom
+    /* ── Marquee Y-fold ── */
     if (marqueeEl) {
-      const MAX_FOLD_OFFSET = 32; // px
+      const MAX_FOLD_OFFSET = 32;
       const textScaleY = Math.abs(Math.cos(angleRad));
-      let textTranslateY;
-      let textOriginY;
+      let textTranslateY, textOriginY;
+
       if (effectiveAngle <= 90) {
-        // First half: rise + squish toward top
         textTranslateY = -Math.sin(angleRad) * MAX_FOLD_OFFSET;
         textOriginY = '0%';
       } else {
-        // Second half: reappear from below, unfold upward
-        const t = (effectiveAngle - 90) * Math.PI / 180;
-        textTranslateY = MAX_FOLD_OFFSET * Math.cos(t);
+        const tVal = (effectiveAngle - 90) * Math.PI / 180;
+        textTranslateY = MAX_FOLD_OFFSET * Math.cos(tVal);
         textOriginY = '100%';
       }
+
       marqueeEl.style.transformOrigin = `center ${textOriginY}`;
-      marqueeEl.style.transform =
-        `translateY(calc(-50% + ${textTranslateY.toFixed(2)}px)) scaleY(${textScaleY.toFixed(4)})`;
+      marqueeEl.style.transform = `translateY(calc(-50% + ${textTranslateY.toFixed(2)}px)) scaleY(${textScaleY.toFixed(4)})`;
     }
 
-    const driftX = (currentY * v2SelectWorksConfig.drift) / v2SelectWorksConfig.tiltRange;
-    const driftY = (-currentX * v2SelectWorksConfig.drift) / v2SelectWorksConfig.tiltRange;
+    /* ── Tilt + drift transforms ── */
+    const driftX = (currentY * SELECT_WORKS_CONFIG.drift) / SELECT_WORKS_CONFIG.tiltRange;
+    const driftY = (-currentX * SELECT_WORKS_CONFIG.drift) / SELECT_WORKS_CONFIG.tiltRange;
     tilt.style.transform = `translate3d(${driftX.toFixed(2)}px, ${driftY.toFixed(2)}px, 0) rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg)`;
     flip.style.transform = `rotateX(${effectiveAngle.toFixed(3)}deg)`;
 
     requestAnimationFrame(animate);
   };
 
+  /* ── Bind events ── */
   window.addEventListener('scroll', updateScrollProgress, { passive: true });
   window.addEventListener('resize', () => {
     updateScrollProgress();
@@ -509,76 +439,68 @@ function initV2SelectWorksCard() {
   requestAnimationFrame(animate);
 }
 
-document.addEventListener('DOMContentLoaded', initV2SelectWorksCard);
+/* ══════════════════════════════════════
+   4. SKILLS ACCORDION
+   ══════════════════════════════════════ */
 
-/* ── Skills accordion (Kanso-style) ── */
-function initV2Skills() {
+function initSkills() {
   const accordion = document.querySelector('.v2-skills-accordion');
   const items = document.querySelectorAll('.v2-skills-item[data-skill]');
   if (!accordion || !items.length) return;
 
-  // Set initial has-active if any item starts open
   if (document.querySelector('.v2-skills-item.is-open')) {
     accordion.classList.add('has-active');
   }
 
-  items.forEach((item) => {
+  items.forEach(item => {
     const row = item.querySelector('.v2-skills-row');
     if (!row) return;
 
     row.addEventListener('click', () => {
-      const isAlreadyOpen = item.classList.contains('is-open');
+      const wasOpen = item.classList.contains('is-open');
+      items.forEach(i => i.classList.remove('is-open'));
 
-      // Close all
-      items.forEach((i) => i.classList.remove('is-open'));
-
-      if (!isAlreadyOpen) {
-        // Open this one
+      if (!wasOpen) {
         item.classList.add('is-open');
         accordion.classList.add('has-active');
       } else {
-        // All closed
         accordion.classList.remove('has-active');
       }
     });
   });
 }
 
-document.addEventListener('DOMContentLoaded', initV2Skills);
+/* ══════════════════════════════════════
+   5. QUOTE — Word Fill + Parallax Image
+   ══════════════════════════════════════ */
 
-/* ── Quote: sticky scroll \u2014 word fill + fast parallax image ── */
-function initV2Quote() {
+function initQuote() {
   const section = document.querySelector('.v2-quote');
   const words = document.querySelectorAll('.v2-quote-word');
   const photo = document.getElementById('quotePhoto');
   if (!section || !words.length) return;
 
-  const total = words.length;
-
   function tick() {
     const rect = section.getBoundingClientRect();
     const viewportH = window.innerHeight;
     const sectionH = section.offsetHeight;
-
-    // Free-scroll: progress from when section bottom enters viewport to section top exits
     const entered = viewportH - rect.top;
-    const total_travel = sectionH + viewportH;
-    const progress = Math.max(0, Math.min(1, entered / total_travel));
+    const totalTravel = sectionH + viewportH;
+    const progress = clampValue(entered / totalTravel, 0, 1);
 
-    /* ── Word fill: each word lights up in sequence across 0–1 progress ── */
+    /* Word fill */
     words.forEach((word, i) => {
       const wordStart = (i / words.length) * 0.75;
       const wordEnd = wordStart + 0.15;
-      const t = Math.max(0, Math.min(1, (progress - wordStart) / (wordEnd - wordStart)));
+      const t = clampValue((progress - wordStart) / (wordEnd - wordStart), 0, 1);
       word.style.color = `rgba(249,253,254,${(0.18 + t * 0.82).toFixed(3)})`;
     });
 
-    /* ── Image: matches text fill speed, finishes just after last word ── */
+    /* Image parallax */
     if (photo) {
       if (progress > 0.02 && !photo.classList.contains('is-visible')) {
         photo.classList.add('is-visible');
       }
-      // translateY 120% → -20% finishing slightly after text fills (~87% progress)
       const ty = 120 - progress * 140;
       photo.style.transform = `translateY(${ty.toFixed(1)}%)`;
     }
@@ -591,49 +513,41 @@ function initV2Quote() {
   tick();
 }
 
-document.addEventListener('DOMContentLoaded', initV2Quote);
+/* ══════════════════════════════════════
+   6. SEE ALL WORKS — Intersection Fade
+   ══════════════════════════════════════ */
 
-/* ── See All Works Parallax Fade ── */
-function initV2SeeAllAnimation() {
+function initSeeAllAnimation() {
   const container = document.querySelector('.v2-see-all-container');
   if (!container) return;
 
-  const observer = new IntersectionObserver((entries) => {
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.intersectionRatio > 0.5) {
         container.classList.add('is-visible');
       } else if (entry.intersectionRatio === 0) {
-        // Only completely remove when out of view to prevent jittering
         container.classList.remove('is-visible');
       }
     });
-  }, {
-    threshold: [0, 0.6] // Trigger updates at 0% and 60% visibility
-  });
+  }, { threshold: [0, 0.6] });
 
   observer.observe(container);
 }
 
-document.addEventListener('DOMContentLoaded', initV2SeeAllAnimation);
+/* ══════════════════════════════════════
+   7. QUOTE CURSOR — Liquid Glass Shader
+   ══════════════════════════════════════ */
 
-/* ── Quote Image Liquid Glass Cursor (SVG Displacement Shader) ── */
-function initV2QuoteCursor() {
+function initQuoteCursor() {
   const photoLink = document.querySelector('.v2-quote-photo-link');
   const cursor = document.getElementById('quoteCursor');
   if (!photoLink || !cursor) return;
 
-  /* ── Shader helpers ── */
-  function smoothStep(a, b, t) {
-    t = Math.max(0, Math.min(1, (t - a) / (b - a)));
-    return t * t * (3 - 2 * t);
-  }
-  function vlen(x, y) { return Math.sqrt(x * x + y * y); }
-
-  /* ── Build SVG filter once ── */
-  const CURSOR_SIZE = 120;
+  const SIZE = QUOTE_CURSOR_CONFIG.size;
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const XLINK_NS = 'http://www.w3.org/1999/xlink';
 
+  /* Build SVG filter */
   const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('xmlns', SVG_NS);
   svg.setAttribute('width', '0');
@@ -647,13 +561,13 @@ function initV2QuoteCursor() {
   filter.setAttribute('colorInterpolationFilters', 'sRGB');
   filter.setAttribute('x', '0');
   filter.setAttribute('y', '0');
-  filter.setAttribute('width', CURSOR_SIZE.toString());
-  filter.setAttribute('height', CURSOR_SIZE.toString());
+  filter.setAttribute('width', SIZE.toString());
+  filter.setAttribute('height', SIZE.toString());
 
   const feImage = document.createElementNS(SVG_NS, 'feImage');
   feImage.id = 'v2-liquid-glass-map';
-  feImage.setAttribute('width', CURSOR_SIZE.toString());
-  feImage.setAttribute('height', CURSOR_SIZE.toString());
+  feImage.setAttribute('width', SIZE.toString());
+  feImage.setAttribute('height', SIZE.toString());
 
   const feDisplace = document.createElementNS(SVG_NS, 'feDisplacementMap');
   feDisplace.setAttribute('in', 'SourceGraphic');
@@ -667,21 +581,19 @@ function initV2QuoteCursor() {
   svg.appendChild(defs);
   document.body.appendChild(svg);
 
-  /* ── Hidden canvas for displacement generation ── */
+  /* Hidden canvas for displacement generation */
   const canvas = document.createElement('canvas');
-  canvas.width = CURSOR_SIZE;
-  canvas.height = CURSOR_SIZE;
+  canvas.width = SIZE;
+  canvas.height = SIZE;
   canvas.style.display = 'none';
   document.body.appendChild(canvas);
   const ctx = canvas.getContext('2d');
 
-  /* ── Compute displacement map from SDF ── */
+  /* Compute displacement map from SDF */
   function updateShader(normMouseX, normMouseY) {
-    const w = CURSOR_SIZE;
-    const h = CURSOR_SIZE;
+    const w = SIZE, h = SIZE;
     const data = new Uint8ClampedArray(w * h * 4);
-    const rawDx = [];
-    const rawDy = [];
+    const rawDx = [], rawDy = [];
     let maxScale = 0;
 
     for (let i = 0; i < w * h; i++) {
@@ -711,44 +623,41 @@ function initV2QuoteCursor() {
     maxScale = Math.max(maxScale, 0.001) * 0.5;
 
     for (let i = 0; i < w * h; i++) {
-      const r = (rawDx[i] / maxScale + 0.5) * 255;
-      const g = (rawDy[i] / maxScale + 0.5) * 255;
-      data[i * 4] = r;
-      data[i * 4 + 1] = g;
+      data[i * 4] = (rawDx[i] / maxScale + 0.5) * 255;
+      data[i * 4 + 1] = (rawDy[i] / maxScale + 0.5) * 255;
       data[i * 4 + 2] = 0;
       data[i * 4 + 3] = 255;
     }
 
     ctx.putImageData(new ImageData(data, w, h), 0, 0);
     feImage.setAttributeNS(XLINK_NS, 'href', canvas.toDataURL());
-    feDisplace.setAttribute('scale', (maxScale).toString());
+    feDisplace.setAttribute('scale', maxScale.toString());
   }
 
   updateShader(0.5, 0.5);
 
-  /* ── LERP position state ── */
+  /* ── LERP cursor position ── */
   let mouseX = 0, mouseY = 0;
   let cursorX = 0, cursorY = 0;
   let isHovering = false;
   let rafId = null;
-  const LERP = 0.14;
 
-  const animate = () => {
+  const animateCursor = () => {
     if (!isHovering) return;
-    cursorX += (mouseX - cursorX) * LERP;
-    cursorY += (mouseY - cursorY) * LERP;
+    cursorX = lerp(cursorX, mouseX, QUOTE_CURSOR_CONFIG.lerp);
+    cursorY = lerp(cursorY, mouseY, QUOTE_CURSOR_CONFIG.lerp);
     cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) scale(1)`;
 
     const rect = cursor.getBoundingClientRect();
     if (rect.width > 0) {
-      const relX = Math.max(0, Math.min(1, (mouseX - rect.left) / rect.width));
-      const relY = Math.max(0, Math.min(1, (mouseY - rect.top) / rect.height));
+      const relX = clampValue((mouseX - rect.left) / rect.width, 0, 1);
+      const relY = clampValue((mouseY - rect.top) / rect.height, 0, 1);
       updateShader(relX, relY);
     }
-    rafId = requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animateCursor);
   };
 
-  photoLink.addEventListener('mouseenter', (e) => {
+  photoLink.addEventListener('mouseenter', e => {
     isHovering = true;
     mouseX = e.clientX;
     mouseY = e.clientY;
@@ -757,10 +666,10 @@ function initV2QuoteCursor() {
     cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) scale(0)`;
     cursor.classList.add('is-active');
     if (rafId) cancelAnimationFrame(rafId);
-    animate();
+    animateCursor();
   });
 
-  photoLink.addEventListener('mousemove', (e) => {
+  photoLink.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
   });
@@ -772,47 +681,27 @@ function initV2QuoteCursor() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', initV2QuoteCursor);
-/* ── NAVIGATION HIDE/SHOW ON SCROLL (Ported from V1) ── */
-(function () {
-  const nav = document.querySelector('.v2-nav');
-  if (!nav) return;
+/* ══════════════════════════════════════
+   BOOTSTRAP — Single DOMContentLoaded
+   ══════════════════════════════════════ */
 
-  let lastScrollY = window.scrollY;
-  let navScrollTicking = false;
+document.addEventListener('DOMContentLoaded', () => {
+  // Inject shared layout (nav, logo, SVG filter)
+  injectSharedLayout();
 
-  function updateNavVisibility() {
-    const currentScrollY = window.scrollY;
-
-    // Add background pill when scrolled
-    if (currentScrollY > 20) {
-      nav.classList.add('nav-scrolled');
-    } else {
-      nav.classList.remove('nav-scrolled');
-    }
-
-    // Determine scroll direction
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      // Scrolling DOWN - collapse nav
-      nav.classList.add('nav-collapsed');
-    } else {
-      // Scrolling UP - show nav
-      nav.classList.remove('nav-collapsed');
-    }
-
-    lastScrollY = currentScrollY;
+  if (document.body.classList.contains('v2-home')) {
+    window.scrollTo(0, 0);
   }
 
-  window.addEventListener('scroll', () => {
-    if (!navScrollTicking) {
-      requestAnimationFrame(() => {
-        updateNavVisibility();
-        navScrollTicking = false;
-      });
-      navScrollTicking = true;
-    }
-  }, { passive: true });
+  // Init all home page features
+  initHero();
+  initLogoRotation();
+  initSelectWorksCard();
+  initSkills();
+  initQuote();
+  initSeeAllAnimation();
+  initQuoteCursor();
 
-  // Set initial state
-  updateNavVisibility();
-})();
+  // Nav scroll (standard, not Lenis)
+  initNavScroll();
+});

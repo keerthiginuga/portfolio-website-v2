@@ -1,5 +1,7 @@
 /* ══════════════════════════════════════
    WORKS PAGE — Buttery Paced Card Stack
+   ══════════════════════════════════════
+   Depends on: js/utils.js, js/data.js, js/nav.js, js/components.js
 
    Architecture:
    ─ Lenis: inertial smooth scroll (lerp for weight)
@@ -14,25 +16,33 @@
 (function () {
     'use strict';
 
-    gsap.registerPlugin(ScrollTrigger);
-
+    /* ── Configuration ─────────────────────────────────────────────────── */
     var NUM_PROJECTS = 6;
-    var NUM_TRANSITIONS = NUM_PROJECTS - 1; // 5
+    var NUM_TRANSITIONS = NUM_PROJECTS - 1;
+    var MAX_VELOCITY = 3000;
+    var MAX_BOOST = 0.40;
+    var FAST_LERP = 0.085;
+    var SLOW_LERP = 0.025;
+    var SETTLE_FRACTION = 0.25;
+    var HOVER_RANGE = 80;
+    var CURSOR_LERP = 0.14;
 
+    /* ── DOM refs ──────────────────────────────────────────────────────── */
     var main = document.getElementById('worksMain');
     var sticky = document.getElementById('worksSticky');
     var imgStack = document.getElementById('imgStack');
     var slides = document.querySelectorAll('.v2-stack-slide');
     var infoItems = document.querySelectorAll('.v2-stack-info-item');
 
-    // Which project is physically under the cursor (-1 = none, use scroll logic)
     var hoveredProject = -1;
 
     if (!sticky || !slides.length) return;
 
-    // ── 1. Lenis Smooth Scroll ────────────────────────────────────────────────
+    /* ── 1. Lenis Smooth Scroll ────────────────────────────────────────── */
+    gsap.registerPlugin(ScrollTrigger);
+
     var lenis = new Lenis({
-        lerp: 0.08, // weight/momentum
+        lerp: 0.08,
         smooth: true,
         smoothTouch: false,
         direction: 'vertical',
@@ -56,7 +66,7 @@
     ScrollTrigger.addEventListener('refresh', function () { lenis.resize(); });
     ScrollTrigger.refresh();
 
-    // ── 2. Layout ─────────────────────────────────────────────────────────────
+    /* ── 2. Layout ─────────────────────────────────────────────────────── */
     var stickyRect = sticky.getBoundingClientRect();
     var stickyTop = stickyRect.top;
 
@@ -65,13 +75,11 @@
     main.style.paddingBottom = '0';
     sticky.style.marginTop = stickyTop + 'px';
 
-    // ── 3. Start Position: Deeper Hide ────────────────────────────────────────
-    // We compute exactly where the viewport bottom is relative to the stack frame,
-    // then ADD 15% so incoming cards are deeply hidden and never peek on jitters.
+    /* ── 3. Start Position: Deep Hide ──────────────────────────────────── */
     var stackRect = imgStack.getBoundingClientRect();
     var distToVpBottom = window.innerHeight - stackRect.top;
     var exactBottomPct = (distToVpBottom / stackRect.height) * 100;
-    var startYPercent = exactBottomPct + 15; // 15% deeper hide
+    var startYPercent = exactBottomPct + 15;
 
     var ySetters = Array.prototype.map.call(slides, function (slide) {
         return gsap.quickSetter(slide, 'yPercent');
@@ -87,10 +95,10 @@
         gsap.set(slide, { force3D: true });
     });
 
-    // ── 4. Scroll Stage Definition ────────────────────────────────────────────
+    /* ── 4. Scroll Stage ───────────────────────────────────────────────── */
     var VH = window.innerHeight;
-    var SCROLL_PER_ITEM = VH * 1.5;                 // 1.5 screens of scroll per project
-    var HOLD_DIST = SCROLL_PER_ITEM * 0.40;   // 40% of that is pure hold (no movement)
+    var SCROLL_PER_ITEM = VH * 1.5;
+    var HOLD_DIST = SCROLL_PER_ITEM * 0.40;
     var TRANS_DIST = SCROLL_PER_ITEM - Math.max(0, HOLD_DIST);
     var totalScrollDist = NUM_TRANSITIONS * SCROLL_PER_ITEM;
 
@@ -102,7 +110,6 @@
         pin: true,
         pinSpacing: true,
         onUpdate: function (self) {
-            // Hover takes priority — only switch via scroll when cursor is off all slides
             if (hoveredProject !== -1) return;
             var rawPos = self.progress * NUM_TRANSITIONS;
             var active = Math.min(NUM_TRANSITIONS, Math.max(0, Math.round(rawPos)));
@@ -112,47 +119,28 @@
         },
     });
 
-    // ── 5. Velocity Tracker & Nav Hide ────────────────────────────────────────
+    /* ── 5. Velocity Tracker & Nav ─────────────────────────────────────── */
     var scrollVelocity = 0;
     var lastScroll = 0;
     var lastTime = performance.now();
-    var nav = document.querySelector('.v2-nav');
+    var lastNavScroll = 0;
 
     lenis.on('scroll', function (e) {
         var now = performance.now();
         var dt = now - lastTime;
         if (dt > 0) {
             var raw = (e.scroll - lastScroll) * (1000 / dt);
-            // heavier smoothing so boost feels organic, not jittery
             scrollVelocity = scrollVelocity * 0.8 + raw * 0.2;
         }
 
-        // Nav Hide/Show logic
-        if (nav) {
-            if (e.scroll > 20) {
-                nav.classList.add('nav-scrolled');
-            } else {
-                nav.classList.remove('nav-scrolled');
-            }
-
-            if (e.scroll > lastScroll && e.scroll > 100) {
-                nav.classList.add('nav-collapsed');
-            } else {
-                nav.classList.remove('nav-collapsed');
-            }
-        }
+        // Use shared nav controller (from nav.js)
+        lastNavScroll = updateNavOnScroll(e.scroll, lastNavScroll);
 
         lastScroll = e.scroll;
         lastTime = now;
     });
 
-    // ── 6. Physics Loop ───────────────────────────────────────────────────────
-    var MAX_VELOCITY = 3000;
-    var MAX_BOOST = 0.40;   // allow velocity to advance progress up to 40%
-    var FAST_LERP = 0.085;  // buttery, slightly slower main approach
-    var SLOW_LERP = 0.025;  // very slow float for the settle
-    var SETTLE_FRACTION = 0.25;   // last 25% of distance enters float mode
-
+    /* ── 6. Physics Loop ───────────────────────────────────────────────── */
     function animLoop() {
         var scrollPos = Math.max(0, lenis.scroll);
         var velAbs = Math.abs(scrollVelocity);
@@ -160,7 +148,6 @@
         var velBoost = velNorm * MAX_BOOST;
 
         for (var i = 1; i < slides.length; i++) {
-            // Compute progress for THIS specific project's transition phase
             var itemStartScroll = (i - 1) * SCROLL_PER_ITEM;
             var transStartScroll = itemStartScroll + HOLD_DIST;
 
@@ -168,21 +155,14 @@
             if (scrollPos > transStartScroll) {
                 rawProgress = (scrollPos - transStartScroll) / TRANS_DIST;
             }
-            rawProgress = Math.max(0, Math.min(1, rawProgress));
+            rawProgress = clampValue(rawProgress, 0, 1);
 
-            // ISOLATED BOOST:
-            // Velocity only pulls this card if it's currently actively transitioning
-            // (meaning it's past the hold phase, but hasn't fully landed yet).
-            // This stops card #4 from jumping while we're still looking at card #2.
             var isActivelyTransitioning = (rawProgress > 0 && rawProgress < 1);
             var boost = (scrollVelocity > 0 && isActivelyTransitioning) ? velBoost : 0;
-
             var effectiveProgress = Math.min(1, rawProgress + boost);
 
-            // Target Y computation
             targetY[i] = startYPercent * (1 - effectiveProgress);
 
-            // Dual-lerp physical easing
             var remaining = currentY[i] - targetY[i];
             var settleZone = startYPercent * SETTLE_FRACTION;
             var lerpRate = (remaining > 0 && currentY[i] < settleZone) ? SLOW_LERP : FAST_LERP;
@@ -196,12 +176,9 @@
 
     requestAnimationFrame(animLoop);
 
-    // ── 7. Hover Parallax ─────────────────────────────────────────────────────
-    var RANGE = 80;
+    /* ── 7. Hover Parallax ─────────────────────────────────────────────── */
     var row = document.querySelector('.v2-works-row');
     var pRaf = null, pTargetY = 0, pCurrentY = 0, pBaseY = 0, pHovered = false;
-
-    function lerpFn(a, b, t) { return a + (b - a) * t; }
 
     function calcBase() {
         var h = imgStack.getBoundingClientRect().height;
@@ -217,7 +194,7 @@
     }
 
     function parallaxTick() {
-        pCurrentY = lerpFn(pCurrentY, pTargetY, 0.08);
+        pCurrentY = lerp(pCurrentY, pTargetY, 0.08);
         setAllInfoTops(pCurrentY);
         pRaf = requestAnimationFrame(parallaxTick);
     }
@@ -231,9 +208,10 @@
             row.classList.add('is-hovered');
             if (!pRaf) pRaf = requestAnimationFrame(parallaxTick);
         });
+
         imgStack.addEventListener('mouseleave', function () {
             pHovered = false;
-            hoveredProject = -1;  // revert info panel to scroll-based logic
+            hoveredProject = -1;
             row.classList.remove('is-hovered');
             pTargetY = pBaseY + 30;
             setTimeout(function () {
@@ -244,14 +222,12 @@
                 }
             }, 500);
         });
+
         imgStack.addEventListener('mousemove', function (e) {
-            // Parallax
             var rect = imgStack.getBoundingClientRect();
             var normalized = (e.clientY - rect.top) / rect.height;
-            pTargetY = pBaseY + (normalized - 0.5) * RANGE * 2;
+            pTargetY = pBaseY + (normalized - 0.5) * HOVER_RANGE * 2;
 
-            // Detect which slide is physically under the cursor
-            // elementsFromPoint returns elements top-to-bottom in z-order
             var els = document.elementsFromPoint(e.clientX, e.clientY);
             var hit = -1;
             for (var k = 0; k < els.length; k++) {
@@ -269,14 +245,14 @@
         });
     }
 
-    // ── 8. /VIEW Cursor ───────────────────────────────────────────────────────
+    /* ── 8. /VIEW Cursor ───────────────────────────────────────────────── */
     var cursor = document.getElementById('viewCursor');
     if (!cursor) return;
     var mx = 0, my = 0, cx = 0, cy = 0, cRaf = null;
 
     function animCursor() {
-        cx = lerpFn(cx, mx, 0.14);
-        cy = lerpFn(cy, my, 0.14);
+        cx = lerp(cx, mx, CURSOR_LERP);
+        cy = lerp(cy, my, CURSOR_LERP);
         cursor.style.left = cx + 'px';
         cursor.style.top = cy + 'px';
         cRaf = requestAnimationFrame(animCursor);

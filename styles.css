@@ -1,24 +1,42 @@
 :root {
+  /* ── Colors ── */
   --v2-color-black: #000000;
   --v2-color-white: #f9fdfe;
   --v2-color-gray: #6d6d6d;
   --v2-color-gray-2: #a5a5a5;
   --v2-color-gray-3: #1f1f1f;
+  --v2-color-panel-bg: #f2f2f2;
+  --v2-color-surface-dark: #111;
+  --v2-color-surface-darker: #0d0d0d;
 
+  /* ── Spacing ── */
   --v2-space-1: 8px;
   --v2-space-2: 16px;
   --v2-space-3: 24px;
   --v2-space-4: 32px;
   --v2-space-5: 45px;
 
+  /* ── Radii ── */
   --v2-radius-card: 8px;
 
+  /* ── Timing ── */
   --v2-duration-fast: 180ms;
   --v2-duration-medium: 420ms;
   --v2-ease-main: cubic-bezier(0.22, 1, 0.36, 1);
+  --v2-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
+  /* ── Typography ── */
   --v2-name-size: clamp(54px, 7vw, 120px);
   --v2-title-size: clamp(26px, 2.9vw, 52px);
+  --v2-font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --v2-font-serif: 'EB Garamond', Georgia, serif;
+
+  /* ── Shared effects (nav glass) ── */
+  --v2-nav-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.25),
+    inset 0 -6px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  --v2-nav-backdrop-scrolled: url(#nav-glass-filter) blur(16px) saturate(1.5) brightness(1.06) contrast(1.1);
 }
 
 * {
@@ -35,9 +53,10 @@ html {
   /* Removed scroll-snap to prevent bouncy scroll loops */
 }
 
-body.v2-home {
+body.v2-home,
+body.v2-about-page {
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--v2-font-system);
   background: var(--v2-color-black);
   color: var(--v2-color-white);
   overflow-x: hidden;
@@ -81,10 +100,7 @@ body.v2-home {
   background: rgba(20, 20, 20, 0.35);
   backdrop-filter: url(#nav-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
   -webkit-backdrop-filter: url(#nav-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.25),
-    inset 0 -6px 20px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  box-shadow: var(--v2-nav-shadow);
   border-radius: 100px;
   padding: 8px 32px;
   transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.5s var(--v2-ease-main), box-shadow 0.4s ease;
@@ -93,23 +109,14 @@ body.v2-home {
 
 .v2-nav.nav-scrolled .v2-nav-inner {
   background: rgba(20, 20, 20, 0.45);
-  backdrop-filter: url(#nav-glass-filter) blur(16px) saturate(1.5) brightness(1.06) contrast(1.1);
-  -webkit-backdrop-filter: url(#nav-glass-filter) blur(16px) saturate(1.5) brightness(1.06) contrast(1.1);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.25),
-    inset 0 -6px 20px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
-  padding: 8px 32px;
+  backdrop-filter: var(--v2-nav-backdrop-scrolled);
+  -webkit-backdrop-filter: var(--v2-nav-backdrop-scrolled);
 }
 
 .v2-nav.nav-collapsed .v2-nav-inner {
   background: rgba(20, 20, 20, 0.45);
-  backdrop-filter: url(#nav-glass-filter) blur(16px) saturate(1.5) brightness(1.06) contrast(1.1);
-  -webkit-backdrop-filter: url(#nav-glass-filter) blur(16px) saturate(1.5) brightness(1.06) contrast(1.1);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.25),
-    inset 0 -6px 20px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  backdrop-filter: var(--v2-nav-backdrop-scrolled);
+  -webkit-backdrop-filter: var(--v2-nav-backdrop-scrolled);
   padding: 8px 16px;
 }
 
@@ -134,8 +141,8 @@ body.v2-home {
 }
 
 .v2-nav-link {
-  color: #6D6D6D;
-  font-family: 'EB Garamond', serif;
+  color: var(--v2-color-gray);
+  font-family: var(--v2-font-serif);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -143,7 +150,6 @@ body.v2-home {
   text-transform: uppercase;
   transition: color 0.3s ease;
   white-space: nowrap;
-  /* Keep single continuous line while morphing */
 }
 
 .v2-nav-link:hover,
@@ -427,7 +433,7 @@ body.v2-home {
   max-width: none;
   margin: 0;
   border-radius: 42px 42px 0 0;
-  background: #f2f2f2;
+  background: var(--v2-color-panel-bg);
   color: #000;
   padding: clamp(40px, 6vw, 96px) clamp(20px, 5vw, 80px) clamp(34px, 4vw, 56px);
   display: flex;
@@ -760,7 +766,7 @@ body.v2-home {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f2f2f2;
+  background: var(--v2-color-panel-bg);
 }
 
 .v2-see-all-link-mask {
@@ -1053,7 +1059,7 @@ body.v2-home {
 ══════════════════════════════════════ */
 
 .v2-skills {
-  background: #f2f2f2;
+  background: var(--v2-color-panel-bg);
   padding: clamp(28px, 5vw, 64px);
   min-height: 100svh;
   display: flex;
@@ -1061,11 +1067,7 @@ body.v2-home {
   border-radius: 0 0 clamp(24px, 3.5vw, 56px) clamp(24px, 3.5vw, 56px);
 }
 
-.v2-skills-grid {
-  width: 100%;
-  max-width: 1340px;
-  margin: 0 auto;
-}
+/* .v2-skills-grid removed — unused */
 
 .v2-skills-eyebrow {
   margin: 0;
@@ -1086,7 +1088,7 @@ body.v2-home {
 .v2-skills-accordion {
   display: flex;
   flex-direction: column;
-  background: #0d0d0d;
+  background: var(--v2-color-surface-darker);
   border-radius: 24px;
   padding: clamp(12px, 1.4vw, 20px) clamp(24px, 3.2vw, 52px);
   width: 100%;
@@ -1579,9 +1581,7 @@ body.v2-home {
     padding: 36px 14px;
   }
 
-  .v2-skills-name {
-    white-space: normal;
-  }
+  /* .v2-skills-name removed — unused */
 
   .v2-footer-headline {
     font-size: clamp(36px, 12vw, 64px);
@@ -1849,13 +1849,7 @@ body.v2-works-page * {
    ABOUT ME PAGE
    ═══════════════════════════════════════════════ */
 
-body.v2-about-page {
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background: var(--v2-color-black);
-  color: var(--v2-color-white);
-  overflow-x: hidden;
-}
+/* body.v2-about-page base styles are now shared with body.v2-home above */
 
 /* ── Hero: full viewport, flex row, vertically centered ── */
 .v2-about-hero {
