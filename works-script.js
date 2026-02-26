@@ -17,8 +17,6 @@
     'use strict';
 
     /* ── Configuration ─────────────────────────────────────────────────── */
-    var NUM_PROJECTS = 6;
-    var NUM_TRANSITIONS = NUM_PROJECTS - 1;
     var MAX_VELOCITY = 3000;
     var MAX_BOOST = 0.40;
     var FAST_LERP = 0.085;
@@ -34,9 +32,35 @@
     var slides = document.querySelectorAll('.v2-stack-slide');
     var infoItems = document.querySelectorAll('.v2-stack-info-item');
 
+    /* Drive transition count from the actual DOM so HTML is the single source of truth */
+    var NUM_PROJECTS = slides.length;
+    var NUM_TRANSITIONS = NUM_PROJECTS - 1;
+
     var hoveredProject = -1;
 
     if (!sticky || !slides.length) return;
+
+    /* ── Global Tags Helper ─────────────────────────────────────────────── */
+    var tagSpans = document.querySelectorAll('#globalTags [data-tag]');
+    var sepSpans = document.querySelectorAll('#globalTags .v2-tag-sep');
+
+    function updateGlobalTags(activeIndex) {
+        var item = infoItems[activeIndex];
+        if (!item) return;
+        var rawTags = item.getAttribute('data-tags') || '';
+        var activeTags = rawTags.split(',').map(function (t) { return t.trim(); });
+
+        tagSpans.forEach(function (span, i) {
+            var tag = span.getAttribute('data-tag');
+            var isDim = activeTags.indexOf(tag) === -1;
+            span.classList.toggle('is-dim', isDim);
+            /* Dim the separator that follows this tag if the tag is dimmed */
+            if (sepSpans[i]) sepSpans[i].classList.toggle('is-dim', isDim);
+        });
+    }
+
+    /* Initialise tags for first project */
+    // updateGlobalTags(0); - Removed so that all tags start in default state
 
     /* ── 1. Lenis Smooth Scroll ────────────────────────────────────────── */
     gsap.registerPlugin(ScrollTrigger);
@@ -102,6 +126,8 @@
     var TRANS_DIST = SCROLL_PER_ITEM - Math.max(0, HOLD_DIST);
     var totalScrollDist = NUM_TRANSITIONS * SCROLL_PER_ITEM;
 
+    var hasInteracted = false;
+
     ScrollTrigger.create({
         scroller: document.documentElement,
         trigger: sticky,
@@ -116,6 +142,10 @@
             infoItems.forEach(function (item, i) {
                 item.classList.toggle('is-active', i === active);
             });
+            // Update tags only after interaction
+            if (hasInteracted) {
+                updateGlobalTags(active);
+            }
         },
     });
 
@@ -131,6 +161,11 @@
         if (dt > 0) {
             var raw = (e.scroll - lastScroll) * (1000 / dt);
             scrollVelocity = scrollVelocity * 0.8 + raw * 0.2;
+            
+            // Register interaction on actual scroll movement (not just lenis setup)
+            if (Math.abs(e.scroll - lastScroll) > 1 && !hasInteracted) {
+                hasInteracted = true;
+            }
         }
 
         // Use shared nav controller (from nav.js)
@@ -236,11 +271,15 @@
                     break;
                 }
             }
-            if (hit !== -1 && hit !== hoveredProject) {
-                hoveredProject = hit;
-                infoItems.forEach(function (item, i) {
-                    item.classList.toggle('is-active', i === hoveredProject);
-                });
+            if (hit !== -1) {
+                if (!hasInteracted) hasInteracted = true;
+                if (hit !== hoveredProject) {
+                    hoveredProject = hit;
+                    infoItems.forEach(function (item, i) {
+                        item.classList.toggle('is-active', i === hoveredProject);
+                    });
+                    updateGlobalTags(hoveredProject);
+                }
             }
         });
     }

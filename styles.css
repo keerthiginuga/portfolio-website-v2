@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Neue Haas Grotesk Text';
+  src: url('./assets/fonts/NeueHaasGrotText-55Roman-Trial.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* ── Colors ── */
   --v2-color-black: #000000;
@@ -28,7 +36,7 @@
   /* ── Typography ── */
   --v2-name-size: clamp(54px, 7vw, 120px);
   --v2-title-size: clamp(26px, 2.9vw, 52px);
-  --v2-font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --v2-font-system: 'Neue Haas Grotesk Text', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --v2-font-serif: 'EB Garamond', Georgia, serif;
 
   /* ── Shared effects (nav glass) ── */
@@ -85,6 +93,21 @@ body.v2-about-page {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+/* Page Transition Transitions */
+body.v2-page-transitioning {
+  overflow: hidden;
+}
+body.v2-page-transitioning main {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body.v2-page-transitioning .v2-quote-cursor {
+  opacity: 0 !important;
+  transform: scale(0.5) !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
 }
 
 .v2-nav {
@@ -144,8 +167,8 @@ body.v2-about-page {
   color: var(--v2-color-gray);
   font-family: var(--v2-font-serif);
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  letter-spacing: 0;
   text-decoration: none;
   text-transform: uppercase;
   transition: color 0.3s ease;
@@ -306,7 +329,7 @@ body.v2-about-page {
   margin: 0;
   font-size: var(--v2-name-size);
   line-height: 1.5;
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
@@ -314,10 +337,10 @@ body.v2-about-page {
   margin: -14px 0 0;
   font-family: 'EB Garamond', serif;
   font-size: var(--v2-title-size);
-  font-weight: 500;
+  font-weight: 400;
   font-style: italic;
   line-height: 1.5;
-  letter-spacing: -0.011em;
+  letter-spacing: 0;
 }
 
 .v2-selected-works-cue {
@@ -329,7 +352,7 @@ body.v2-about-page {
   z-index: 7;
   text-align: center;
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0;
   /* Slightly wider for the longer word */
   color: var(--v2-color-gray);
   text-transform: uppercase;
@@ -488,7 +511,7 @@ body.v2-about-page {
 .v2-select-works-marquee-track span {
   font-size: clamp(84px, 11vw, 180px);
   line-height: 0.9;
-  letter-spacing: 0.03em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: #000000;
   -webkit-text-stroke: 0 transparent;
@@ -529,8 +552,8 @@ body.v2-about-page {
   font-size: clamp(54px, 8.2vw, 120px);
   line-height: 0.95;
   text-transform: uppercase;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 
@@ -737,8 +760,8 @@ body.v2-about-page {
   color: #ffffff;
   font-size: clamp(16px, 1.6vw, 22px);
   line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0;
   text-transform: none;
 }
 
@@ -759,7 +782,7 @@ body.v2-about-page {
   line-height: 1;
   font-weight: 400;
   text-transform: none;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
 }
 
 .v2-see-all-container {
@@ -781,8 +804,8 @@ body.v2-about-page {
   text-transform: uppercase;
   color: #000;
   font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-weight: 400;
+  letter-spacing: 0;
   text-decoration: underline;
   text-underline-offset: 6px;
   transform: translateY(150%);
@@ -909,7 +932,7 @@ body.v2-about-page {
 
   .v2-nav-link {
     font-size: 11px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
   }
 
   .v2-hero {
@@ -975,7 +998,7 @@ body.v2-about-page {
   .v2-selected-works-cue {
     bottom: 24px;
     font-size: 10px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0;
   }
 
   .v2-cue-line {
@@ -1073,7 +1096,7 @@ body.v2-about-page {
   margin: 0;
   padding: clamp(16px, 2vw, 28px) 0 clamp(8px, 1vw, 14px);
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: rgba(249, 253, 254, 0.35);
   line-height: 1.4;
@@ -1164,9 +1187,9 @@ body.v2-about-page {
 /* ── Heading ── */
 .v2-skills-heading {
   font-size: clamp(30px, 4.2vw, 64px);
-  font-weight: 600;
+  font-weight: 400;
   color: rgba(249, 253, 254, 0.75);
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
   line-height: 1;
   transition: color 0.35s ease;
 }
@@ -1195,9 +1218,9 @@ body.v2-about-page {
 
 .v2-skills-index-num {
   font-size: clamp(30px, 4.2vw, 64px);
-  font-weight: 600;
+  font-weight: 400;
   color: rgba(249, 253, 254, 0.22);
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
   line-height: 1;
   opacity: 1;
@@ -1208,7 +1231,7 @@ body.v2-about-page {
   font-size: clamp(36px, 5vw, 78px);
   font-weight: 300;
   color: rgba(249, 253, 254, 0.22);
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   line-height: 1;
   opacity: 0;
   transform: translateX(20px);
@@ -1290,7 +1313,7 @@ body.v2-about-page {
   padding: 6px 15px;
   font-size: clamp(11px, 0.85vw, 14px);
   line-height: 1;
-  letter-spacing: 0.03em;
+  letter-spacing: 0;
   transition: background 0.25s ease, color 0.25s ease;
 }
 
@@ -1347,13 +1370,14 @@ body.v2-about-page {
   /* allows the flex text block to physically overlap the image box */
   font-size: clamp(36px, 5.8vw, 88px);
   line-height: 1.12;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-weight: 400;
+  letter-spacing: 0;
   max-width: 85%;
   position: relative;
   z-index: 3;
-  pointer-events: none;
-  /* Pass mouse events through to the photo behind */
+  pointer-events: auto;
+  cursor: none;
+  /* Allow hover on text. Overlaps photo behind slightly */
 }
 
 /* Word spans — start dim, JS drives color */
@@ -1409,7 +1433,7 @@ body.v2-about-page {
   align-items: center;
   justify-content: center;
   font-size: 80px;
-  font-weight: 700;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.15);
 }
 
@@ -1454,8 +1478,8 @@ body.v2-about-page {
   color: rgba(255, 255, 255, 0.9);
   font-family: inherit;
   font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  letter-spacing: 0;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 
   opacity: 0;
@@ -1511,8 +1535,8 @@ body.v2-about-page {
   gap: 0;
   font-size: clamp(44px, 7.5vw, 120px);
   line-height: 0.95;
-  letter-spacing: -0.025em;
-  font-weight: 700;
+  letter-spacing: 0;
+  font-weight: 400;
   text-transform: uppercase;
   color: var(--v2-color-white);
 }
@@ -1527,7 +1551,7 @@ body.v2-about-page {
   font-weight: 400;
   text-transform: none;
   font-size: clamp(40px, 7vw, 112px);
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   color: rgba(249, 253, 254, 0.88);
 }
 
@@ -1542,7 +1566,7 @@ body.v2-about-page {
 
 .v2-footer-links a {
   font-size: clamp(10px, 0.85vw, 14px);
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: var(--v2-color-gray);
   text-decoration: none;
@@ -1636,7 +1660,7 @@ body.v2-works-page * {
 
 .v2-works-header-text {
   font-size: clamp(11px, 0.85vw, 13px);
-  letter-spacing: 0.14em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: rgba(249, 253, 254, 0.4);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
@@ -1699,6 +1723,42 @@ body.v2-works-page * {
   z-index: 6;
 }
 
+.v2-stack-slide:nth-child(7) {
+  z-index: 7;
+}
+
+.v2-stack-slide:nth-child(8) {
+  z-index: 8;
+}
+
+.v2-stack-slide:nth-child(9) {
+  z-index: 9;
+}
+
+.v2-stack-slide:nth-child(10) {
+  z-index: 10;
+}
+
+.v2-stack-slide:nth-child(11) {
+  z-index: 11;
+}
+
+.v2-stack-slide:nth-child(12) {
+  z-index: 12;
+}
+
+.v2-stack-slide:nth-child(13) {
+  z-index: 13;
+}
+
+.v2-stack-slide:nth-child(14) {
+  z-index: 14;
+}
+
+.v2-stack-slide:nth-child(15) {
+  z-index: 15;
+}
+
 .v2-stack-img {
   display: block;
   width: 100%;
@@ -1752,8 +1812,8 @@ body.v2-works-page * {
 .v2-works-title {
   margin: 0;
   font-size: clamp(18px, 1.6vw, 26px);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0;
   line-height: 1.15;
   color: var(--v2-color-white);
   text-transform: uppercase;
@@ -1778,7 +1838,73 @@ body.v2-works-page * {
   font-size: clamp(13px, 1vw, 16px);
   line-height: 1.7;
   color: var(--v2-color-white);
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
+}
+
+/* ── Global Tags Panel ── */
+.v2-global-tags {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  font-size: clamp(12px, 0.9vw, 14px);
+  line-height: 1.7;
+  color: var(--v2-color-white);
+  /* Dimmed state by default */
+  max-width: 480px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 6px;
+  pointer-events: none;
+}
+
+.v2-global-tags span {
+  transition: color 0.35s ease;
+  white-space: nowrap;
+}
+
+/* Base style for individual tags */
+.v2-global-tags span[data-tag],
+.v2-tag-sep {
+  color: var(--v2-color-white);
+}
+
+.v2-tag-sep {
+  user-select: none;
+}
+
+/* Dimmed tags when a project is active */
+.v2-global-tags span[data-tag].is-dim,
+.v2-tag-sep.is-dim {
+  color: rgba(249, 253, 254, 0.25);
+}
+
+line-height: 1.15;
+color: var(--v2-color-white);
+text-transform: uppercase;
+}
+
+.v2-works-year {
+  color: rgba(249, 253, 254, 0.45);
+  font-weight: 400;
+}
+
+.v2-works-desc {
+  margin: 0;
+  font-size: clamp(12px, 0.9vw, 14px);
+  line-height: 1.65;
+  color: rgba(249, 253, 254, 0.45);
+  max-width: 340px;
+}
+
+.v2-works-categories {
+  margin: 0;
+  margin-top: auto;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.7;
+  color: var(--v2-color-white);
+  letter-spacing: 0;
 }
 
 /* ── Custom /VIEW cursor ── */
@@ -1789,8 +1915,8 @@ body.v2-works-page * {
   z-index: 9999;
   pointer-events: none;
   font-size: clamp(11px, 0.85vw, 13px);
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-weight: 400;
+  letter-spacing: 0;
   color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
@@ -1879,8 +2005,8 @@ body.v2-works-page * {
 .v2-about-name {
   margin: 0;
   font-size: clamp(16px, 1.5vw, 22px);
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 400;
+  letter-spacing: 0;
   text-transform: uppercase;
   line-height: 1.2;
   color: var(--v2-color-white);
@@ -1890,7 +2016,7 @@ body.v2-works-page * {
   margin: 0;
   font-size: clamp(11px, 1vw, 14px);
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   color: var(--v2-color-gray-2);
   line-height: 1.4;
 }
@@ -1905,8 +2031,8 @@ body.v2-works-page * {
   color: var(--v2-color-black);
   font-family: inherit;
   font-size: clamp(11px, 0.85vw, 13px);
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  letter-spacing: 0;
   border-radius: 9999px;
   border: none;
   cursor: pointer;
@@ -1936,8 +2062,8 @@ body.v2-works-page * {
   border: none;
   font-size: clamp(28px, 4.2vw, 68px);
   line-height: 1.18;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: 0;
   text-align: right;
   color: var(--v2-color-white);
   max-width: 22ch;

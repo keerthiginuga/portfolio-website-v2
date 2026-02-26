@@ -540,101 +540,13 @@ function initSeeAllAnimation() {
 
 function initQuoteCursor() {
   const photoLink = document.querySelector('.v2-quote-photo-link');
+  const quoteText = document.getElementById('quoteText');
   const cursor = document.getElementById('quoteCursor');
-  if (!photoLink || !cursor) return;
+  if (!cursor) return;
 
-  const SIZE = QUOTE_CURSOR_CONFIG.size;
-  const SVG_NS = 'http://www.w3.org/2000/svg';
-  const XLINK_NS = 'http://www.w3.org/1999/xlink';
-
-  /* Build SVG filter */
-  const svg = document.createElementNS(SVG_NS, 'svg');
-  svg.setAttribute('xmlns', SVG_NS);
-  svg.setAttribute('width', '0');
-  svg.setAttribute('height', '0');
-  svg.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;z-index:-1;';
-
-  const defs = document.createElementNS(SVG_NS, 'defs');
-  const filter = document.createElementNS(SVG_NS, 'filter');
-  filter.id = 'v2-liquid-glass-filter';
-  filter.setAttribute('filterUnits', 'userSpaceOnUse');
-  filter.setAttribute('colorInterpolationFilters', 'sRGB');
-  filter.setAttribute('x', '0');
-  filter.setAttribute('y', '0');
-  filter.setAttribute('width', SIZE.toString());
-  filter.setAttribute('height', SIZE.toString());
-
-  const feImage = document.createElementNS(SVG_NS, 'feImage');
-  feImage.id = 'v2-liquid-glass-map';
-  feImage.setAttribute('width', SIZE.toString());
-  feImage.setAttribute('height', SIZE.toString());
-
-  const feDisplace = document.createElementNS(SVG_NS, 'feDisplacementMap');
-  feDisplace.setAttribute('in', 'SourceGraphic');
-  feDisplace.setAttribute('in2', 'v2-liquid-glass-map');
-  feDisplace.setAttribute('xChannelSelector', 'R');
-  feDisplace.setAttribute('yChannelSelector', 'G');
-
-  filter.appendChild(feImage);
-  filter.appendChild(feDisplace);
-  defs.appendChild(filter);
-  svg.appendChild(defs);
-  document.body.appendChild(svg);
-
-  /* Hidden canvas for displacement generation */
-  const canvas = document.createElement('canvas');
-  canvas.width = SIZE;
-  canvas.height = SIZE;
-  canvas.style.display = 'none';
-  document.body.appendChild(canvas);
-  const ctx = canvas.getContext('2d');
-
-  /* Compute displacement map from SDF */
-  function updateShader(normMouseX, normMouseY) {
-    const w = SIZE, h = SIZE;
-    const data = new Uint8ClampedArray(w * h * 4);
-    const rawDx = [], rawDy = [];
-    let maxScale = 0;
-
-    for (let i = 0; i < w * h; i++) {
-      const px = i % w;
-      const py = Math.floor(i / w);
-      const uvx = px / w;
-      const uvy = py / h;
-      const ix = uvx - 0.5;
-      const iy = uvy - 0.5;
-
-      const dist = vlen(ix, iy);
-      const displacement = smoothStep(0.5, 0.1, dist - 0.12) * 0.35;
-
-      const mx = uvx - normMouseX;
-      const my = uvy - normMouseY;
-      const mouseDist = vlen(mx, my);
-      const mouseInfluence = smoothStep(0.5, 0.0, mouseDist) * 0.15;
-
-      const dx = (ix / Math.max(dist, 0.001)) * displacement + mx * mouseInfluence;
-      const dy = (iy / Math.max(dist, 0.001)) * displacement + my * mouseInfluence;
-
-      maxScale = Math.max(maxScale, Math.abs(dx), Math.abs(dy));
-      rawDx.push(dx);
-      rawDy.push(dy);
-    }
-
-    maxScale = Math.max(maxScale, 0.001) * 0.5;
-
-    for (let i = 0; i < w * h; i++) {
-      data[i * 4] = (rawDx[i] / maxScale + 0.5) * 255;
-      data[i * 4 + 1] = (rawDy[i] / maxScale + 0.5) * 255;
-      data[i * 4 + 2] = 0;
-      data[i * 4 + 3] = 255;
-    }
-
-    ctx.putImageData(new ImageData(data, w, h), 0, 0);
-    feImage.setAttributeNS(XLINK_NS, 'href', canvas.toDataURL());
-    feDisplace.setAttribute('scale', maxScale.toString());
-  }
-
-  updateShader(0.5, 0.5);
+  /* Collect all hover targets — image link + quote text */
+  const targets = [photoLink, quoteText].filter(Boolean);
+  if (!targets.length) return;
 
   /* ── LERP cursor position ── */
   let mouseX = 0, mouseY = 0;
@@ -647,38 +559,43 @@ function initQuoteCursor() {
     cursorX = lerp(cursorX, mouseX, QUOTE_CURSOR_CONFIG.lerp);
     cursorY = lerp(cursorY, mouseY, QUOTE_CURSOR_CONFIG.lerp);
     cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) scale(1)`;
-
-    const rect = cursor.getBoundingClientRect();
-    if (rect.width > 0) {
-      const relX = clampValue((mouseX - rect.left) / rect.width, 0, 1);
-      const relY = clampValue((mouseY - rect.top) / rect.height, 0, 1);
-      updateShader(relX, relY);
-    }
     rafId = requestAnimationFrame(animateCursor);
   };
 
-  photoLink.addEventListener('mouseenter', e => {
-    isHovering = true;
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursorX = mouseX;
-    cursorY = mouseY;
-    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) scale(0)`;
-    cursor.classList.add('is-active');
-    if (rafId) cancelAnimationFrame(rafId);
-    animateCursor();
+  targets.forEach(target => {
+    target.addEventListener('mouseenter', e => {
+      isHovering = true;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorX = mouseX;
+      cursorY = mouseY;
+      cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) scale(0)`;
+      cursor.classList.add('is-active');
+      if (rafId) cancelAnimationFrame(rafId);
+      animateCursor();
+    });
+
+    target.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    target.addEventListener('mouseleave', () => {
+      isHovering = false;
+      cursor.classList.remove('is-active');
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    });
   });
 
-  photoLink.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  photoLink.addEventListener('mouseleave', () => {
-    isHovering = false;
-    cursor.classList.remove('is-active');
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-  });
+  if (quoteText) {
+    quoteText.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.body.classList.add('v2-page-transitioning');
+      setTimeout(() => {
+        window.location.href = 'about.html';
+      }, 400); // Wait for fade-out animation
+    });
+  }
 }
 
 /* ══════════════════════════════════════

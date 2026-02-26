@@ -101,21 +101,60 @@ const WORKS_ONLY_PROJECTS = [
         description: 'Rethinking the self-checkout experience at Kroger to reduce friction, errors, and frustration through empathetic service design.',
         images: ['assets/images/kroger.jpg'],
         heroImage: 'assets/images/kroger.jpg'
+    },
+    {
+        id: 'imessage',
+        title: 'iMessage (Placeholder Title)',
+        shortTitle: 'IMESSAGE',
+        year: 2024,
+        marqueeKey: 'IMESSAGE',
+        tags: ['Placeholder Tag'],
+        categories: 'Placeholder Category / Tag 2',
+        description: 'Placeholder description for the iMessage project.',
+        images: ['assets/images/imessage.jpg'],
+        heroImage: 'assets/images/imessage.jpg'
+    },
+    {
+        id: 'sync',
+        title: 'Sync (Placeholder Title)',
+        shortTitle: 'SYNC',
+        year: 2024,
+        marqueeKey: 'SYNC',
+        tags: ['Placeholder Tag'],
+        categories: 'Placeholder Category / Tag 2',
+        description: 'Placeholder description for the Sync project.',
+        images: ['assets/images/sync.jpg'],
+        heroImage: 'assets/images/sync.jpg'
+    },
+    {
+        id: 'zillow',
+        title: 'Zillow (Placeholder Title)',
+        shortTitle: 'ZILLOW',
+        year: 2024,
+        marqueeKey: 'ZILLOW',
+        tags: ['Placeholder Tag'],
+        categories: 'Placeholder Category / Tag 2',
+        description: 'Placeholder description for the Zillow project.',
+        images: ['assets/images/zillow.jpg'],
+        heroImage: 'assets/images/zillow.jpg'
     }
 ];
 
 /**
  * Returns the full list of projects for the works page,
- * ordered: SONIX, 7WEST, SEALOVE, GOOGLE NEST, KROGER, KOHLER
+ * ordered: SONIX, IMESSAGE, SEALOVE, GOOGLE NEST, KROGER, KOHLER, SYNC, 7WEST, ZILLOW
  */
 function getAllProjects() {
     return [
         PROJECT_DATA[0],             // SONIX
-        WORKS_ONLY_PROJECTS[0],      // 7WEST
+        WORKS_ONLY_PROJECTS[2],      // IMESSAGE
         PROJECT_DATA[1],             // SEALOVE
         PROJECT_DATA[2],             // GOOGLE NEST
         WORKS_ONLY_PROJECTS[1],      // KROGER
-        PROJECT_DATA[3]              // KOHLER
+        PROJECT_DATA[3],             // KOHLER
+        WORKS_ONLY_PROJECTS[3],      // SYNC
+        WORKS_ONLY_PROJECTS[0],      // 7WEST
+        WORKS_ONLY_PROJECTS[4]       // ZILLOW
     ];
 }
 

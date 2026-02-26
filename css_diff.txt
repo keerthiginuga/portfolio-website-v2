@@ -1,0 +1,1473 @@
+diff --git a/styles.css b/styles.css
+index 1550e57..9d647e9 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,3 +1,11 @@
++@font-face {
++  font-family: 'Neue Haas Grotesk Text';
++  src: url('./assets/fonts/NeueHaasGrotText-55Roman-Trial.otf') format('opentype');
++  font-weight: normal;
++  font-style: normal;
++  font-display: swap;
++}
++
+ :root {
+   /* ── Colors ── */
+   --v2-color-black: #000000;
+@@ -28,7 +36,7 @@
+   /* ── Typography ── */
+   --v2-name-size: clamp(54px, 7vw, 120px);
+   --v2-title-size: clamp(26px, 2.9vw, 52px);
+-  --v2-font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
++  --v2-font-system: 'Neue Haas Grotesk Text', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+   --v2-font-serif: 'EB Garamond', Georgia, serif;
+ 
+   /* ── Shared effects (nav glass) ── */
+@@ -142,10 +150,10 @@ body.v2-about-page {
+ 
+ .v2-nav-link {
+   color: var(--v2-color-gray);
+-  font-family: var(--v2-font-serif);
++  font-family: var(--v2-font-system);
+   font-size: 14px;
+-  font-weight: 500;
+-  letter-spacing: 0.02em;
++  font-weight: 400;
++  letter-spacing: 0;
+   text-decoration: none;
+   text-transform: uppercase;
+   transition: color 0.3s ease;
+@@ -306,7 +314,7 @@ body.v2-about-page {
+   margin: 0;
+   font-size: var(--v2-name-size);
+   line-height: 1.5;
+-  font-weight: 500;
++  font-weight: 400;
+   text-transform: uppercase;
+ }
+ 
+@@ -329,8 +337,7 @@ body.v2-about-page {
+   z-index: 7;
+   text-align: center;
+   font-size: 12px;
+-  letter-spacing: 0.14em;
+-  /* Slightly wider for the longer word */
++  letter-spacing: 0;
+   color: var(--v2-color-gray);
+   text-transform: uppercase;
+ }
+@@ -488,7 +495,7 @@ body.v2-about-page {
+ .v2-select-works-marquee-track span {
+   font-size: clamp(84px, 11vw, 180px);
+   line-height: 0.9;
+-  letter-spacing: 0.03em;
++  letter-spacing: 0;
+   text-transform: uppercase;
+   color: #000000;
+   -webkit-text-stroke: 0 transparent;
+@@ -529,8 +536,8 @@ body.v2-about-page {
+   font-size: clamp(54px, 8.2vw, 120px);
+   line-height: 0.95;
+   text-transform: uppercase;
+-  font-weight: 500;
+-  letter-spacing: -0.02em;
++  font-weight: 400;
++  letter-spacing: 0;
+ }
+ 
+ 
+@@ -737,8 +744,8 @@ body.v2-about-page {
+   color: #ffffff;
+   font-size: clamp(16px, 1.6vw, 22px);
+   line-height: 1.2;
+-  font-weight: 500;
+-  letter-spacing: -0.01em;
++  font-weight: 400;
++  letter-spacing: 0;
+   text-transform: none;
+ }
+ 
+@@ -759,7 +766,7 @@ body.v2-about-page {
+   line-height: 1;
+   font-weight: 400;
+   text-transform: none;
+-  letter-spacing: 0.01em;
++  letter-spacing: 0;
+ }
+ 
+ .v2-see-all-container {
+@@ -781,8 +788,8 @@ body.v2-about-page {
+   text-transform: uppercase;
+   color: #000;
+   font-size: 13px;
+-  font-weight: 500;
+-  letter-spacing: 0.05em;
++  font-weight: 400;
++  letter-spacing: 0;
+   text-decoration: underline;
+   text-underline-offset: 6px;
+   transform: translateY(150%);
+@@ -1073,7 +1080,7 @@ body.v2-about-page {
+   margin: 0;
+   padding: clamp(16px, 2vw, 28px) 0 clamp(8px, 1vw, 14px);
+   font-size: 12px;
+-  letter-spacing: 0.14em;
++  letter-spacing: 0;
+   text-transform: uppercase;
+   color: rgba(249, 253, 254, 0.35);
+   line-height: 1.4;
+@@ -1164,9 +1171,9 @@ body.v2-about-page {
+ /* ── Heading ── */
+ .v2-skills-heading {
+   font-size: clamp(30px, 4.2vw, 64px);
+-  font-weight: 600;
++  font-weight: 400;
+   color: rgba(249, 253, 254, 0.75);
+-  letter-spacing: -0.025em;
++  letter-spacing: 0;
+   line-height: 1;
+   transition: color 0.35s ease;
+ }
+@@ -1195,9 +1202,9 @@ body.v2-about-page {
+ 
+ .v2-skills-index-num {
+   font-size: clamp(30px, 4.2vw, 64px);
+-  font-weight: 600;
++  font-weight: 400;
+   color: rgba(249, 253, 254, 0.22);
+-  letter-spacing: -0.04em;
++  letter-spacing: 0;
+   font-variant-numeric: tabular-nums;
+   line-height: 1;
+   opacity: 1;
+@@ -1206,9 +1213,9 @@ body.v2-about-page {
+ 
+ .v2-skills-index-icon {
+   font-size: clamp(36px, 5vw, 78px);
+-  font-weight: 300;
++  font-weight: 400;
+   color: rgba(249, 253, 254, 0.22);
+-  letter-spacing: -0.04em;
++  letter-spacing: 0;
+   line-height: 1;
+   opacity: 0;
+   transform: translateX(20px);
+@@ -1290,7 +1297,7 @@ body.v2-about-page {
+   padding: 6px 15px;
+   font-size: clamp(11px, 0.85vw, 14px);
+   line-height: 1;
+-  letter-spacing: 0.03em;
++  letter-spacing: 0;
+   transition: background 0.25s ease, color 0.25s ease;
+ }
+ 
+@@ -1304,697 +1311,711 @@ body.v2-about-page {
+   .v2-skills-heading {
+     white-space: normal;
+   }
+-
+-  .v2-skills-detail {
+-    padding-left: 0;
+-  }
+ }
+ 
+ 
+-/* ══════════════════════════════════════
+-   SECTION B — Quote / Bio
+-══════════════════════════════════════ */
++══════════════════════════════════════ SECTION B — Quote / Bio ══════════════════════════════════════ */ Free-flowing quote section — no sticky trap */ 2-quote {
++  ckground: var(--v2-color-black);
++  n-height: 100svh;
++  sition: relative;
++  splay: flex;
++  ign-items: center;
++  dding: clamp(80px, 12vw, 160px) 0;
+ 
+-/* Free-flowing quote section — no sticky trap */
+-.v2-quote {
+-  background: var(--v2-color-black);
+-  min-height: 100svh;
+-  position: relative;
+-  display: flex;
+-  align-items: center;
+-  padding: clamp(80px, 12vw, 160px) 0;
+-}
+ 
+-/* Sticky wrapper kept as a transparent passthrough */
+-.v2-quote-sticky {
+-  width: 100%;
+-}
++  Sticky wrapper kept as a transparent passthrough */ 2-quote-sticky {
++    width: 100%;
+ 
+-.v2-quote-inner {
+-  position: relative;
+-  width: 100%;
+-  max-width: 1340px;
+-  margin: 0 auto;
+-  padding: 0 clamp(24px, 5vw, 72px);
+-  display: flex;
+-  align-items: center;
+-}
+ 
+-/* Text: large, left side, overlaps the image on the right */
+-.v2-quote-text {
+-  margin: 0;
+-  margin-right: -20%;
+-  /* allows the flex text block to physically overlap the image box */
+-  font-size: clamp(36px, 5.8vw, 88px);
+-  line-height: 1.12;
+-  font-weight: 600;
+-  letter-spacing: -0.03em;
+-  max-width: 85%;
+-  position: relative;
+-  z-index: 3;
+-  pointer-events: none;
+-  /* Pass mouse events through to the photo behind */
+-}
++    2-quote-inner {
++      position: relative;
++      width: 100%;
++      max-width: 1340px;
++      margin: 0 auto;
++      padding: 0 clamp(24px, 5vw, 72px);
++      splay: flex;
++      ign-items: center;
++
++
++      Text: large,
++      left side,
++      overlaps the image on the right */ 2-quote-text {
++        rgin: 0;
++        mrgin-right: -20%;
++        / allows the flex text block to physically overlap the image box */ font-size: clamp(36px, 5.8vw, 88px);
++        line-height: 1.12;
++        nt-weight: 400;
++        ltter-spacing: 0;
++        mx-width: 85%;
++        position: relative;
++        z-index: 3;
++        inter-events: auto;
++
++
++        Word spans — start dim,
++        JS drives color */ 2-quote-word {
++          dsplay: inline;
++          lor: rgba(249, 253, 254, 0.18);
++          ite-space: normal;
++
++
++          Italic word */ 2-quote-word--italic {
++            nt-family: 'EB Garamond', serif;
++            nt-style: italic;
++            nt-weight: 400;
++
++
++            Image: relative right alignment,
++            starts below viewport,
++            JS drives translateY */ 2-quote-photo {
++              position: relative;
++              margin-left: auto;
++              /* Pushes to the right edge */
++              flex-shrink: 0;
++              width: clamp(220px, 24vw, 340px);
++              aspect-ratio: 3 / 4;
++              overflow: visible;
++              /* Allow cursor to extend outside bounds */
++              bckground: #1a1a2e;
++              ll-change: transform;
++              ansform: translateY(120%);
++              index: 1;
++              Text is 3,
++              sitting above image */ acity: 0;
++              ansition: opacity 0.5s ease;
++
++
++              2-quote-photo.is-visible {
++                acity: 1;
++
++
++                2-quote-photo img {
++                  width: 100%;
++                  height: 100%;
++                  object-fit: cover;
++                  object-position: top center;
++                  display: block;
++
++
++                  2-quote-photo--placeholder::after {
++                    content: "K";
++                    sition: absolute;
++                    set: 0;
++                    splay: flex;
++                    ign-items: center;
++                    stify-content: center;
++                    nt-size: 80px;
++                    nt-weight: 400;
++                    lor: rgba(255, 255, 255, 0.15);
++
++
++                    2-quote-photo-link {
++                      splay: block;
++                      dth: 100%;
++                      ight: 100%;
++                      rsor: none;
++                      rder-radius: 16px;
++                      Image rounded corners live here */ erflow: hidden;
++
++                      Clips the image inside,
++                      not the cursor outside */ 2-quote-cursor {
++                        position: fixed;
++                        top: 0;
++                        left: 0;
++                        pointer-events: none;
++                        z-index: 1000;
++
++                        /* Frosted glass — exact match with /VIEW cursor */
++                        background: rgba(255, 255, 255, 0.08);
++                        backdrop-filter: blur(8px);
++                        -webkit-backdrop-filter: blur(8px);
++                        border: 1px solid rgba(255, 255, 255, 0.15);
++
++                        border-radius: 50%;
++                        width: 120px;
++                        height: 120px;
++                        margin-top: -60px;
++                        margin-left: -60px;
++
++                        display: flex;
++                        align-items: center;
++                        justify-content: center;
++
++                        color: #ffffff;
++                        fnt-family: inherit;
++                        nt-size: clamp(11px, 0.85vw, 13px);
++                        nt-weight: 400;
++                        tter-spacing: 0;
++                        ite-space: nowrap;
++
++                        acity: 0;
++                        ansition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
++
++
++                        2-quote-cursor.is-active {
++                          acity: 1;
++
++
++
++                          ══════════════════════════════════════ SECTION C — CTA / Footer ══════════════════════════════════════ */ 2-footer {
++                            position: relative;
++                            background: #000;
++                            padding: clamp(80px, 12vw, 160px) clamp(16px, 5vw, 72px) clamp(36px, 4vw, 56px);
++                            overflow: hidden;
++                            display: flex;
++                            flex-direction: column;
++                            justify-content: space-between;
++                            mn-height: clamp(420px, 55vh, 680px);
++
++
++                            2-footer::before {
++                              ntent: "";
++                              psition: absolute;
++                              bttom: -20%;
++                              left: 50%;
++                              transform: translateX(-50%);
++                              dth: 80%;
++                              hight: 60%;
++                              brder-radius: 50%;
++                              background: radial-gradient(ellipse at center,
++                                  rgba(100, 100, 180, 0.18) 0%,
++                                  ba(60, 60, 140, 0.10) 40%,
++                                  tansparent 70%);
++                              pinter-events: none;
++                              lter: blur(40px);
++
++
++                              2-footer-inner {
++                                position: relative;
++                                index: 1;
++
++
++                                2-footer-headline {
++                                  margin: 0;
++                                  display: flex;
++                                  ex-direction: column;
++                                  gp: 0;
++                                  fnt-size: clamp(44px, 7.5vw, 120px);
++                                  line-height: 0.95;
++                                  letter-spacing: 0;
++                                  nt-weight: 400;
++                                  txt-transform: uppercase;
++                                  clor: var(--v2-color-white);
+ 
+-/* Word spans — start dim, JS drives color */
+-.v2-quote-word {
+-  display: inline;
+-  color: rgba(249, 253, 254, 0.18);
+-  white-space: normal;
+-}
+ 
+-/* Italic word */
+-.v2-quote-word--italic {
+-  font-family: 'EB Garamond', serif;
+-  font-style: italic;
+-  font-weight: 400;
+-}
++                                  2-footer-headline span:nth-child(2) {
++                                    rgin-left: clamp(20px, 5vw, 100px);
+ 
+-/* Image: relative right alignment, starts below viewport, JS drives translateY */
+-.v2-quote-photo {
+-  position: relative;
+-  margin-left: auto;
+-  /* Pushes to the right edge */
+-  flex-shrink: 0;
+-  width: clamp(220px, 24vw, 340px);
+-  aspect-ratio: 3 / 4;
+-  overflow: visible;
+-  /* Allow cursor to extend outside bounds */
+-  background: #1a1a2e;
+-  will-change: transform;
+-  transform: translateY(120%);
+-  z-index: 1;
+-  /* Text is 3, sitting above image */
+-  opacity: 0;
+-  transition: opacity 0.5s ease;
+-}
+ 
+-.v2-quote-photo.is-visible {
+-  opacity: 1;
+-}
++                                    2-footer-headline em {
++                                      font-family: 'EB Garamond', serif;
++                                      font-style: italic;
++                                      nt-weight: 400;
++                                      xt-transform: none;
++                                      nt-size: clamp(40px, 7vw, 112px);
++                                      tter-spacing: -0.01em;
++                                      lor: rgba(249, 253, 254, 0.88);
+ 
+-.v2-quote-photo img {
+-  width: 100%;
+-  height: 100%;
+-  object-fit: cover;
+-  object-position: top center;
+-  display: block;
+-}
+ 
+-.v2-quote-photo--placeholder::after {
+-  content: "K";
+-  position: absolute;
+-  inset: 0;
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  font-size: 80px;
+-  font-weight: 700;
+-  color: rgba(255, 255, 255, 0.15);
+-}
++                                      2-footer-links {
++                                        position: relative;
++                                        z-index: 1;
++                                        display: flex;
++                                        p: 32px;
++                                        stify-content: flex-end;
++                                        rgin-top: clamp(32px, 5vw, 72px);
+ 
+-.v2-quote-photo-link {
+-  display: block;
+-  width: 100%;
+-  height: 100%;
+-  cursor: none;
+-  border-radius: 16px;
+-  /* Image rounded corners live here */
+-  overflow: hidden;
+-  /* Clips the image inside, not the cursor outside */
+-}
+ 
+-.v2-quote-cursor {
+-  position: fixed;
+-  top: 0;
+-  left: 0;
+-  pointer-events: none;
+-  z-index: 1000;
++                                        2-footer-links a {
++                                          font-size: clamp(10px, 0.85vw, 14px);
++                                          letter-spacing: 0;
++                                          text-transform: uppercase;
++                                          color: var(--v2-color-gray);
++                                          txt-decoration: none;
++                                          ansition: color var(--v2-duration-fast) ease;
+ 
+-  /* SVG Liquid Glass: displacement filter injected by JS */
+-  backdrop-filter: url(#v2-liquid-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
+-  -webkit-backdrop-filter: url(#v2-liquid-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
+ 
+-  /* Subtle edge glow */
+-  box-shadow:
+-    0 4px 8px rgba(0, 0, 0, 0.25),
+-    inset 0 -6px 20px rgba(0, 0, 0, 0.15),
+-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
++                                          2-footer-links a:hover {
++                                            lor: var(--v2-color-white);
+ 
+-  border-radius: 50%;
+-  width: 120px;
+-  height: 120px;
+-  margin-top: -60px;
+-  margin-left: -60px;
+ 
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
++                                            ── Responsive: tablet ── */ edia (max-width: 1024px) {
++                                              .v2-quote-text {
++                                                max-width: 100%;
++                                                mrgin-bottom: clamp(24px, 4vw, 48px);
++                                              }
+ 
+-  color: rgba(255, 255, 255, 0.9);
+-  font-family: inherit;
+-  font-size: 13px;
+-  font-weight: 500;
+-  letter-spacing: 0.04em;
+-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
++                                              .v2-quote-photo {
++                                                sition: relative;
++                                                tp: auto;
++                                                rght: auto;
++                                                transform: none;
++                                                margin-left: auto;
++                                                dth: clamp(160px, 45vw, 260px);
++                                              }
+ 
+-  opacity: 0;
+-  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+-}
++                                              .2-quote-inner {
++                                                splay: flex;
++                                                ex-direction: column;
+ 
+-.v2-quote-cursor.is-active {
+-  opacity: 1;
+-}
+ 
+ 
+-/* ══════════════════════════════════════
+-   SECTION C — CTA / Footer
+-══════════════════════════════════════ */
++                                                ── Responsive: mobile ── */ edia (max-width: 767px) {
++                                                  .v2-skills {
++                                                    padding: 36px 14px;
++                                                  }
+ 
+-.v2-footer {
+-  position: relative;
+-  background: #000;
+-  padding: clamp(80px, 12vw, 160px) clamp(16px, 5vw, 72px) clamp(36px, 4vw, 56px);
+-  overflow: hidden;
+-  display: flex;
+-  flex-direction: column;
+-  justify-content: space-between;
+-  min-height: clamp(420px, 55vh, 680px);
+-}
++                                                  / .v2-skills-name removed — unused */ .v2-footer-headline {
++                                                    font-size: clamp(36px, 12vw, 64px);
+ 
+-.v2-footer::before {
+-  content: "";
+-  position: absolute;
+-  bottom: -20%;
+-  left: 50%;
+-  transform: translateX(-50%);
+-  width: 80%;
+-  height: 60%;
+-  border-radius: 50%;
+-  background: radial-gradient(ellipse at center,
+-      rgba(100, 100, 180, 0.18) 0%,
+-      rgba(60, 60, 140, 0.10) 40%,
+-      transparent 70%);
+-  pointer-events: none;
+-  filter: blur(40px);
+-}
+ 
+-.v2-footer-inner {
+-  position: relative;
+-  z-index: 1;
+-}
++                                                    .2-footer-headline em {
++                                                      fnt-size: clamp(34px, 11vw, 60px);
++                                                    }
+ 
+-.v2-footer-headline {
+-  margin: 0;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 0;
+-  font-size: clamp(44px, 7.5vw, 120px);
+-  line-height: 0.95;
+-  letter-spacing: -0.025em;
+-  font-weight: 700;
+-  text-transform: uppercase;
+-  color: var(--v2-color-white);
+-}
++                                                    .v2-footer-links {
++                                                      stify-content: flex-start;
++                                                      gap: 20px;
+ 
+-.v2-footer-headline span:nth-child(2) {
+-  margin-left: clamp(20px, 5vw, 100px);
+-}
+ 
+-.v2-footer-headline em {
+-  font-family: 'EB Garamond', serif;
+-  font-style: italic;
+-  font-weight: 400;
+-  text-transform: none;
+-  font-size: clamp(40px, 7vw, 112px);
+-  letter-spacing: -0.01em;
+-  color: rgba(249, 253, 254, 0.88);
+-}
++                                                      .2-quote {
++                                                        pdding: 56px 14px;
++                                                      }
+ 
+-.v2-footer-links {
+-  position: relative;
+-  z-index: 1;
+-  display: flex;
+-  gap: 32px;
+-  justify-content: flex-end;
+-  margin-top: clamp(32px, 5vw, 72px);
+-}
++                                                      .v2-quote-text {
++                                                        nt-size: clamp(24px, 7.5vw, 36px);
+ 
+-.v2-footer-links a {
+-  font-size: clamp(10px, 0.85vw, 14px);
+-  letter-spacing: 0.12em;
+-  text-transform: uppercase;
+-  color: var(--v2-color-gray);
+-  text-decoration: none;
+-  transition: color var(--v2-duration-fast) ease;
+-}
+ 
+-.v2-footer-links a:hover {
+-  color: var(--v2-color-white);
+-}
+ 
+-/* ── Responsive: tablet ── */
+-@media (max-width: 1024px) {
+-  .v2-quote-text {
+-    max-width: 100%;
+-    margin-bottom: clamp(24px, 4vw, 48px);
+-  }
++                                                        ══════════════════════════════════════ WORKS PAGE ══════════════════════════════════════ */ dy.v2-works-page {
++                                                          ckground: #0a0a0a;
++                                                          n-height: 100vh;
++                                                          rsor: none;
+ 
+-  .v2-quote-photo {
+-    position: relative;
+-    top: auto;
+-    right: auto;
+-    transform: none;
+-    margin-left: auto;
+-    width: clamp(160px, 45vw, 260px);
+-  }
+ 
+-  .v2-quote-inner {
+-    display: flex;
+-    flex-direction: column;
+-  }
+-}
++                                                          Prevent default cursor on works page */ dy.v2-works-page * {
++                                                            cursor: none !important;
+ 
+-/* ── Responsive: mobile ── */
+-@media (max-width: 767px) {
+-  .v2-skills {
+-    padding: 36px 14px;
+-  }
+ 
+-  /* .v2-skills-name removed — unused */
++                                                            2-works-main {
++                                                              min-height: 100svh;
++                                                              splay: flex;
++                                                              ex-direction: column;
++                                                              stify-content: flex-end;
++                                                              dding-top: 0;
++                                                              dding-bottom: 1vh;
+ 
+-  .v2-footer-headline {
+-    font-size: clamp(36px, 12vw, 64px);
+-  }
+ 
+-  .v2-footer-headline em {
+-    font-size: clamp(34px, 11vw, 60px);
+-  }
++                                                              ── Header: ALL WORKS" ── */
++ 2-works-header {
++                                                                dding: 0 var(--v2-space-5) 12px;
+ 
+-  .v2-footer-links {
+-    justify-content: flex-start;
+-    gap: 20px;
+-  }
+ 
+-  .v2-quote {
+-    padding: 56px 14px;
+-  }
++                                                                2-works-header-text {
++                                                                  font-size: clamp(11px, 0.85vw, 13px);
++                                                                  letter-spacing: 0;
++                                                                  text-transform: uppercase;
++                                                                  color: rgba(249, 253, 254, 0.4);
++                                                                  font-family: var(--v2-font-system);
+ 
+-  .v2-quote-text {
+-    font-size: clamp(24px, 7.5vw, 36px);
+-  }
+-}
+ 
+-/* ══════════════════════════════════════
+-   WORKS PAGE
+-══════════════════════════════════════ */
++                                                                  2-works-header-text sup {
++                                                                    font-size: 0.65em;
++                                                                    vrtical-align: super;
++                                                                    lor: rgba(249, 253, 254, 0.25);
+ 
+-body.v2-works-page {
+-  background: #0a0a0a;
+-  min-height: 100vh;
+-  cursor: none;
+-}
+ 
+-/* Prevent default cursor on works page */
+-body.v2-works-page * {
+-  cursor: none !important;
+-}
++                                                                    ── Image stack: all project images in one container ── */ 2-works-img-stack {
++                                                                      sition: relative;
++                                                                      erflow: visible;
++                                                                      slides emerge from below the container — NOT clipped here */ pect-ratio: 16 / 9;
+ 
+-.v2-works-main {
+-  min-height: 100svh;
+-  display: flex;
+-  flex-direction: column;
+-  justify-content: flex-end;
+-  padding-top: 0;
+-  padding-bottom: 1vh;
+-}
++                                                                      width comes from the 60vw grid column */ ── Individual project row ── */ 2-works-row {
++                                                                        splay: grid;
++                                                                        id-template-columns: 60vw 1fr;
++                                                                        ign-items: stretch;
++                                                                        dding: 0 var(--v2-space-5) clamp(20px, 3vw, 36px);
++                                                                        p: clamp(24px, 4vw, 48px);
+ 
+-/* ── Header: ALL WORKS" ── */
+-.v2-works-header {
+-  padding: 0 var(--v2-space-5) 12px;
+-}
+ 
+-.v2-works-header-text {
+-  font-size: clamp(11px, 0.85vw, 13px);
+-  letter-spacing: 0.14em;
+-  text-transform: uppercase;
+-  color: rgba(249, 253, 254, 0.4);
+-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+-}
++                                                                        Each slide fills the full stack area. overflow:hidden here clips its own image,
++                                                                        NOT the parent. */ 2-stack-slide {
++                                                                          position: absolute;
++                                                                          inset: 0;
++                                                                          overflow: hidden;
++                                                                          /* Layer order: later slides sit on top */
+ 
+-.v2-works-header-text sup {
+-  font-size: 0.65em;
+-  vertical-align: super;
+-  color: rgba(249, 253, 254, 0.25);
+-}
+ 
+-/* ── Image stack: all project images in one container ── */
+-.v2-works-img-stack {
+-  position: relative;
+-  overflow: visible;
+-  /* slides emerge from below the container — NOT clipped here */
+-  aspect-ratio: 16 / 9;
+-  /* width comes from the 60vw grid column */
+-}
++                                                                          2-stack-slide:nth-child(1) {
++                                                                            z-index: 1;
+ 
+-/* ── Individual project row ── */
+-.v2-works-row {
+-  display: grid;
+-  grid-template-columns: 60vw 1fr;
+-  align-items: stretch;
+-  padding: 0 var(--v2-space-5) clamp(20px, 3vw, 36px);
+-  gap: clamp(24px, 4vw, 48px);
+-}
+ 
+-/* Each slide fills the full stack area.
+-   overflow:hidden here clips its own image, NOT the parent. */
+-.v2-stack-slide {
+-  position: absolute;
+-  inset: 0;
+-  overflow: hidden;
+-  /* Layer order: later slides sit on top */
+-}
++                                                                            2-stack-slide:nth-child(2) {
++                                                                              z-index: 2;
+ 
+-.v2-stack-slide:nth-child(1) {
+-  z-index: 1;
+-}
+ 
+-.v2-stack-slide:nth-child(2) {
+-  z-index: 2;
+-}
++                                                                              2-stack-slide:nth-child(3) {
++                                                                                z-index: 3;
+ 
+-.v2-stack-slide:nth-child(3) {
+-  z-index: 3;
+-}
+ 
+-.v2-stack-slide:nth-child(4) {
+-  z-index: 4;
+-}
++                                                                                2-stack-slide:nth-child(4) {
++                                                                                  z-index: 4;
+ 
+-.v2-stack-slide:nth-child(5) {
+-  z-index: 5;
+-}
+ 
+-.v2-stack-slide:nth-child(6) {
+-  z-index: 6;
+-}
++                                                                                  2-stack-slide:nth-child(5) {
++                                                                                    zindex: 5;
+ 
+-.v2-stack-img {
+-  display: block;
+-  width: 100%;
+-  height: 100%;
+-  object-fit: cover;
+-  will-change: transform;
+-}
+ 
+-/* ── Info panel: relative container for 6 absolute info items ── */
+-.v2-works-info {
+-  position: relative;
+-  align-self: stretch;
+-}
++                                                                                    2-stack-slide:nth-child(6) {
++                                                                                      index: 6;
+ 
+-/* Each info item is absolutely stacked — only .is-active shows */
+-.v2-stack-info-item {
+-  position: absolute;
+-  inset: 0;
+-  display: flex;
+-  flex-direction: column;
+-  justify-content: flex-start;
+-  padding: clamp(4px, 0.5vw, 8px) 0;
+-  opacity: 0;
+-  pointer-events: none;
+-  transition: opacity 0.35s ease;
+-}
+ 
+-.v2-stack-info-item.is-active {
+-  opacity: 1;
+-  pointer-events: auto;
+-}
++                                                                                      2-stack-slide:nth-child(7) {
++                                                                                        index: 7;
+ 
+-.v2-works-info-top {
+-  display: flex;
+-  flex-direction: column;
+-  gap: clamp(10px, 1.2vw, 16px);
+ 
+-  /* JS drives transform entirely — CSS only handles opacity */
+-  opacity: 0;
+-  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+-  pointer-events: none;
+-  will-change: transform;
+-}
++                                                                                        2-stack-slide:nth-child(8) {
++                                                                                          index: 8;
+ 
+-/* Show info-top when hovering the image stack */
+-.v2-works-row.is-hovered .v2-works-info-top {
+-  opacity: 1;
+-  pointer-events: auto;
+-}
+ 
+-.v2-works-title {
+-  margin: 0;
+-  font-size: clamp(18px, 1.6vw, 26px);
+-  font-weight: 600;
+-  letter-spacing: -0.01em;
+-  line-height: 1.15;
+-  color: var(--v2-color-white);
+-  text-transform: uppercase;
+-}
++                                                                                          2-stack-slide:nth-child(9) {
++                                                                                            index: 9;
+ 
+-.v2-works-year {
+-  color: rgba(249, 253, 254, 0.45);
+-  font-weight: 400;
+-}
+ 
+-.v2-works-desc {
+-  margin: 0;
+-  font-size: clamp(12px, 0.9vw, 14px);
+-  line-height: 1.65;
+-  color: rgba(249, 253, 254, 0.45);
+-  max-width: 340px;
+-}
++                                                                                            2-stack-slide:nth-child(10) {
++                                                                                              index: 10;
+ 
+-.v2-works-categories {
+-  margin: 0;
+-  margin-top: auto;
+-  font-size: clamp(13px, 1vw, 16px);
+-  line-height: 1.7;
+-  color: var(--v2-color-white);
+-  letter-spacing: 0.01em;
+-}
+ 
+-/* ── Custom /VIEW cursor ── */
+-.v2-view-cursor {
+-  position: fixed;
+-  top: 0;
+-  left: 0;
+-  z-index: 9999;
+-  pointer-events: none;
+-  font-size: clamp(11px, 0.85vw, 13px);
+-  font-weight: 500;
+-  letter-spacing: 0.1em;
+-  color: #ffffff;
+-  background: rgba(255, 255, 255, 0.08);
+-  backdrop-filter: blur(8px);
+-  -webkit-backdrop-filter: blur(8px);
+-  border: 1px solid rgba(255, 255, 255, 0.15);
+-  border-radius: 999px;
+-  padding: 8px 18px;
+-  transform: translate(-50%, -50%) scale(0);
+-  opacity: 0;
+-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+-    opacity 0.2s ease;
+-  white-space: nowrap;
+-  will-change: transform;
+-}
++                                                                                              2-stack-slide:nth-child(11) {
++                                                                                                index: 11;
+ 
+-.v2-view-cursor.is-visible {
+-  transform: translate(-50%, -50%) scale(1);
+-  opacity: 1;
+-}
+ 
+-/* ── Responsive ── */
+-@media (max-width: 1024px) {
+-  .v2-works-row {
+-    grid-template-columns: 1fr clamp(200px, 30vw, 300px);
+-  }
+-}
++                                                                                                2-stack-slide:nth-child(12) {
++                                                                                                  index: 12;
+ 
+-@media (max-width: 767px) {
+-  body.v2-works-page {
+-    cursor: auto;
+-  }
+ 
+-  body.v2-works-page * {
+-    cursor: auto !important;
+-  }
++                                                                                                  2-stack-slide:nth-child(13) {
++                                                                                                    index: 13;
+ 
+-  .v2-view-cursor {
+-    display: none;
+-  }
+ 
+-  .v2-works-row {
+-    grid-template-columns: 1fr;
+-    gap: 20px;
+-  }
++                                                                                                    2-stack-slide:nth-child(14) {
++                                                                                                      index: 14;
+ 
+-  .v2-works-info {
+-    gap: 16px;
+-  }
+ 
+-  .v2-works-info-top {
+-    gap: 10px;
+-  }
+-}
++                                                                                                      2-stack-slide:nth-child(15) {
++                                                                                                        index: 15;
+ 
+-/* ═══════════════════════════════════════════════
+-   ABOUT ME PAGE
+-   ═══════════════════════════════════════════════ */
+ 
+-/* body.v2-about-page base styles are now shared with body.v2-home above */
++                                                                                                        2-stack-img {
++                                                                                                          splay: block;
++                                                                                                          dth: 100%;
++                                                                                                          ight: 100%;
++                                                                                                          ject-fit: cover;
++                                                                                                          ll-change: transform;
+ 
+-/* ── Hero: full viewport, flex row, vertically centered ── */
+-.v2-about-hero {
+-  display: flex;
+-  align-items: stretch;
+-  min-height: 100svh;
+-  padding-top: clamp(80px, 10vh, 120px);
+-  padding-bottom: clamp(40px, 6vh, 80px);
+-  padding-left: clamp(24px, 5vw, 80px);
+-  padding-right: clamp(24px, 5vw, 80px);
+-}
+ 
+-/* ── Left column: vertically centered, ~35% width ── */
+-.v2-about-left {
+-  display: flex;
+-  align-items: center;
+-  flex: 0 0 clamp(220px, 32%, 420px);
+-  padding-right: clamp(20px, 3vw, 60px);
+-}
++                                                                                                          ── Info panel: relative container for 6 absolute info items ── */ 2-works-info {
++                                                                                                            position: relative;
++                                                                                                            align-self: stretch;
+ 
+-.v2-about-identity {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 10px;
+-}
+ 
+-.v2-about-name {
+-  margin: 0;
+-  font-size: clamp(16px, 1.5vw, 22px);
+-  font-weight: 700;
+-  letter-spacing: 0.06em;
+-  text-transform: uppercase;
+-  line-height: 1.2;
+-  color: var(--v2-color-white);
+-}
++                                                                                                            Each info item is absolutely stacked — only .is-active shows */ 2-stack-info-item {
++                                                                                                              position: absolute;
++                                                                                                              inset: 0;
++                                                                                                              display: flex;
++                                                                                                              flex-direction: column;
++                                                                                                              justify-content: flex-start;
++                                                                                                              padding: clamp(4px, 0.5vw, 8px) 0;
++                                                                                                              opacity: 0;
++                                                                                                              pointer-events: none;
++                                                                                                              transition: opacity 0.35s ease;
+ 
+-.v2-about-role {
+-  margin: 0;
+-  font-size: clamp(11px, 1vw, 14px);
+-  font-weight: 400;
+-  letter-spacing: 0.01em;
+-  color: var(--v2-color-gray-2);
+-  line-height: 1.4;
+-}
+ 
+-.v2-about-resume-btn {
+-  display: inline-flex;
+-  align-items: center;
+-  justify-content: center;
+-  margin-top: 6px;
+-  padding: 8px 20px;
+-  background: var(--v2-color-white);
+-  color: var(--v2-color-black);
+-  font-family: inherit;
+-  font-size: clamp(11px, 0.85vw, 13px);
+-  font-weight: 500;
+-  letter-spacing: 0.02em;
+-  border-radius: 9999px;
+-  border: none;
+-  cursor: pointer;
+-  text-decoration: none;
+-  width: fit-content;
+-  transition: opacity 0.25s ease, transform 0.2s ease;
+-}
++                                                                                                              2-stack-info-item.is-active {
++                                                                                                                opacity: 1;
++                                                                                                                pointer-events: auto;
+ 
+-.v2-about-resume-btn:hover {
+-  opacity: 0.82;
+-  transform: scale(0.97);
+-}
+ 
+-/* ── Right column: takes remaining space, aligns quote to bottom ── */
+-.v2-about-right {
+-  flex: 1;
+-  display: flex;
+-  align-items: flex-end;
+-  justify-content: flex-end;
+-  padding-bottom: clamp(20px, 4vh, 60px);
+-}
++                                                                                                                2-works-info-top {
++                                                                                                                  display: flex;
++                                                                                                                  flex-direction: column;
++                                                                                                                  gap: clamp(10px, 1.2vw, 16px);
+ 
+-/* ── Quote: large mixed-typography statement ── */
+-.v2-about-quote {
+-  margin: 0;
+-  padding: 0;
+-  border: none;
+-  font-size: clamp(28px, 4.2vw, 68px);
+-  line-height: 1.18;
+-  font-weight: 500;
+-  letter-spacing: -0.02em;
+-  text-align: right;
+-  color: var(--v2-color-white);
+-  max-width: 22ch;
+-}
++                                                                                                                  /* JS drives transform entirely — CSS only handles opacity */
++                                                                                                                  opacity: 0;
++                                                                                                                  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
++                                                                                                                  pointer-events: none;
++                                                                                                                  will-change: transform;
+ 
+-/* Italic words use EB Garamond, inheriting the same rhythm */
+-.v2-about-quote em {
+-  font-family: 'EB Garamond', Georgia, serif;
+-  font-style: italic;
+-  font-weight: 400;
+-  font-size: 1.08em;
+-}
+ 
+-.v2-about-quote-mark {
+-  font-family: 'EB Garamond', Georgia, serif;
+-  font-style: normal;
+-  font-weight: 400;
+-  font-size: 1.1em;
+-  opacity: 0.55;
+-  margin-left: 0.04em;
+-}
++                                                                                                                  Show info-top when hovering the image stack */ 2-works-row.is-hovered .v2-works-info-top {
++                                                                                                                    opacity: 1;
++                                                                                                                    pointer-events: auto;
+ 
+-/* ── Responsive: tablet ── */
+-@media (max-width: 900px) {
+-  .v2-about-hero {
+-    flex-direction: column;
+-    align-items: flex-start;
+-    gap: 48px;
+-    padding-top: clamp(100px, 14vh, 140px);
+-  }
+ 
+-  .v2-about-left {
+-    flex: none;
+-    padding-right: 0;
+-  }
++                                                                                                                    2-works-title {
++                                                                                                                      margin: 0;
++                                                                                                                      font-size: clamp(18px, 1.6vw, 26px);
++                                                                                                                      font-weight: 400;
++                                                                                                                      ltter-spacing: 0;
++                                                                                                                      ne-height: 1.15;
++                                                                                                                      lor: var(--v2-color-white);
++                                                                                                                      xt-transform: uppercase;
+ 
+-  .v2-about-right {
+-    align-items: flex-start;
+-    justify-content: flex-start;
+-    padding-bottom: 0;
+-    padding-top: 20px;
+-  }
+ 
+-  .v2-about-quote {
+-    text-align: left;
+-    font-size: clamp(26px, 5.5vw, 54px);
+-  }
+-}
++                                                                                                                      2-works-year {
++                                                                                                                        color: rgba(249, 253, 254, 0.45);
++                                                                                                                        font-weight: 400;
+ 
+-/* ── Responsive: mobile ── */
+-@media (max-width: 480px) {
+-  .v2-about-hero {
+-    padding-top: 110px;
+-    gap: 36px;
+-  }
+ 
+-  .v2-about-quote {
+-    font-size: clamp(24px, 7.5vw, 40px);
+-  }
+-}
+\ No newline at end of file
++                                                                                                                        2-works-desc {
++                                                                                                                          mrgin: 0;
++                                                                                                                          nt-size: clamp(12px, 0.9vw, 14px);
++                                                                                                                          ne-height: 1.65;
++                                                                                                                          lor: rgba(249, 253, 254, 0.45);
++                                                                                                                          x-width: 340px;
++
++
++                                                                                                                          2-works-categories {
++                                                                                                                            margin: 0;
++                                                                                                                            margin-top: auto;
++                                                                                                                            font-size: clamp(13px, 1vw, 16px);
++                                                                                                                            lne-height: 1.7;
++                                                                                                                            lor: var(--v2-color-white);
++                                                                                                                            tter-spacing: 0;
++
++
++                                                                                                                            ── Global Tags (permanent, project-aware) ── */ 2-global-tags {
++                                                                                                                              position: absolute;
++                                                                                                                              bottom: clamp(4px, 0.5vw, 8px);
++                                                                                                                              left: 0;
++                                                                                                                              right: 0;
++                                                                                                                              mrgin: 0;
++                                                                                                                              font-size: clamp(12px, 0.9vw, 15px);
++                                                                                                                              line-height: 1.7;
++                                                                                                                              lor: var(--v2-color-white);
++                                                                                                                              ltter-spacing: 0;
++                                                                                                                              pinter-events: none;
++
++
++                                                                                                                              2-global-tags [data-tag],
++                                                                                                                              2-global-tags .v2-tag-sep {
++                                                                                                                                display: inline;
++                                                                                                                                ansition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
++                                                                                                                                  lor 0.4s cubic-bezier(0.22, 1, 0.36, 1);
++
++
++                                                                                                                                2-global-tags [data-tag].is-dim {
++                                                                                                                                  acity: 0.22;
++
++
++                                                                                                                                  2-global-tags .v2-tag-sep.is-dim {
++                                                                                                                                    acity: 0.22;
++
++
++                                                                                                                                    ── Custom /VIEW cursor ── */ 2-view-cursor {
++                                                                                                                                      position: fixed;
++                                                                                                                                      top: 0;
++                                                                                                                                      left: 0;
++                                                                                                                                      z-index: 9999;
++                                                                                                                                      pointer-events: none;
++                                                                                                                                      font-size: clamp(11px, 0.85vw, 13px);
++                                                                                                                                      font-weight: 400;
++                                                                                                                                      letter-spacing: 0;
++                                                                                                                                      color: #ffffff;
++                                                                                                                                      ckground: rgba(255, 255, 255, 0.08);
++                                                                                                                                      bckdrop-filter: blur(8px);
++                                                                                                                                      -ebkit-backdrop-filter: blur(8px);
++                                                                                                                                      border: 1px solid rgba(255, 255, 255, 0.15);
++                                                                                                                                      border-radius: 999px;
++                                                                                                                                      dding: 8px 18px;
++                                                                                                                                      tansform: translate(-50%, -50%) scale(0);
++                                                                                                                                      oacity: 0;
++                                                                                                                                      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
++                                                                                                                                        opacity 0.2s ease;
++                                                                                                                                      ite-space: nowrap;
++                                                                                                                                      ll-change: transform;
++
++
++                                                                                                                                      2-view-cursor.is-visible {
++                                                                                                                                        transform: translate(-50%, -50%) scale(1);
++                                                                                                                                        acity: 1;
++
++
++                                                                                                                                        ── Responsive ── */ edia (max-width: 1024px) {
++                                                                                                                                          .2-works-row {
++                                                                                                                                            id-template-columns: 1fr clamp(200px, 30vw, 300px);
++
++
++
++                                                                                                                                            edia (max-width: 767px) {
++                                                                                                                                              bdy.v2-works-page {
++                                                                                                                                                cursor: auto;
++                                                                                                                                              }
++
++                                                                                                                                              dy.v2-works-page * {
++                                                                                                                                                crsor: auto !important;
++                                                                                                                                              }
++
++                                                                                                                                              .v2-view-cursor {
++                                                                                                                                                display: none;
++
++
++                                                                                                                                                .2-works-row {
++                                                                                                                                                  gid-template-columns: 1fr;
++                                                                                                                                                  gap: 20px;
++                                                                                                                                                }
++
++                                                                                                                                                2-works-info {
++                                                                                                                                                  gp: 16px;
++                                                                                                                                                }
++
++                                                                                                                                                2-works-info-top {
++                                                                                                                                                  p: 10px;
++
++
++
++                                                                                                                                                  ═══════════════════════════════════════════════ ABOUT ME PAGE ═══════════════════════════════════════════════ */ body.v2-about-page base styles are now shared with body.v2-home above */ ── Hero: full viewport,
++                                                                                                                                                  flex row,
++                                                                                                                                                  vertically centered ── */ 2-about-hero {
++                                                                                                                                                    display: flex;
++                                                                                                                                                    aign-items: stretch;
++                                                                                                                                                    min-height: 100svh;
++                                                                                                                                                    padding-top: clamp(80px, 10vh, 120px);
++                                                                                                                                                    dding-bottom: clamp(40px, 6vh, 80px);
++                                                                                                                                                    pdding-left: clamp(24px, 5vw, 80px);
++                                                                                                                                                    pdding-right: clamp(24px, 5vw, 80px);
++
++
++                                                                                                                                                    ── Left column: vertically centered,
++                                                                                                                                                    ~35% width ── */ 2-about-left {
++                                                                                                                                                      display: flex;
++                                                                                                                                                      ign-items: center;
++                                                                                                                                                      fex: 0 0 clamp(220px, 32%, 420px);
++                                                                                                                                                      pdding-right: clamp(20px, 3vw, 60px);
++
++
++                                                                                                                                                      2-about-identity {
++                                                                                                                                                        splay: flex;
++                                                                                                                                                        fex-direction: column;
++                                                                                                                                                        gp: 10px;
++
++
++                                                                                                                                                        2-about-name {
++                                                                                                                                                          rgin: 0;
++                                                                                                                                                          fnt-size: clamp(16px, 1.5vw, 22px);
++                                                                                                                                                          fnt-weight: 400;
++                                                                                                                                                          letter-spacing: 0;
++                                                                                                                                                          text-transform: uppercase;
++                                                                                                                                                          ne-height: 1.2;
++                                                                                                                                                          lor: var(--v2-color-white);
++
++
++                                                                                                                                                          2-about-role {
++                                                                                                                                                            margin: 0;
++                                                                                                                                                            nt-size: clamp(11px, 1vw, 14px);
++                                                                                                                                                            nt-weight: 400;
++                                                                                                                                                            tter-spacing: 0;
++                                                                                                                                                            lor: var(--v2-color-gray-2);
++                                                                                                                                                            ne-height: 1.4;
++
++
++                                                                                                                                                            2-about-resume-btn {
++                                                                                                                                                              display: inline-flex;
++                                                                                                                                                              align-items: center;
++                                                                                                                                                              justify-content: center;
++                                                                                                                                                              rgin-top: 6px;
++                                                                                                                                                              pdding: 8px 20px;
++                                                                                                                                                              bckground: var(--v2-color-white);
++                                                                                                                                                              color: var(--v2-color-black);
++                                                                                                                                                              font-family: inherit;
++                                                                                                                                                              nt-size: clamp(11px, 0.85vw, 13px);
++                                                                                                                                                              fnt-weight: 400;
++                                                                                                                                                              ltter-spacing: 0;
++                                                                                                                                                              brder-radius: 9999px;
++                                                                                                                                                              brder: none;
++                                                                                                                                                              rsor: pointer;
++                                                                                                                                                              xt-decoration: none;
++                                                                                                                                                              dth: fit-content;
++                                                                                                                                                              ansition: opacity 0.25s ease, transform 0.2s ease;
++
++
++                                                                                                                                                              2-about-resume-btn:hover {
++                                                                                                                                                                acity: 0.82;
++                                                                                                                                                                ansform: scale(0.97);
++
++
++                                                                                                                                                                ── Right column: takes remaining space,
++                                                                                                                                                                aligns quote to bottom ── */ 2-about-right {
++                                                                                                                                                                  flex: 1;
++                                                                                                                                                                  display: flex;
++                                                                                                                                                                  align-items: flex-end;
++                                                                                                                                                                  justify-content: flex-end;
++                                                                                                                                                                  padding-bottom: clamp(20px, 4vh, 60px);
++
++
++                                                                                                                                                                  ── Quote: large mixed-typography statement ── */ 2-about-quote {
++                                                                                                                                                                    mrgin: 0;
++                                                                                                                                                                    dding: 0;
++                                                                                                                                                                    rder: none;
++                                                                                                                                                                    nt-size: clamp(28px, 4.2vw, 68px);
++                                                                                                                                                                    ne-height: 1.18;
++                                                                                                                                                                    nt-weight: 400;
++                                                                                                                                                                    tter-spacing: 0;
++                                                                                                                                                                    xt-align: right;
++                                                                                                                                                                    lor: var(--v2-color-white);
++                                                                                                                                                                    x-width: 22ch;
++
++
++                                                                                                                                                                    Italic words use EB Garamond,
++                                                                                                                                                                    inheriting the same rhythm */ 2-about-quote em {
++                                                                                                                                                                      font-family: 'EB Garamond', Georgia, serif;
++                                                                                                                                                                      font-style: italic;
++                                                                                                                                                                      font-weight: 400;
++                                                                                                                                                                      font-size: 1.08em;
++
++
++                                                                                                                                                                      2-about-quote-mark {
++                                                                                                                                                                        font-family: 'EB Garamond', Georgia, serif;
++                                                                                                                                                                        nt-style: normal;
++                                                                                                                                                                        nt-weight: 400;
++                                                                                                                                                                        nt-size: 1.1em;
++                                                                                                                                                                        acity: 0.55;
++                                                                                                                                                                        rgin-left: 0.04em;
++
++
++                                                                                                                                                                        ── Responsive: tablet ── */ edia (max-width: 900px) {
++                                                                                                                                                                          .v2-about-hero {
++                                                                                                                                                                            flex-direction: column;
++                                                                                                                                                                            ign-items: flex-start;
++                                                                                                                                                                            gp: 48px;
++                                                                                                                                                                            pdding-top: clamp(100px, 14vh, 140px);
++                                                                                                                                                                          }
++
++                                                                                                                                                                          .v2-about-left {
++                                                                                                                                                                            ex: none;
++                                                                                                                                                                            pdding-right: 0;
++                                                                                                                                                                          }
++
++                                                                                                                                                                          .2-about-right {
++                                                                                                                                                                            aign-items: flex-start;
++                                                                                                                                                                            stify-content: flex-start;
++                                                                                                                                                                            dding-bottom: 0;
++                                                                                                                                                                            dding-top: 20px;
++
++
++                                                                                                                                                                            2-about-quote {
++                                                                                                                                                                              xt-align: left;
++                                                                                                                                                                              nt-size: clamp(26px, 5.5vw, 54px);
++
++
++
++                                                                                                                                                                              ── Responsive: mobile ── */ edia (max-width: 480px) {
++                                                                                                                                                                                .v2-about-hero {
++                                                                                                                                                                                  padding-top: 110px;
++                                                                                                                                                                                  gap: 36px;
++                                                                                                                                                                                }
++
++                                                                                                                                                                                .v2-about-quote {
++                                                                                                                                                                                  font-size: clamp(24px, 7.5vw, 40px);
++                                                                                                                                                                                }
+\ No newline at end of file
