@@ -81,7 +81,7 @@
                   <img data-layer="3" src="assets/images/7west.jpg" alt="SONIX feature mockup 4">
                 </div>
                 <div class="v2-sonix-copy">
-                  <h3 data-project-title>SONIX — YOUR PERSONAL SPACE ON WHEELS</h3>
+                  <h3 data-project-title>SONIX — Your Personal Space On Wheels</h3>
                   <div class="v2-sonix-tags" data-project-tags>
                     <span>UXD</span>
                     <span>UXR</span>
@@ -118,7 +118,7 @@
           <div class="v2-skills-row">
             <div class="v2-skills-row-left">
               <div class="v2-skills-thumb">
-                <img src="assets/images/brand-thinking.jpeg" alt="">
+                <img src="assets/images/Brand-Thinking.jpeg" alt="">
               </div>
               <span class="v2-skills-heading">Brand Thinking</span>
             </div>
@@ -147,7 +147,7 @@
         <div class="v2-skills-item" data-skill>
           <div class="v2-skills-row">
             <div class="v2-skills-row-left">
-              <div class="v2-skills-thumb"><img src="assets/images/human-centered-strategy.jpg" alt=""></div>
+              <div class="v2-skills-thumb"><img src="assets/images/Human-Centered-Strategy.jpg" alt=""></div>
               <span class="v2-skills-heading">Human-Centered Strategy</span>
             </div>
             <span class="v2-skills-index">
@@ -172,7 +172,7 @@
         <div class="v2-skills-item" data-skill>
           <div class="v2-skills-row">
             <div class="v2-skills-row-left">
-              <div class="v2-skills-thumb"><img src="assets/images/interaction-design.png" alt=""></div>
+              <div class="v2-skills-thumb"><img src="assets/images/google-nest.jpg" alt=""></div>
               <span class="v2-skills-heading">Interaction Design</span>
             </div>
             <span class="v2-skills-index">
@@ -185,9 +185,8 @@
               <p>I obsess over the tiny moments. The taps, swipes, and transitions that make something feel effortless
                 instead of exhausting.</p>
               <div class="v2-skills-pills">
-                <span>User Flows</span><span>Wireframing</span>
-                <span>Prototyping</span><span>Microinteractions</span>
-                <span>Usability Testing</span><span>Accessibility</span>
+                <span>Prototyping</span><span>Motion Design</span>
+                <span>UI Systems</span><span>Responsive Design</span>
               </div>
             </div>
           </div>
@@ -197,7 +196,7 @@
         <div class="v2-skills-item" data-skill>
           <div class="v2-skills-row">
             <div class="v2-skills-row-left">
-              <div class="v2-skills-thumb"><img src="assets/images/insight-to-impact.png" alt=""></div>
+              <div class="v2-skills-thumb"><img src="assets/images/sea-love.jpg" alt=""></div>
               <span class="v2-skills-heading">Insight to Impact</span>
             </div>
             <span class="v2-skills-index">
@@ -207,12 +206,11 @@
           </div>
           <div class="v2-skills-detail">
             <div class="v2-skills-detail-inner">
-              <p>I design beyond sticky notes. Turning messy research into sharp decisions and ideas that don’t just
-                look good, they move things forward.</p>
+              <p>I turn raw data and user feedback into actionable design improvements, measuring outcomes to ensure
+                every iteration drives real value.</p>
               <div class="v2-skills-pills">
-                <span>Interviews</span><span>Surveys</span>
-                <span>Affinity Mapping</span><span>Thematic Analysis</span>
-                <span>Persona Development</span><span>Data-Driven Solutions</span>
+                <span>Analytics</span><span>A/B Testing</span>
+                <span>Heuristic Review</span><span>KPI Tracking</span>
               </div>
             </div>
           </div>
@@ -222,7 +220,7 @@
         <div class="v2-skills-item" data-skill>
           <div class="v2-skills-row">
             <div class="v2-skills-row-left">
-              <div class="v2-skills-thumb"><img src="assets/images/collaboration-facilitation.jpeg" alt=""></div>
+              <div class="v2-skills-thumb"><img src="assets/images/7west.jpg" alt=""></div>
               <span class="v2-skills-heading">Collaboration &amp; Facilitation</span>
             </div>
             <span class="v2-skills-index">
@@ -232,11 +230,11 @@
           </div>
           <div class="v2-skills-detail">
             <div class="v2-skills-detail-inner">
-              <p>I turn group chaos into shared clarity. Different voices, aligned direction, forward motion.</p>
+              <p>I thrive in cross-functional teams, facilitating workshops and design sprints that align stakeholders
+                and accelerate decision-making.</p>
               <div class="v2-skills-pills">
-                <span>Design Workshops</span><span>Stakeholder Alignment</span>
-                <span>Cross-Functional Collaboration</span><span>Co-Creation</span>
-                <span>Sprint Facilitation</span>
+                <span>Design Sprints</span><span>Workshops</span>
+                <span>Stakeholder Mgmt</span><span>Agile / Scrum</span>
               </div>
             </div>
           </div>

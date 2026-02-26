@@ -19,28 +19,228 @@
     <div id="shared-layout"></div>
 
     <main>
-        <!-- ── Hero Section ── -->
-        <section class="v2-about-hero" id="about-hero">
+        <!-- Wrapper for parallax reveal to prevent footer from showing through gaps -->
+        <div class="v2-main-content-wrapper" style="position: relative; z-index: 2; background: #000;">
+            <!-- ── Hero Section ── -->
+            <section class="v2-about-hero" id="about-hero">
 
-            <!-- Left column: Name, role, resume -->
-            <div class="v2-about-left">
-                <div class="v2-about-identity">
-                    <h1 class="v2-about-name">Keerthi Ginuga</h1>
-                    <p class="v2-about-role">architect | user experience designer</p>
-                    <a href="#" class="v2-about-resume-btn" aria-label="Download Resume">Resume</a>
+                <!-- Left column: Name, role, resume -->
+                <div class="v2-about-left">
+                    <div class="v2-about-identity">
+                        <h1 class="v2-about-name">Keerthi Ginuga</h1>
+                        <p class="v2-about-role">architect | user experience designer</p>
+                        <a href="#" class="v2-about-resume-btn" aria-label="Download Resume">Resume</a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Right column: large statement quote -->
-            <div class="v2-about-right">
-                <blockquote class="v2-about-quote">
-                    I'm passionate about designing
-                    <em>seamless technology</em> that
-                    understands, not interrupts.<span class="v2-about-quote-mark">"</span>
-                </blockquote>
-            </div>
+                <!-- Right column: large statement quote -->
+                <div class="v2-about-right">
+                    <blockquote class="v2-about-quote">
+                        I'm passionate about designing
+                        <em>seamless technology</em> that
+                        understands, not interrupts.<span class="v2-about-quote-mark">"</span>
+                    </blockquote>
+                </div>
 
-        </section>
+            </section>
+
+            <!-- ── About Page Content (Process & Accomplishments) ── -->
+            <div class="v2-about-content">
+                <!-- ── How I Enjoy The Process ── -->
+                <section class="v2-process-section" id="process">
+                    <div class="v2-process-container">
+                        <div class="v2-process-accordion">
+                            <p class="v2-process-eyebrow">HOW I ENJOY THE PROCESS*</p>
+
+                            <!-- 1 -->
+                            <div class="v2-process-item" data-process-item="0">
+                                <div class="v2-process-row">
+                                    <div class="v2-process-row-left">
+                                        <span class="v2-process-heading">I start with curiosity.</span>
+                                        <div class="v2-process-thumb">
+                                            <img src="assets/images/autonomous-vehicle.jpg" alt="Curiosity">
+                                        </div>
+                                    </div>
+                                    <span class="v2-process-index">
+                                        <span class="v2-process-index-num">1</span>
+                                        <span class="v2-process-index-icon">+</span>
+                                    </span>
+                                </div>
+                                <div class="v2-process-detail">
+                                    <div class="v2-process-detail-inner">
+                                        <p>Research is where I slow down, ask better questions, and let patterns reveal
+                                            themselves instead of jumping to solutions.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2 -->
+                            <div class="v2-process-item" data-process-item="1">
+                                <div class="v2-process-row">
+                                    <div class="v2-process-row-left">
+                                        <span class="v2-process-heading">I collect stories, not just data.</span>
+                                        <div class="v2-process-thumb">
+                                            <img src="assets/images/google-nest.jpg" alt="Stories">
+                                        </div>
+                                    </div>
+                                    <span class="v2-process-index">
+                                        <span class="v2-process-index-num">2</span>
+                                        <span class="v2-process-index-icon">+</span>
+                                    </span>
+                                </div>
+                                <div class="v2-process-detail">
+                                    <div class="v2-process-detail-inner">
+                                        <p>I listen to what people say, but I pay closer attention to what they do and
+                                            how they feel.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3 -->
+                            <div class="v2-process-item" data-process-item="2">
+                                <div class="v2-process-row">
+                                    <div class="v2-process-row-left">
+                                        <span class="v2-process-heading">I learn by listening.</span>
+                                        <div class="v2-process-thumb">
+                                            <img src="assets/images/sea-love.jpg" alt="Listening">
+                                        </div>
+                                    </div>
+                                    <span class="v2-process-index">
+                                        <span class="v2-process-index-num">3</span>
+                                        <span class="v2-process-index-icon">+</span>
+                                    </span>
+                                </div>
+                                <div class="v2-process-detail">
+                                    <div class="v2-process-detail-inner">
+                                        <p>Every project starts with an open ear. The best insights often hide in the
+                                            quiet spaces between questions.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 4 -->
+                            <div class="v2-process-item" data-process-item="3">
+                                <div class="v2-process-row">
+                                    <div class="v2-process-row-left">
+                                        <span class="v2-process-heading">I think best with a pen and a timer.</span>
+                                        <div class="v2-process-thumb">
+                                            <img src="assets/images/imessage.jpg" alt="Pen and Timer">
+                                        </div>
+                                    </div>
+                                    <span class="v2-process-index">
+                                        <span class="v2-process-index-num">4</span>
+                                        <span class="v2-process-index-icon">+</span>
+                                    </span>
+                                </div>
+                                <div class="v2-process-detail">
+                                    <div class="v2-process-detail-inner">
+                                        <p>Rapid sketching forces me to discard the obvious and dig deeper. Time
+                                            constraints breed creative focus.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 5 -->
+                            <div class="v2-process-item" data-process-item="4">
+                                <div class="v2-process-row">
+                                    <div class="v2-process-row-left">
+                                        <span class="v2-process-heading">I trust testing to shape the work.</span>
+                                        <div class="v2-process-thumb">
+                                            <img src="assets/images/word-clock.jpg" alt="Testing">
+                                        </div>
+                                    </div>
+                                    <span class="v2-process-index">
+                                        <span class="v2-process-index-num">5</span>
+                                        <span class="v2-process-index-icon">+</span>
+                                    </span>
+                                </div>
+                                <div class="v2-process-detail">
+                                    <div class="v2-process-detail-inner">
+                                        <p>An un-tested design is just an educated guess. Real-world feedback is what
+                                            turns good ideas into great experiences.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 6 -->
+                            <div class="v2-process-item" data-process-item="5">
+                                <div class="v2-process-row">
+                                    <div class="v2-process-row-left">
+                                        <span class="v2-process-heading">I believe design is a team sport.</span>
+                                        <div class="v2-process-thumb">
+                                            <img src="assets/images/7west.jpg" alt="Team Sport">
+                                        </div>
+                                    </div>
+                                    <span class="v2-process-index">
+                                        <span class="v2-process-index-num">6</span>
+                                        <span class="v2-process-index-icon">+</span>
+                                    </span>
+                                </div>
+                                <div class="v2-process-detail">
+                                    <div class="v2-process-detail-inner">
+                                        <p>The best work results from collaboration, when different perspectives clash
+                                            and merge into something stronger.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ── Accomplishments ── -->
+                <section class="v2-accomplishments-section">
+                    <div class="v2-accomplishments-container">
+                        <p class="v2-accomplishments-eyebrow">ACCOMPLISHMENTS*</p>
+                        <div class="v2-accomplishments-list">
+                            <div class="v2-accomplishment-item">
+                                <span class="v2-accomplishment-title">Sea Love - IDA 2025 Honorable Mention</span>
+                                <span class="v2-accomplishment-org">International Design Awards, IDA</span>
+                            </div>
+                            <div class="v2-accomplishment-item">
+                                <span class="v2-accomplishment-title">SONIX - Rookie of the Year - Highly
+                                    Commended</span>
+                                <span class="v2-accomplishment-org">Rookie Awards</span>
+                            </div>
+                            <div class="v2-accomplishment-item">
+                                <span class="v2-accomplishment-title">Cafe Interior - Honorable Mention</span>
+                                <span class="v2-accomplishment-org">Archdais International Competitions</span>
+                            </div>
+                            <div class="v2-accomplishment-item">
+                                <span class="v2-accomplishment-title">DAH Awards - Top 3</span>
+                                <span class="v2-accomplishment-org">Council of Architecture (COA)</span>
+                            </div>
+                            <div class="v2-accomplishment-item">
+                                <span class="v2-accomplishment-title">ANDC Trophy 2021 - Top 10</span>
+                                <span class="v2-accomplishment-org">National Association of Students of
+                                    Architecture</span>
+                            </div>
+                            <div class="v2-accomplishment-item">
+                                <span class="v2-accomplishment-title">Destech Challenge - Top 10</span>
+                                <span class="v2-accomplishment-org">National Association of Students of
+                                    Architecture</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ── Section C: CTA / Footer ── -->
+        <footer class="v2-footer" id="contact">
+            <div class="v2-footer-inner">
+                <h2 class="v2-footer-headline">
+                    <span>LET'S CREATE</span>
+                    <span>WHAT'S NEXT,</span>
+                    <em>Together.</em>
+                </h2>
+            </div>
+            <nav class="v2-footer-links" aria-label="Footer">
+                <a href="https://linkedin.com/in/keerthiginuga" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="#" target="_blank" rel="noopener">Résumé</a>
+                <a href="mailto:keerthi@example.com">Email</a>
+            </nav>
+        </footer>
     </main>
 
     <!-- Shared modules -->
@@ -65,6 +265,35 @@
                         rafId = null;
                     });
                 }, { passive: true });
+            }
+
+            // Process Section Accordion
+            const procAccordion = document.querySelector('.v2-process-accordion');
+            const procItems = document.querySelectorAll('.v2-process-item');
+
+            if (procAccordion && procItems.length) {
+                if (document.querySelector('.v2-process-item.is-open')) {
+                    procAccordion.classList.add('has-active');
+                }
+
+                procItems.forEach((item) => {
+                    const row = item.querySelector('.v2-process-row');
+                    if (!row) return;
+
+                    row.addEventListener('click', () => {
+                        const wasOpen = item.classList.contains('is-open');
+
+                        // Close all others
+                        procItems.forEach(i => i.classList.remove('is-open'));
+
+                        if (!wasOpen) {
+                            item.classList.add('is-open');
+                            procAccordion.classList.add('has-active');
+                        } else {
+                            procAccordion.classList.remove('has-active');
+                        }
+                    });
+                });
             }
         });
     </script>

@@ -161,7 +161,7 @@
         if (dt > 0) {
             var raw = (e.scroll - lastScroll) * (1000 / dt);
             scrollVelocity = scrollVelocity * 0.8 + raw * 0.2;
-            
+
             // Register interaction on actual scroll movement (not just lenis setup)
             if (Math.abs(e.scroll - lastScroll) > 1 && !hasInteracted) {
                 hasInteracted = true;
@@ -279,6 +279,11 @@
                         item.classList.toggle('is-active', i === hoveredProject);
                     });
                     updateGlobalTags(hoveredProject);
+
+                    var cursorEl = document.getElementById('viewCursor');
+                    if (cursorEl) {
+                        cursorEl.innerText = (hoveredProject >= 5) ? 'Coming soon' : 'view';
+                    }
                 }
             }
         });
@@ -305,6 +310,28 @@
     if (imgStack) {
         imgStack.addEventListener('mouseenter', function () { cursor.classList.add('is-visible'); });
         imgStack.addEventListener('mouseleave', function () { cursor.classList.remove('is-visible'); });
+    }
+
+    /* ── 9. Footer Transition Animation ────────────────────────────────── */
+    var footer = document.getElementById('contact');
+    var worksRow = document.querySelector('.v2-works-row');
+
+    if (footer && worksRow) {
+        gsap.to(worksRow, {
+            scrollTrigger: {
+                scroller: document.documentElement,
+                trigger: footer,
+                // Start fading when the top of the footer is 80% down the viewport (instead of bottom)
+                // This gives the last project a moment to sit fully overlapping before it fades out
+                start: 'top 80%',
+                end: 'top center',
+                scrub: true,
+            },
+            opacity: 0,
+            scale: 0.95,
+            y: -50,
+            ease: 'none'
+        });
     }
 
 })();

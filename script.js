@@ -22,7 +22,7 @@ const SELECT_WORKS_CONFIG = {
   drift: 8,
   leadSegments: 2,
   holdSegments: 1,
-  exitSegments: 1
+  exitSegments: 0
 };
 
 const QUOTE_CURSOR_CONFIG = {
@@ -193,6 +193,7 @@ function initSelectWorksCard() {
   /* ── State ── */
   let angle = 0;
   let scrollProgress = 0;
+  let currentRawSteps = 0;
   let targetX = 0, targetY = 0;
   let currentX = 0, currentY = 0;
   let activeFrontKey = '';
@@ -289,14 +290,17 @@ function initSelectWorksCard() {
   const updateScrollProgress = () => {
     sectionTop = section.offsetTop;
     const vh = Math.max(1, window.innerHeight);
-    const rawSteps = (window.scrollY - sectionTop) / vh;
-    const maxSteps = leadSegments + holdSegments + projects.length + exitSegments;
-    scrollProgress = clampValue(rawSteps, 0, maxSteps);
+    currentRawSteps = (window.scrollY - sectionTop) / vh;
+    // We remove 1 from projects.length because the final card doesn't flip away
+    const maxSteps = leadSegments + holdSegments + (projects.length - 1) + exitSegments;
+    scrollProgress = clampValue(currentRawSteps, 0, maxSteps);
   };
 
   /* ── Animation loop ── */
   const animate = () => {
     const t = scrollProgress;
+    const maxStepsForOverscroll = leadSegments + holdSegments + (projects.length - 1) + exitSegments;
+    const overScroll = Math.max(0, currentRawSteps - maxStepsForOverscroll);
     let segmentIndex = 0;
     let localProgress = 0;
     let rotationStarted = false;
@@ -348,16 +352,23 @@ function initSelectWorksCard() {
 
       const rotationFloat = t - leadSegments - holdSegments;
 
-      if (rotationFloat >= projects.length) {
-        /* Exit: shrink + fade */
-        const exitProgress = Math.min(1, rotationFloat - projects.length);
+      // Clamp the math so it begins exit sequence after the final card
+      if (rotationFloat >= projects.length - 1 || overScroll > 0) {
+        /* Exit: shrink + fade begins *after* the last card flips */
+        let rawExit = 0;
+        if (exitSegments > 0) {
+          rawExit = rotationFloat - (projects.length - 1);
+        } else {
+          rawExit = overScroll;
+        }
+        const exitProgress = Math.min(1, rawExit);
         const eased = exitProgress * exitProgress * (3 - 2 * exitProgress);
         section.style.setProperty('--v2-card-scale', (1 - eased * 0.18).toFixed(4));
         section.style.setProperty('--v2-card-opacity', (1 - eased).toFixed(4));
         section.style.setProperty('--v2-marquee-opacity', (1 - eased).toFixed(4));
         angle = 0;
         segmentIndex = projects.length - 1;
-        localProgress = 1;
+        localProgress = 1; // Forces the face update to lock on the last project
       } else {
         section.style.setProperty('--v2-card-scale', '1');
         section.style.setProperty('--v2-card-opacity', '1');

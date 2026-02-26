@@ -8,7 +8,7 @@
 const PROJECT_DATA = [
     {
         id: 'sonix',
-        title: 'Sonix — Your Personal Space On Wheels',
+        title: 'SONIX — YOUR PERSONAL SPACE ON WHEELS',
         shortTitle: 'SONIX',
         year: 2025,
         marqueeKey: 'SONIX',
@@ -16,61 +16,49 @@ const PROJECT_DATA = [
         categories: 'UX Research / UX Design / UI Design / Branding / Service Design / Information Architecture / User Testing',
         description: 'Sonix reimagines urban mobility through fully autonomous vehicles that deliver hyper-personalized, luxury-grade experiences for everyone.',
         images: [
-            'assets/images/autonomous-vehicle.jpg',
-            'assets/images/sync.jpg',
-            'assets/images/google-nest.jpg',
-            'assets/images/7west.jpg'
+            'assets/images/autonomous-vehicle.jpg'
         ],
         heroImage: 'assets/images/autonomous-vehicle.jpg'
     },
     {
         id: 'sealove',
-        title: 'SeaLove Candle Bar Re-Design',
+        title: 'SEALOVE CANDLE BAR WEBSITE REDESIGN',
         shortTitle: 'SEALOVE',
         year: 2023,
         marqueeKey: 'SEALOVE',
         tags: ['UXD', 'UXR', 'IA', 'Branding'],
         categories: 'UX Design / UX Research / Information Architecture / Branding',
-        description: 'A holistic brand and digital experience redesign for SeaLove Candle Bar, reimagining the customer journey from discovery to checkout.',
+        description: 'A strategic redesign of Sea Love’s website, focused on improving Information Architecture and UI to create a seamless, intuitive shopping and booking experience.',
         images: [
-            'assets/images/sea-love.jpg',
-            'assets/images/kroger.jpg',
-            'assets/images/word-clock.jpg',
-            'assets/images/zillow.jpg'
+            'assets/images/sea-love.jpg'
         ],
         heroImage: 'assets/images/sea-love.jpg'
     },
     {
         id: 'google-nest',
-        title: 'Google Nest Thermostat for Office Space',
+        title: 'GOOGLE NEST THERMOSTAT FOR OFFICE SPACE',
         shortTitle: 'GOOGLE NEST',
         year: 2023,
         marqueeKey: 'GOOGLE NEST',
         tags: ['UXD', 'UXR', 'Branding'],
         categories: 'UX Design / UX Research / Branding',
-        description: 'Redesigning the Google Nest Thermostat experience for enterprise office spaces, balancing individual comfort with collective efficiency.',
+        description: 'Redesigned the Nest thermostat for cheerful office spaces, introducing a collaborative temperature-setting feature that empowers employees to contribute, fostering a collaborative, comfortable, and inclusive environment.',
         images: [
-            'assets/images/google-nest.jpg',
-            'assets/images/autonomous-vehicle.jpg',
-            'assets/images/sync.jpg',
-            'assets/images/sea-love.jpg'
+            'assets/images/google-nest.jpg'
         ],
         heroImage: 'assets/images/google-nest.jpg'
     },
     {
         id: 'kohler',
-        title: 'Kohler × SCADpro — Future of Hydrotherapy',
+        title: 'KOHLER X SCADPRO - THE FUTURE OF HYDROTHERAPY',
         shortTitle: 'KOHLER',
         year: 2022,
         marqueeKey: 'KOHLER',
         tags: ['Lead UXD', 'UXR', 'Product Design'],
         categories: 'Lead UX Design / UX Research / Product Design',
-        description: 'A future-forward hydrotherapy concept developed with Kohler and SCADpro, exploring immersive wellness through connected spaces.',
+        description: 'A collaborative industry project with Kohler through SCADpro focused on reimagining the future of hydrotherapy through human-centered research, concept development, and immersive experience design.',
         images: [
-            'assets/images/kohler-scadpro.jpg',
-            'assets/images/7west.jpg',
-            'assets/images/google-nest.jpg',
-            'assets/images/word-clock.jpg'
+            'assets/images/kohler-scadpro.jpg'
         ],
         heroImage: 'assets/images/kohler-scadpro.jpg'
     }
@@ -80,61 +68,61 @@ const PROJECT_DATA = [
 const WORKS_ONLY_PROJECTS = [
     {
         id: '7west',
-        title: '7WEST',
+        title: '7WEST — YOUR ALL-IN-ONE STUDENT ECOSYSTEM',
         shortTitle: '7WEST',
         year: 2024,
         marqueeKey: '7WEST',
         tags: ['Co-Founder', 'Design Lead', 'UX Design'],
         categories: 'Co-Founder / Design Lead / UX Design',
-        description: 'An all-in-one student ecosystem designed to simplify campus life — from housing to social connection — under one digital roof.',
+        description: '7WEST is an AI-first student ecosystem that connects every layer of university life from organizations and events to housing, jobs, and student discounts into a single, unified platform.',
         images: ['assets/images/7west.jpg'],
         heroImage: 'assets/images/7west.jpg'
     },
     {
         id: 'kroger',
-        title: 'KROGER',
+        title: 'RETHINKING THE SELF-CHECKOUT EXPERIENCE AT KROGER',
         shortTitle: 'KROGER',
         year: 2023,
         marqueeKey: 'KROGER',
         tags: ['UXR', 'Service Design'],
         categories: 'UX Research / Service Design',
-        description: 'Rethinking the self-checkout experience at Kroger to reduce friction, errors, and frustration through empathetic service design.',
+        description: 'An in-depth service design investigation addressing the rising theft, employee stress, and customer frustration surrounding Kroger’s self-checkout systems.',
         images: ['assets/images/kroger.jpg'],
         heroImage: 'assets/images/kroger.jpg'
     },
     {
         id: 'imessage',
-        title: 'iMessage (Placeholder Title)',
+        title: 'IMESSAGE - A RELATIONAL WELLNESS UPDATE',
         shortTitle: 'IMESSAGE',
         year: 2024,
         marqueeKey: 'IMESSAGE',
         tags: ['Placeholder Tag'],
         categories: 'Placeholder Category / Tag 2',
-        description: 'Placeholder description for the iMessage project.',
+        description: 'A hypothetical iMessage update centered around relational wellness, empowering users to maintain their relationships through outreach, context, and organizational support.',
         images: ['assets/images/imessage.jpg'],
         heroImage: 'assets/images/imessage.jpg'
     },
     {
         id: 'sync',
-        title: 'Sync (Placeholder Title)',
+        title: 'SYNC - THE REAL-TIME COACHING',
         shortTitle: 'SYNC',
         year: 2024,
         marqueeKey: 'SYNC',
         tags: ['Placeholder Tag'],
         categories: 'Placeholder Category / Tag 2',
-        description: 'Placeholder description for the Sync project.',
+        description: 'An intelligent smart sneaker system that translates gait sensor data into real-time haptic feedback and immersive visual insights to prevent running injuries.',
         images: ['assets/images/sync.jpg'],
         heroImage: 'assets/images/sync.jpg'
     },
     {
         id: 'zillow',
-        title: 'Zillow (Placeholder Title)',
+        title: 'ZILLOW - SIMPLIFYING SEARCH FOR HOME',
         shortTitle: 'ZILLOW',
         year: 2024,
         marqueeKey: 'ZILLOW',
         tags: ['Placeholder Tag'],
         categories: 'Placeholder Category / Tag 2',
-        description: 'Placeholder description for the Zillow project.',
+        description: 'A usability redesign of Zillow\'s mobile app to streamline search, filters, and saved listings for renters navigating high-stakes housing decisions.',
         images: ['assets/images/zillow.jpg'],
         heroImage: 'assets/images/zillow.jpg'
     }
@@ -162,5 +150,10 @@ function getAllProjects() {
  * Returns projects for the home page select-works card rotation.
  */
 function getSelectWorksProjects() {
-    return PROJECT_DATA;
+    return [
+        PROJECT_DATA[0],             // SONIX
+        WORKS_ONLY_PROJECTS[2],      // IMESSAGE
+        PROJECT_DATA[1],             // SEALOVE
+        PROJECT_DATA[2]              // GOOGLE NEST
+    ];
 }
