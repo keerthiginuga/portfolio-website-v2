@@ -240,14 +240,14 @@ function initSelectWorksCard() {
   /* ── Marquee helpers ── */
   const marqueeMarkup = (key) => {
     const safe = escapeHtml(key.trim().toUpperCase());
-    return Array.from({ length: 8 }, () =>
-      `<span class="v2-marquee-word"><span class="v2-marquee-word-half is-left">${safe}</span><span class="v2-marquee-word-half is-right">${safe}</span></span>`
+    return Array.from({ length: 4 }, () =>
+      `<span>${safe}</span>`
     ).join('');
   };
 
   const setMarquee = (projectIndex) => {
     const project = projects[projectIndex] || projects[0];
-    const key = (project.marqueeKey || project.title).trim().toUpperCase();
+    const key = project.title.trim().toUpperCase();
     if (key === activeMarqueeKey) return;
     activeMarqueeKey = key;
     const markup = marqueeMarkup(key);
@@ -405,29 +405,20 @@ function initSelectWorksCard() {
 
     /* ── Flip geometry ── */
     const effectiveAngle = (isReducedMotion || !rotationStarted) ? 0 : angle;
-    const angleRad = (effectiveAngle * Math.PI) / 180;
-    const openFactor = Math.abs(Math.sin(angleRad));
-    const openPx = Math.min(92, openFactor * 92);
-    section.style.setProperty('--v2-marquee-open', `${openPx.toFixed(2)}px`);
     section.style.setProperty('--v2-marquee-opacity', '1');
 
-    /* ── Marquee Y-fold ── */
+    /* ── Marquee Vertical Slide ── */
+    let translateYPercent = 0;
+    if (effectiveAngle <= 90) {
+      translateYPercent = -((effectiveAngle / 90) * 150);
+    } else {
+      translateYPercent = (1 - ((effectiveAngle - 90) / 90)) * 150;
+    }
+    section.style.setProperty('--v2-marquee-y', `${translateYPercent.toFixed(2)}%`);
+
     if (marqueeEl) {
-      const MAX_FOLD_OFFSET = 32;
-      const textScaleY = Math.abs(Math.cos(angleRad));
-      let textTranslateY, textOriginY;
-
-      if (effectiveAngle <= 90) {
-        textTranslateY = -Math.sin(angleRad) * MAX_FOLD_OFFSET;
-        textOriginY = '0%';
-      } else {
-        const tVal = (effectiveAngle - 90) * Math.PI / 180;
-        textTranslateY = MAX_FOLD_OFFSET * Math.cos(tVal);
-        textOriginY = '100%';
-      }
-
-      marqueeEl.style.transformOrigin = `center ${textOriginY}`;
-      marqueeEl.style.transform = `translateY(calc(-50% + ${textTranslateY.toFixed(2)}px)) scaleY(${textScaleY.toFixed(4)})`;
+      marqueeEl.style.transformOrigin = '';
+      marqueeEl.style.transform = '';
     }
 
     /* ── Tilt + drift transforms ── */
