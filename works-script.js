@@ -298,7 +298,7 @@
         });
 
         // Add click listener to route to project pages
-        imgStack.addEventListener('click', function () {
+        row.addEventListener('click', function () {
             if (hoveredProject !== -1) {
                 var activeProjects = [0, 2, 3, 4];
                 if (activeProjects.includes(hoveredProject)) {
