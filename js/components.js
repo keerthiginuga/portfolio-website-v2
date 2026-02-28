@@ -9,10 +9,10 @@
 */
 
 const NAV_LINKS = [
-    { label: 'Home', href: 'index.html' },
-    { label: 'Works', href: 'works.html' },
-    { label: 'Playground', href: '#' },
-    { label: 'About Me', href: 'about.html' }
+  { label: 'Home', href: 'index.html' },
+  { label: 'Works', href: 'works.html' },
+  { label: 'Playground', href: '#' },
+  { label: 'About Me', href: 'about.html' }
 ];
 
 const LOGO_SVG = `<svg width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,11 +35,11 @@ const NAV_GLASS_SVG_FILTER = `<svg style="position:absolute;width:0;height:0;ove
  * @returns {string}
  */
 function _getActiveHref() {
-    const path = window.location.pathname;
-    if (path.includes('works')) return 'works.html';
-    if (path.includes('about')) return 'about.html';
-    if (path.includes('playground')) return '#';
-    return 'index.html';
+  const path = window.location.pathname;
+  if (path.includes('works')) return 'works.html';
+  if (path.includes('about')) return 'about.html';
+  if (path.includes('playground')) return '#';
+  return 'index.html';
 }
 
 /**
@@ -47,11 +47,11 @@ function _getActiveHref() {
  * @returns {string} HTML string
  */
 function _buildNavLinks() {
-    const activeHref = _getActiveHref();
-    return NAV_LINKS.map(link => {
-        const activeClass = link.href === activeHref ? ' is-active' : '';
-        return `<li><a class="v2-nav-link${activeClass}" href="${link.href}">${link.label}</a></li>`;
-    }).join('\n        ');
+  const activeHref = _getActiveHref();
+  return NAV_LINKS.map(link => {
+    const activeClass = link.href === activeHref ? ' is-active' : '';
+    return `<li><a class="v2-nav-link${activeClass}" href="${link.href}">${link.label}</a></li>`;
+  }).join('\n        ');
 }
 
 /**
@@ -60,10 +60,9 @@ function _buildNavLinks() {
  * Also works by prepending to body if placeholder is missing.
  */
 function injectSharedLayout() {
-    const logoHref = _getActiveHref() === 'index.html' ? '#' : 'index.html';
+  const logoHref = _getActiveHref() === 'index.html' ? '#' : 'index.html';
 
-    const html = `
-${NAV_GLASS_SVG_FILTER}
+  const html = `
 <a class="v2-logo" id="mainLogo" href="${logoHref}" aria-label="Keerthi home">
   ${LOGO_SVG}
 </a>
@@ -72,6 +71,7 @@ ${NAV_GLASS_SVG_FILTER}
     <ul class="v2-nav-links">
       ${_buildNavLinks()}
     </ul>
+    <a href="assets/resume.pdf" target="_blank" class="v2-nav-resume">RESUME</a>
     <button class="v2-hamburger" aria-label="Toggle menu" aria-expanded="false">
       <span class="v2-hamburger-line"></span>
       <span class="v2-hamburger-line"></span>
@@ -80,11 +80,11 @@ ${NAV_GLASS_SVG_FILTER}
   </div>
 </nav>`;
 
-    const placeholder = document.getElementById('shared-layout');
-    if (placeholder) {
-        placeholder.innerHTML = html;
-    } else {
-        // Fallback: prepend to body
-        document.body.insertAdjacentHTML('afterbegin', html);
-    }
+  const placeholder = document.getElementById('shared-layout');
+  if (placeholder) {
+    placeholder.innerHTML = html;
+  } else {
+    // Fallback: prepend to body
+    document.body.insertAdjacentHTML('afterbegin', html);
+  }
 }

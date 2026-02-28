@@ -34,8 +34,8 @@
   --v2-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* ── Typography ── */
-  --v2-name-size: clamp(54px, 7vw, 120px);
-  --v2-title-size: clamp(26px, 2.9vw, 52px);
+  --v2-name-size: clamp(43.2px, 5.6vw, 96px);
+  --v2-title-size: clamp(20.8px, 2.32vw, 41.6px);
   --v2-font-system: 'Neue Haas Grotesk Text', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --v2-font-serif: 'EB Garamond', Georgia, serif;
 
@@ -122,27 +122,6 @@ body.v2-page-transitioning .v2-quote-cursor {
 .v2-nav-inner {
   display: flex;
   align-items: center;
-  background: rgba(20, 20, 20, 0.35);
-  backdrop-filter: url(#nav-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
-  -webkit-backdrop-filter: url(#nav-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
-  box-shadow: var(--v2-nav-shadow);
-  border-radius: 100px;
-  padding: 8px 32px;
-  transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.5s var(--v2-ease-main), box-shadow 0.4s ease;
-  overflow: hidden;
-}
-
-.v2-nav.nav-scrolled .v2-nav-inner {
-  background: rgba(20, 20, 20, 0.45);
-  backdrop-filter: var(--v2-nav-backdrop-scrolled);
-  -webkit-backdrop-filter: var(--v2-nav-backdrop-scrolled);
-}
-
-.v2-nav.nav-collapsed .v2-nav-inner {
-  background: rgba(20, 20, 20, 0.45);
-  backdrop-filter: var(--v2-nav-backdrop-scrolled);
-  -webkit-backdrop-filter: var(--v2-nav-backdrop-scrolled);
-  padding: 8px 16px;
 }
 
 .v2-nav-links {
@@ -150,16 +129,17 @@ body.v2-page-transitioning .v2-quote-cursor {
   align-items: center;
   gap: 50px;
   list-style: none;
-  margin: 0;
+  margin: 0 40px 0 0;
   padding: 0;
   max-width: 600px;
   /* Base enough for links */
-  transition: max-width 0.5s var(--v2-ease-main), opacity 0.4s ease, transform 0.5s var(--v2-ease-main);
+  transition: max-width 0.5s var(--v2-ease-main), opacity 0.4s ease, transform 0.5s var(--v2-ease-main), margin 0.5s var(--v2-ease-main);
   transform-origin: right center;
 }
 
 .v2-nav.nav-collapsed .v2-nav-links {
   max-width: 0px;
+  margin-right: 0px;
   opacity: 0;
   transform: translateX(20px) scale(0.95);
   pointer-events: none;
@@ -167,7 +147,7 @@ body.v2-page-transitioning .v2-quote-cursor {
 
 .v2-nav-link {
   color: var(--v2-color-gray);
-  font-family: var(--v2-font-serif);
+  font-family: var(--v2-font-system);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0;
@@ -175,6 +155,39 @@ body.v2-page-transitioning .v2-quote-cursor {
   text-transform: uppercase;
   transition: color 0.3s ease;
   white-space: nowrap;
+}
+
+.v2-nav-resume {
+  font-family: var(--v2-font-system);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--v2-color-black);
+  background: var(--v2-color-white);
+  padding: 8px 20px;
+  border-radius: 100px;
+  transition: transform 0.3s ease, opacity 0.4s ease, max-width 0.5s var(--v2-ease-main);
+  white-space: nowrap;
+  max-width: 120px;
+  transform-origin: right center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.v2-nav-resume:hover {
+  transform: scale(1.05);
+}
+
+.v2-nav.nav-collapsed .v2-nav-resume {
+  max-width: 0px;
+  opacity: 0;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateX(20px) scale(0.95);
 }
 
 .v2-nav-link:hover,
@@ -336,7 +349,7 @@ body.v2-page-transitioning .v2-quote-cursor {
 }
 
 .v2-hero-title {
-  margin: -14px 0 0;
+  margin: -22px 0 0;
   font-family: 'EB Garamond', serif;
   font-size: var(--v2-title-size);
   font-weight: 400;
@@ -367,7 +380,7 @@ body.v2-page-transitioning .v2-quote-cursor {
   /* Slightly smaller height for elegance */
   height: clamp(18px, 4.5vh, 38px);
   margin: 0 auto 12px;
-  background: linear-gradient(to bottom, rgba(109, 109, 109, 0.9), rgba(109, 109, 109, 0.25));
+  background: var(--v2-color-gray);
   overflow: hidden;
 }
 
@@ -407,85 +420,83 @@ body.v2-page-transitioning .v2-quote-cursor {
 
 .v2-select-works {
   --v2-project-count: 4;
-  --v2-lead-segments: 2;
+  --v2-lead-segments: 1;
   --v2-hold-segments: 1;
   --v2-exit-segments: 1;
   --v2-marquee-open: 0px;
   --v2-marquee-opacity: 1;
-  --v2-panel-shift: 20vh;
+  --v2-panel-shift: 0px;
   --v2-header-opacity: 1;
   --v2-header-shift: 0px;
   --v2-header-max-h: 420px;
   --v2-header-gap: clamp(28px, 4vw, 54px);
   --v2-card-opacity: 1;
   --v2-card-scale: 1;
-  --v2-card-shift: 22vh;
+  --v2-card-shift: 0px;
   position: relative;
   margin-top: 0;
-  min-height: calc(100svh * (var(--v2-project-count) - 1 + var(--v2-lead-segments) + var(--v2-hold-segments) + var(--v2-exit-segments)));
   padding: 0;
   z-index: 10;
-  background: linear-gradient(to bottom, #000 0%, #000 100svh, var(--v2-color-panel-bg) 100svh, var(--v2-color-panel-bg) 100%);
+  /* Background: black under the hero, then the panel covers it */
+  background: #000;
 }
 
 .v2-select-works-sticky {
   position: sticky;
   top: 0;
+  /* Exactly fills the viewport — card centers within here */
+  height: 100svh;
+  width: 100vw;
+  overflow: hidden;
+  perspective: 1000px;
   display: flex;
-  align-items: flex-start;
-  background: transparent;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--v2-color-panel-bg);
 }
 
+/* Obsolete snap divs — hidden so they don't add ghost scroll height */
 .v2-select-works-mid-snap,
 .v2-select-works-card-snap,
-.v2-select-works-hold-snap {
-  position: relative;
-  height: 100svh;
-  scroll-snap-align: start;
-}
-
+.v2-select-works-hold-snap,
 .v2-select-works-rotation-track {
-  position: relative;
-  height: calc(100svh * (var(--v2-project-count) - 1));
+  display: none;
 }
 
 .v2-select-works-panel {
   position: relative;
-  overflow: hidden;
-  perspective: 1000px;
-  width: 100vw;
-  max-width: none;
-  margin: 0;
+  width: 100%;
+  /* Height is natural: header + sticky(100svh) + scroll-space below */
   border-radius: 42px 42px 0 0;
   background: var(--v2-color-panel-bg);
   color: #000;
-  padding: clamp(40px, 6vw, 96px) clamp(20px, 5vw, 80px) clamp(34px, 4vw, 56px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  transform: translateY(var(--v2-panel-shift));
-  transition: transform 0.2s linear;
+  /* NOTE: Do NOT add overflow:hidden here — it would break position:sticky on child .v2-select-works-sticky */
+}
+
+/* Provides exactly (hold + flips + exit) * 100svh of post-pin scroll room.
+   This is independent of header height, so the JS timeline always maps correctly. */
+.v2-select-works-scroll-space {
+  height: calc(100svh * (var(--v2-hold-segments) + var(--v2-project-count) - 1 + var(--v2-exit-segments)));
 }
 
 .v2-select-works-header {
+  /* Now sits in normal document flow above the sticky container */
   position: relative;
-  z-index: 2;
+  padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 80px) clamp(28px, 4vw, 56px);
   display: grid;
   grid-template-columns: 1fr minmax(260px, 38%);
   gap: 32px;
   align-items: end;
-  margin-bottom: var(--v2-header-gap);
-  max-height: var(--v2-header-max-h);
-  overflow: hidden;
-  opacity: var(--v2-header-opacity);
-  transform: translateY(var(--v2-header-shift));
-  transition: opacity 0.2s linear, transform 0.2s linear, max-height 0.2s linear, margin-bottom 0.2s linear;
+  color: #000;
+  z-index: 2;
 }
 
 .v2-select-works-marquee {
   position: absolute;
   left: -12%;
   right: -12%;
+  /* 50% centers the marquee behind the card (sticky is an exact 100svh viewport tile) */
   top: 50%;
   transform: translateY(-50%);
   width: 122%;
@@ -917,13 +928,13 @@ body.v2-page-transitioning .v2-quote-cursor {
   }
 
   .v2-hero-name {
-    font-size: clamp(44px, 12vw, 62px);
+    font-size: clamp(35.2px, 9.6vw, 49.6px);
     line-height: 1.2;
   }
 
   .v2-hero-title {
-    margin-top: 0;
-    font-size: clamp(22px, 5.6vw, 32px);
+    margin-top: -8px;
+    font-size: clamp(17.6px, 4.48vw, 25.6px);
     line-height: 1.25;
   }
 
@@ -2163,7 +2174,7 @@ text-transform: uppercase;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: clamp(16px, 2vw, 24px) 0;
+  padding: clamp(8px, 1.5vw, 16px) 0;
   cursor: pointer;
   user-select: none;
 }
@@ -2176,7 +2187,7 @@ text-transform: uppercase;
 }
 
 .v2-process-heading {
-  font-size: clamp(30px, 4.2vw, 64px);
+  font-size: clamp(24px, 3.2vw, 48px);
   font-weight: 400;
   color: rgba(249, 253, 254, 0.75);
   letter-spacing: 0;
@@ -2191,8 +2202,8 @@ text-transform: uppercase;
 
 .v2-process-thumb {
   max-width: 0;
-  width: clamp(72px, 8vw, 120px);
-  height: clamp(52px, 5.5vw, 80px);
+  width: clamp(56px, 6.5vw, 100px);
+  height: clamp(40px, 4.5vw, 66px);
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
@@ -2207,7 +2218,7 @@ text-transform: uppercase;
 
 .v2-process-item.is-open .v2-process-thumb,
 .v2-process-item:hover .v2-process-thumb {
-  max-width: clamp(72px, 8vw, 120px);
+  max-width: clamp(56px, 6.5vw, 100px);
   margin-left: clamp(12px, 1.6vw, 20px);
   opacity: 1;
   transform: scale(1);
@@ -2237,7 +2248,7 @@ text-transform: uppercase;
 }
 
 .v2-process-index-num {
-  font-size: clamp(30px, 4.2vw, 64px);
+  font-size: clamp(24px, 3.2vw, 48px);
   font-weight: 400;
   color: rgba(249, 253, 254, 0.22);
   letter-spacing: 0;
@@ -2248,7 +2259,7 @@ text-transform: uppercase;
 }
 
 .v2-process-index-icon {
-  font-size: clamp(36px, 5vw, 78px);
+  font-size: clamp(28px, 4vw, 56px);
   font-weight: 300;
   color: rgba(249, 253, 254, 0.22);
   letter-spacing: 0;

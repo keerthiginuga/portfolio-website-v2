@@ -20,9 +20,9 @@ const SELECT_WORKS_CONFIG = {
   spring: 0.08,
   touchScale: 0.45,
   drift: 8,
-  leadSegments: 2,
+  leadSegments: 1,
   holdSegments: 1,
-  exitSegments: 0
+  exitSegments: 0  // 0 = unpin happens exactly when last flip completes; exit driven by natural scroll-away
 };
 
 const QUOTE_CURSOR_CONFIG = {
@@ -185,6 +185,8 @@ function initSelectWorksCard() {
   const projects = getSelectWorksProjects();
 
   const { leadSegments, holdSegments, exitSegments } = SELECT_WORKS_CONFIG;
+  const stickyEl = section.querySelector('.v2-select-works-sticky');
+  const headerEl = section.querySelector('.v2-select-works-header');
   section.style.setProperty('--v2-project-count', String(projects.length));
   section.style.setProperty('--v2-lead-segments', String(leadSegments));
   section.style.setProperty('--v2-hold-segments', String(holdSegments));
@@ -288,94 +290,60 @@ function initSelectWorksCard() {
 
   /* ── Scroll progress ── */
   const updateScrollProgress = () => {
-    sectionTop = section.offsetTop;
+    const rect = section.getBoundingClientRect();
     const vh = Math.max(1, window.innerHeight);
-    currentRawSteps = (window.scrollY - sectionTop) / vh;
-    // We remove 1 from projects.length because the final card doesn't flip away
-    const maxSteps = leadSegments + holdSegments + (projects.length - 1) + exitSegments;
+    // CRITICAL: Use headerEl.offsetHeight (static) NOT stickyEl.offsetTop (dynamic).
+    // When position:sticky engages, the browser increases stickyEl.offsetTop in sync
+    // with the scroll, which cancels out the math and locks scrollProgress at 0.
+    // headerEl.offsetHeight is the true static distance from section top to the pin point.
+    const pinOffset = headerEl ? headerEl.offsetHeight : 0;
+    const scrolledPastPin = -(rect.top + pinOffset);
+    currentRawSteps = Math.max(0, scrolledPastPin) / vh;
+    const maxSteps = holdSegments + (projects.length - 1) + exitSegments;
     scrollProgress = clampValue(currentRawSteps, 0, maxSteps);
   };
 
   /* ── Animation loop ── */
   const animate = () => {
     const t = scrollProgress;
-    const maxStepsForOverscroll = leadSegments + holdSegments + (projects.length - 1) + exitSegments;
+    const maxStepsForOverscroll = holdSegments + (projects.length - 1) + exitSegments;
     const overScroll = Math.max(0, currentRawSteps - maxStepsForOverscroll);
+
     let segmentIndex = 0;
     let localProgress = 0;
-    let rotationStarted = false;
+    let rotationStarted = true; // Always in the hold/rotation phase now that t starts at pin
 
-    if (t < 1) {
-      /* Intro: heading visible, card rises */
-      section.style.setProperty('--v2-header-opacity', '1');
-      section.style.setProperty('--v2-header-shift', '0px');
-      section.style.setProperty('--v2-header-max-h', '420px');
-      section.style.setProperty('--v2-header-gap', '54px');
-      section.style.setProperty('--v2-panel-shift', '0px');
-      const revealPx = (1 - t) * (window.innerHeight * 0.10);
-      section.style.setProperty('--v2-card-shift', `${revealPx.toFixed(2)}px`);
-      section.style.setProperty('--v2-card-opacity', '1');
-      section.style.setProperty('--v2-card-scale', '1');
-      angle = 0;
-    } else if (t < 2) {
-      /* Mid: heading fades, card centers */
-      const p = t - 1;
-      section.style.setProperty('--v2-header-opacity', Math.max(0, 1 - p).toFixed(3));
-      section.style.setProperty('--v2-header-shift', `${(-36 * p).toFixed(2)}px`);
-      section.style.setProperty('--v2-header-max-h', `${Math.max(0, 420 * (1 - p)).toFixed(2)}px`);
-      section.style.setProperty('--v2-header-gap', `${Math.max(0, 54 * (1 - p)).toFixed(2)}px`);
-      section.style.setProperty('--v2-panel-shift', `${((1 - p) * window.innerHeight * 0.03).toFixed(2)}px`);
-      section.style.setProperty('--v2-card-shift', `${((1 - p) * window.innerHeight * 0.04).toFixed(2)}px`);
-      section.style.setProperty('--v2-card-opacity', '1');
-      section.style.setProperty('--v2-card-scale', '1');
-      angle = 0;
-    } else if (t < leadSegments + holdSegments) {
-      /* Hold: card centered, no flip */
-      section.style.setProperty('--v2-header-opacity', '0');
-      section.style.setProperty('--v2-header-shift', '-36px');
-      section.style.setProperty('--v2-header-max-h', '0px');
-      section.style.setProperty('--v2-header-gap', '0px');
-      section.style.setProperty('--v2-panel-shift', '0px');
-      section.style.setProperty('--v2-card-shift', '0px');
-      section.style.setProperty('--v2-card-opacity', '1');
-      section.style.setProperty('--v2-card-scale', '1');
-      angle = 0;
-    } else {
-      /* Rotation phase */
-      rotationStarted = true;
-      section.style.setProperty('--v2-header-opacity', '0');
-      section.style.setProperty('--v2-header-shift', '-36px');
-      section.style.setProperty('--v2-header-max-h', '0px');
-      section.style.setProperty('--v2-header-gap', '0px');
-      section.style.setProperty('--v2-panel-shift', '0px');
-      section.style.setProperty('--v2-card-shift', '0px');
+    {  // Hold/Rotation/Exit phase: t = 0 when the sticky pins, grows with each 100svh scrolled.
+      // Hold is the first `holdSegments` viewport-heights. Rotation starts after that.
+      const rotationFloat = Math.max(0, t - holdSegments);
+      const maxFlipSteps = holdSegments + (projects.length - 1); // = t when last flip completes
 
-      const rotationFloat = t - leadSegments - holdSegments;
+      // 1. Calculate routine card rotation, capped at final project
+      const clampedRotation = Math.min(rotationFloat, projects.length - 1);
+      segmentIndex = Math.floor(clampedRotation);
+      localProgress = clampedRotation - segmentIndex;
+      angle = localProgress * 180;
 
-      // Clamp the math so it begins exit sequence after the final card
-      if (rotationFloat >= projects.length - 1 || overScroll > 0) {
-        /* Exit: shrink + fade begins *after* the last card flips */
-        let rawExit = 0;
-        if (exitSegments > 0) {
-          rawExit = rotationFloat - (projects.length - 1);
-        } else {
-          rawExit = overScroll;
-        }
+      // 2. Exit: starts the MOMENT the section unpins (exitSegments=0 means unpin == last flip).
+      //    Drive exit using UNCLAMPED currentRawSteps so the fade tracks the physical scroll-away.
+      //    scrollProgress (clamped) can never power this — it stops changing at unpin.
+      if (rotationFloat >= projects.length - 1) {
+        const rawExit = Math.max(0, currentRawSteps - maxFlipSteps);
         const exitProgress = Math.min(1, rawExit);
         const eased = exitProgress * exitProgress * (3 - 2 * exitProgress);
         section.style.setProperty('--v2-card-scale', (1 - eased * 0.18).toFixed(4));
         section.style.setProperty('--v2-card-opacity', (1 - eased).toFixed(4));
         section.style.setProperty('--v2-marquee-opacity', (1 - eased).toFixed(4));
+
+        // Lock the final card flat during exit
         angle = 0;
         segmentIndex = projects.length - 1;
-        localProgress = 1; // Forces the face update to lock on the last project
+        localProgress = 1;
       } else {
+        /* Normal rotation phase: fully visible */
         section.style.setProperty('--v2-card-scale', '1');
         section.style.setProperty('--v2-card-opacity', '1');
         section.style.setProperty('--v2-marquee-opacity', '1');
-        segmentIndex = Math.floor(rotationFloat);
-        localProgress = rotationFloat - segmentIndex;
-        angle = localProgress * 180;
       }
     }
 
@@ -405,7 +373,6 @@ function initSelectWorksCard() {
 
     /* ── Flip geometry ── */
     const effectiveAngle = (isReducedMotion || !rotationStarted) ? 0 : angle;
-    section.style.setProperty('--v2-marquee-opacity', '1');
 
     /* ── Marquee Vertical Slide ── */
     let translateYPercent = 0;
@@ -426,19 +393,48 @@ function initSelectWorksCard() {
     const driftY = (-currentX * SELECT_WORKS_CONFIG.drift) / SELECT_WORKS_CONFIG.tiltRange;
     tilt.style.transform = `translate3d(${driftX.toFixed(2)}px, ${driftY.toFixed(2)}px, 0) rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg)`;
     flip.style.transform = `rotateX(${effectiveAngle.toFixed(3)}deg)`;
-
-    requestAnimationFrame(animate);
   };
 
+  /* ── Intersection Observer for performance ── */
+  let isVisible = false;
+  let rafId = null;
+
+  const loop = () => {
+    if (!isVisible) return;
+    animate();
+    rafId = requestAnimationFrame(loop);
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) {
+        if (!rafId) loop();
+      } else {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+    });
+  }, { rootMargin: "100px 0px 100px 0px" });
+
+  observer.observe(section);
+
   /* ── Bind events ── */
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener('scroll', () => {
+    if (isVisible) updateScrollProgress();
+  }, { passive: true });
+
   window.addEventListener('resize', () => {
-    updateScrollProgress();
-    syncFlipHeight();
+    if (isVisible) {
+      updateScrollProgress();
+      syncFlipHeight();
+    }
   });
+
   syncFlipHeight();
   updateScrollProgress();
-  requestAnimationFrame(animate);
 }
 
 /* ══════════════════════════════════════
@@ -492,10 +488,10 @@ function initQuote() {
 
     /* Word fill */
     words.forEach((word, i) => {
-      const wordStart = (i / words.length) * 0.75;
-      const wordEnd = wordStart + 0.15;
+      const wordStart = 0.12 + (i / words.length) * 0.28;
+      const wordEnd = wordStart + 0.10;
       const t = clampValue((progress - wordStart) / (wordEnd - wordStart), 0, 1);
-      word.style.color = `rgba(249,253,254,${(0.18 + t * 0.82).toFixed(3)})`;
+      word.style.color = `rgba(249,253,254,${(0.08 + t * 0.92).toFixed(3)})`;
     });
 
     /* Image parallax */
@@ -503,7 +499,7 @@ function initQuote() {
       if (progress > 0.02 && !photo.classList.contains('is-visible')) {
         photo.classList.add('is-visible');
       }
-      const ty = 120 - progress * 140;
+      const ty = 140 - progress * 280;
       photo.style.transform = `translateY(${ty.toFixed(1)}%)`;
     }
   }
@@ -612,6 +608,30 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo(0, 0);
   }
 
+  // Initialize global smooth scrolling (Lenis)
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({
+      lerp: 0.08,
+      smooth: true,
+      smoothTouch: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Connect Lenis to the shared navigation logic
+    let lastNavScroll = 0;
+    lenis.on('scroll', (e) => {
+      lastNavScroll = updateNavOnScroll(e.scroll, lastNavScroll);
+    });
+  } else {
+    // Fallback if Lenis fails to load
+    initNavScroll();
+  }
+
   // Init all home page features
   initHero();
   initLogoRotation();
@@ -620,7 +640,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuote();
   initSeeAllAnimation();
   initQuoteCursor();
-
-  // Nav scroll (standard, not Lenis)
-  initNavScroll();
 });

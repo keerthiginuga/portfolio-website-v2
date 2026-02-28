@@ -53,22 +53,26 @@
     </section>
 
     <section class="v2-select-works" id="select-works">
-      <div class="v2-select-works-sticky">
-        <div class="v2-select-works-panel">
+      <!-- Panel is now the outer scroll wrapper (grey bg + rounded corners) -->
+      <div class="v2-select-works-panel">
+
+        <!-- Header sits in normal document flow at the top of the grey panel -->
+        <header class="v2-select-works-header">
+          <h2 class="v2-select-works-title">
+            <span>Selected</span>
+            <span>Works</span>
+          </h2>
+          <p class="v2-select-works-intro">I love to learn by making and experimenting.<br>/here's some of my works
+          </p>
+        </header>
+
+        <!-- Sticky container follows the header — holds ONLY the marquee and card -->
+        <div class="v2-select-works-sticky">
           <div class="v2-select-works-marquee" aria-hidden="true">
             <div class="v2-select-works-marquee-track">
               <span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span>
             </div>
           </div>
-
-          <header class="v2-select-works-header">
-            <h2 class="v2-select-works-title">
-              <span>Selected</span>
-              <span>Works</span>
-            </h2>
-            <p class="v2-select-works-intro">I love to learn by making and experimenting.<br>/here's some of my works
-            </p>
-          </header>
 
           <div class="v2-sonix-card-wrap" data-card-wrap>
             <article class="v2-sonix-card" data-parallax-card>
@@ -91,13 +95,12 @@
               </div>
             </article>
           </div>
-
         </div>
+
+        <!-- Scroll spacer: provides exactly maxSteps*100svh of post-pin scroll room -->
+        <div class="v2-select-works-scroll-space" aria-hidden="true"></div>
+
       </div>
-      <div class="v2-select-works-mid-snap" aria-hidden="true"></div>
-      <div class="v2-select-works-card-snap" aria-hidden="true"></div>
-      <div class="v2-select-works-hold-snap" aria-hidden="true"></div>
-      <div class="v2-select-works-rotation-track" aria-hidden="true"></div>
     </section>
 
     <!-- ── See All Works Link & Divider ── -->
@@ -301,6 +304,7 @@
   <script src="js/data.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/components.js"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
   <script src="script.js"></script>
 </body>
 
