@@ -125,6 +125,8 @@
     var HOLD_DIST = SCROLL_PER_ITEM * 0.40;
     var TRANS_DIST = SCROLL_PER_ITEM - Math.max(0, HOLD_DIST);
     var totalScrollDist = NUM_TRANSITIONS * SCROLL_PER_ITEM;
+    var END_LINGER_DIST = VH * 2.5; // Hold the last project for 250% viewport height before unpinning
+    var pinDist = totalScrollDist + END_LINGER_DIST;
 
     var hasInteracted = false;
 
@@ -132,12 +134,13 @@
         scroller: document.documentElement,
         trigger: sticky,
         start: 'top ' + stickyTop + 'px',
-        end: '+=' + totalScrollDist,
+        end: '+=' + pinDist,
         pin: true,
         pinSpacing: true,
         onUpdate: function (self) {
             if (hoveredProject !== -1) return;
-            var rawPos = self.progress * NUM_TRANSITIONS;
+            var scrolled = self.progress * pinDist;
+            var rawPos = scrolled / SCROLL_PER_ITEM;
             var active = Math.min(NUM_TRANSITIONS, Math.max(0, Math.round(rawPos)));
             infoItems.forEach(function (item, i) {
                 item.classList.toggle('is-active', i === active);
@@ -282,8 +285,30 @@
 
                     var cursorEl = document.getElementById('viewCursor');
                     if (cursorEl) {
-                        cursorEl.innerText = (hoveredProject >= 5) ? 'Coming soon' : 'view';
+                        // Indexes 0 (SONIX), 2 (SeaLove), 3 (Google Nest), 4 (Kroger) are active
+                        var activeProjects = [0, 2, 3, 4];
+                        if (activeProjects.includes(hoveredProject)) {
+                            cursorEl.innerText = 'view';
+                        } else {
+                            cursorEl.innerText = 'Coming soon';
+                        }
                     }
+                }
+            }
+        });
+
+        // Add click listener to route to project pages
+        imgStack.addEventListener('click', function () {
+            if (hoveredProject !== -1) {
+                var activeProjects = [0, 2, 3, 4];
+                if (activeProjects.includes(hoveredProject)) {
+                    var urls = {
+                        0: 'project-sonix.html',
+                        2: 'project-sealove.html',
+                        3: 'project-nest.html',
+                        4: 'project-kroger.html'
+                    };
+                    window.location.href = urls[hoveredProject];
                 }
             }
         });
