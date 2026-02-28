@@ -297,18 +297,26 @@
             }
         });
 
-        // Add click listener to route to project pages
-        row.addEventListener('click', function () {
-            if (hoveredProject !== -1) {
+        // Add click listener to route to project pages - use document.body for reliable capturing
+        document.body.addEventListener('click', function (e) {
+            // First try to detect if we clicked directly on or within a slide
+            var slideEl = e.target.closest('.v2-stack-slide');
+            var targetProject = hoveredProject; // Default to the globally tracked one
+
+            if (slideEl) {
+                targetProject = parseInt(slideEl.getAttribute('data-slide'), 10);
+            }
+
+            if (targetProject !== -1) {
                 var activeProjects = [0, 2, 3, 4];
-                if (activeProjects.includes(hoveredProject)) {
+                if (activeProjects.includes(targetProject)) {
                     var urls = {
                         0: 'project-sonix.html',
                         2: 'project-sealove.html',
                         3: 'project-nest.html',
                         4: 'project-kroger.html'
                     };
-                    window.location.href = urls[hoveredProject];
+                    window.location.href = urls[targetProject];
                 }
             }
         });
