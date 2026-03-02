@@ -7,12 +7,22 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "NeueHaasGrotTextMedium";
+    src: url("NeueHaasGrotText-65Medium-Trial.otf") format("opentype");
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+}
+
 :root {
     --ps-bg: #060708;
     --ps-panel: #070809;
     --ps-text: #f2f2f2;
     --ps-muted: rgba(242, 242, 242, 0.66);
     --ps-radius: 26px;
+    --ps-body-size: clamp(0.92rem, 1.05vw, 1.04rem);
+    --ps-body-line: 1.78;
 }
 
 body {
@@ -26,7 +36,7 @@ body {
     height: 100vh;
     height: 100svh;
     overflow: hidden;
-    z-index: 0;
+    z-index: 2;
 }
 
 .ps-hero-img {
@@ -43,42 +53,79 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 36%, rgba(0, 0, 0, 0.76) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, 0.2) 68%, rgba(0, 0, 0, 0.82) 100%);
 }
 
 .ps-hero-title {
     position: absolute;
     left: clamp(1.5rem, 4vw, 4rem);
-    bottom: clamp(3rem, 7vw, 6rem);
+    bottom: clamp(2.15rem, 4.9vw, 4.2rem);
     z-index: 2;
     margin: 0;
     color: #fff;
-    font-size: clamp(1.9rem, 4.8vw, 4.6rem);
-    line-height: 1.05;
+    font-size: clamp(1.35rem, 3.36vw, 3.22rem);
+    line-height: 0.98;
     letter-spacing: -0.02em;
-    max-width: 12ch;
+    max-width: calc(100% - 3rem);
+    white-space: nowrap;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.32);
 }
 
-.ps-scroll-hint {
+.ps-scroll-indicator {
     position: absolute;
-    left: 50%;
-    bottom: 1.2rem;
-    transform: translateX(-50%);
+    right: clamp(0.9rem, 3.2vw, 3.25rem);
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
+    pointer-events: none;
 }
 
-.ps-scroll-hint svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    stroke-width: 2;
-    fill: none;
+.ps-scroll-mouse {
+    display: flex;
+    justify-content: center;
+    width: clamp(19px, 1.36vw, 24px);
+    height: clamp(32px, 2.4vw, 42px);
+    border: 2.4px solid rgba(255, 255, 255, 0.9);
+    border-radius: 999px;
+    padding-top: clamp(5px, 0.56vw, 8px);
+    box-sizing: border-box;
+    animation: ps-scroll-outline 1.9s ease-in-out infinite;
+}
+
+.ps-scroll-wheel {
+    width: clamp(3px, 0.32vw, 5px);
+    height: clamp(3px, 0.32vw, 5px);
+    background: #fff;
+    border-radius: 50%;
+    animation: ps-scroll-wheel 1.9s ease-in-out infinite;
+}
+
+@keyframes ps-scroll-wheel {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    70% {
+        transform: translateY(clamp(10px, 1.2vw, 14px));
+        opacity: 0.2;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes ps-scroll-outline {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.72;
+    }
 }
 
 .ps-info {
@@ -89,43 +136,44 @@ body {
     border-radius: var(--ps-radius) var(--ps-radius) 0 0;
     color: var(--ps-text);
     background: radial-gradient(circle at 10% 8%, rgba(255, 255, 255, 0.03), transparent 40%), var(--ps-panel);
-    padding: clamp(2.25rem, 4vw, 4.5rem) clamp(1.3rem, 4.1vw, 5rem) clamp(4rem, 5.5vw, 6rem);
+    padding: clamp(2.25rem, 4vw, 4.5rem) clamp(2.4rem, 6.2vw, 7.25rem) clamp(8.25rem, 12vw, 12rem);
     font-family: "NeueHaasGrotText", sans-serif;
 }
 
 .ps-meta-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 26%);
     gap: 2rem;
     margin-bottom: clamp(2.5rem, 4vw, 4.5rem);
 }
 
 .ps-meta-item:last-child {
-    justify-self: end;
+    justify-self: start;
     text-align: left;
-    min-width: 240px;
+    min-width: 0;
 }
 
 .ps-meta-label,
 .ps-detail-label {
     margin: 0 0 0.55rem;
-    color: var(--ps-muted);
-    font-family: "NeueHaasGrotText", sans-serif;
-    font-size: clamp(1.05rem, 1.8vw, 2rem);
+    color: #6D6D6D;
+    font-family: "EB Garamond", serif;
+    font-style: italic;
+    font-size: clamp(0.98rem, 1.65vw, 1.85rem);
     font-weight: 400;
     line-height: 1.1;
 }
 
 .ps-meta-value {
     margin: 0;
-    font-size: clamp(1.1rem, 1.55vw, 1.7rem);
-    line-height: 1.4;
+    font-size: var(--ps-body-size);
+    line-height: var(--ps-body-line);
 }
 
 .ps-info-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(280px, 26%);
-    gap: clamp(2rem, 5vw, 6rem);
+    gap: clamp(3.5rem, 8vw, 10rem);
     align-items: start;
 }
 
@@ -144,7 +192,8 @@ body {
 .ps-section-heading {
     margin: 0 0 0.9rem;
     color: var(--ps-text);
-    font-size: clamp(1.55rem, 2.7vw, 3rem);
+    font-family: "NeueHaasGrotTextMedium", "NeueHaasGrotText", sans-serif;
+    font-size: clamp(1.24rem, 2.16vw, 2.4rem);
     line-height: 1.1;
     font-weight: 500;
     letter-spacing: -0.02em;
@@ -152,8 +201,8 @@ body {
 
 .ps-section-body {
     margin: 0;
-    font-size: clamp(0.93rem, 1.15vw, 1.05rem);
-    line-height: 1.62;
+    font-size: var(--ps-body-size);
+    line-height: var(--ps-body-line);
     color: rgba(242, 242, 242, 0.95);
     max-width: 98%;
 }
@@ -189,8 +238,8 @@ body {
     padding-left: 1.15em;
     list-style: disc;
     color: rgba(242, 242, 242, 0.95);
-    font-size: clamp(0.92rem, 1.05vw, 1.04rem);
-    line-height: 1.38;
+    font-size: var(--ps-body-size);
+    line-height: var(--ps-body-line);
 }
 
 .ps-detail-list li {
@@ -211,7 +260,96 @@ body {
     display: block;
 }
 
+.ps-footer {
+    position: relative;
+    z-index: 3;
+    background: #000;
+    border-radius: 0;
+    margin-top: 0;
+    padding: clamp(72px, 10vw, 140px) clamp(20px, 5vw, 72px) clamp(34px, 4vw, 56px);
+    min-height: clamp(360px, 48vh, 620px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.ps-footer::before {
+    content: "";
+    position: absolute;
+    bottom: -22%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 82%;
+    height: 62%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center,
+            rgba(100, 100, 180, 0.18) 0%,
+            rgba(60, 60, 140, 0.1) 40%,
+            transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+.ps-footer-inner,
+.ps-footer-links {
+    position: relative;
+    z-index: 1;
+}
+
+.ps-footer-headline {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 0.95;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: #f4f8f9;
+    font-family: "NeueHaasGrotTextMedium", "NeueHaasGrotText", sans-serif;
+    font-size: clamp(40px, 7.1vw, 112px);
+    font-weight: 500;
+}
+
+.ps-footer-headline span:nth-child(2) {
+    margin-left: clamp(16px, 5vw, 92px);
+}
+
+.ps-footer-headline em {
+    margin-top: 0.08em;
+    font-family: "EB Garamond", serif;
+    font-style: italic;
+    font-weight: 400;
+    text-transform: none;
+    font-size: clamp(38px, 6.6vw, 104px);
+    color: rgba(248, 251, 252, 0.9);
+}
+
+.ps-footer-links {
+    display: flex;
+    justify-content: flex-end;
+    gap: 32px;
+    margin-top: clamp(28px, 4.6vw, 68px);
+    flex-wrap: wrap;
+}
+
+.ps-footer-links a {
+    font-family: "NeueHaasGrotText", sans-serif;
+    font-size: clamp(10px, 0.85vw, 14px);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #7b7b7b;
+    transition: color 150ms ease;
+}
+
+.ps-footer-links a:hover {
+    color: #f7f7f7;
+}
+
 @media (max-width: 1100px) {
+    .ps-meta-row {
+        grid-template-columns: 1fr;
+    }
+
     .ps-info-grid {
         grid-template-columns: 1fr;
     }
@@ -223,9 +361,37 @@ body {
     .ps-right {
         position: static;
     }
+
+    .ps-footer {
+        border-radius: 0;
+    }
 }
 
 @media (max-width: 780px) {
+    .ps-hero-title {
+        font-size: clamp(1rem, 5vw, 1.75rem);
+        line-height: 1;
+        max-width: calc(100% - 2rem);
+    }
+
+    .ps-scroll-indicator {
+        right: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .ps-scroll-mouse {
+        width: 18px;
+        height: 30px;
+        border-width: 1.6px;
+        padding-top: 5px;
+    }
+
+    .ps-scroll-wheel {
+        width: 3px;
+        height: 3px;
+    }
+
     .ps-info {
         margin-top: 0;
         width: 100%;
@@ -235,6 +401,25 @@ body {
 
     .ps-images {
         width: 100%;
+    }
+
+    .ps-footer {
+        margin-top: 0;
+        border-radius: 0;
+        min-height: clamp(300px, 46vh, 480px);
+    }
+
+    .ps-footer-headline {
+        font-size: clamp(34px, 12vw, 62px);
+    }
+
+    .ps-footer-headline em {
+        font-size: clamp(32px, 10.5vw, 58px);
+    }
+
+    .ps-footer-links {
+        justify-content: flex-start;
+        gap: 20px;
     }
 
     .ps-meta-row {

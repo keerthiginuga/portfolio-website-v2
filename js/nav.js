@@ -12,13 +12,20 @@
 const NAV_SCROLL_THRESHOLD = 20;
 const NAV_COLLAPSE_THRESHOLD = 100;
 const NAV_COLLAPSE_DIRECTION_EPSILON = 4;
-const NAV_CONTRAST_LIGHT_ENTER_THRESHOLD = 0.6;
-const NAV_CONTRAST_LIGHT_EXIT_THRESHOLD = 0.5;
+const NAV_CONTRAST_LIGHT_ENTER_THRESHOLD = 0.58;
+const NAV_CONTRAST_LIGHT_EXIT_THRESHOLD = 0.50;
 const NAV_CONTRAST_ALPHA_THRESHOLD = 0.08;
-const NAV_CONTRAST_LUMA_SMOOTHING = 0.35;
+const NAV_CONTRAST_SWITCH_DEBOUNCE_MS = 100;
+const NAV_CONTRAST_IDLE_UPDATE_MS = 120;
 
 let navContrastRaf = null;
-const navContrastLumaCache = new WeakMap();
+let navContrastIdleTimer = null;
+const navContrastState = {
+    initialized: false,
+    useDarkForeground: false,
+    pendingForeground: null,
+    pendingSinceMs: 0
+};
 
 function _clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -66,82 +73,117 @@ function _resolveBackgroundLuminance(element) {
     return 0;
 }
 
-function _elementUnderPoint(x, y, occluders) {
-    const states = occluders.map(el => ({
-        el,
-        pointerEvents: el.style.pointerEvents
-    }));
-
-    states.forEach(({ el }) => {
-        el.style.pointerEvents = 'none';
-    });
-
-    const target = document.elementFromPoint(x, y);
-
-    states.forEach(({ el, pointerEvents }) => {
-        el.style.pointerEvents = pointerEvents;
-    });
-
-    return target;
-}
-
-function _setContrastClass(element, luminance) {
-    if (!element) return;
-    const currentlyDark = element.classList.contains('v2-contrast-dark');
-    const shouldUseDarkForeground = currentlyDark
-        ? luminance >= NAV_CONTRAST_LIGHT_EXIT_THRESHOLD
-        : luminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
-    if (shouldUseDarkForeground) {
-        element.classList.add('v2-contrast-dark');
-    } else {
-        element.classList.remove('v2-contrast-dark');
-    }
-}
-
-function _applyContrastForTarget(target, anchor, occluders) {
-    if (!target || !anchor) return;
+function _getSampleLuminance(anchor, blockers) {
+    if (!anchor) return null;
     const x = _clamp(anchor.x, 1, Math.max(1, window.innerWidth - 1));
     const y = _clamp(anchor.y, 1, Math.max(1, window.innerHeight - 1));
-    const underneath = _elementUnderPoint(x, y, occluders);
-    const rawLum = underneath ? _resolveBackgroundLuminance(underneath) : 0;
-    const prevLum = navContrastLumaCache.has(target)
-        ? navContrastLumaCache.get(target)
-        : rawLum;
-    const smoothedLum = prevLum + ((rawLum - prevLum) * NAV_CONTRAST_LUMA_SMOOTHING);
-    navContrastLumaCache.set(target, smoothedLum);
-    _setContrastClass(target, smoothedLum);
+    const stack = document.elementsFromPoint(x, y);
+    const beneath = stack.find((el) => {
+        if (!el) return false;
+        return !blockers.some((blocker) => blocker === el || blocker.contains(el));
+    });
+    if (!beneath) return null;
+    return _resolveBackgroundLuminance(beneath);
+}
+
+function _median(values) {
+    if (!values.length) return 0;
+    const sorted = [...values].sort((a, b) => a - b);
+    return sorted[Math.floor(sorted.length / 2)];
+}
+
+function _setUnifiedContrast(nav, logo, useDarkForeground) {
+    const method = useDarkForeground ? 'add' : 'remove';
+    nav.classList[method]('v2-contrast-dark');
+    if (logo) logo.classList[method]('v2-contrast-dark');
+}
+
+function _resolveContrastDecision(rawLuminance) {
+    if (!navContrastState.initialized) {
+        navContrastState.initialized = true;
+        navContrastState.useDarkForeground = rawLuminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
+        navContrastState.pendingForeground = null;
+        navContrastState.pendingSinceMs = 0;
+        return navContrastState.useDarkForeground;
+    }
+
+    const desired = navContrastState.useDarkForeground
+        ? rawLuminance >= NAV_CONTRAST_LIGHT_EXIT_THRESHOLD
+        : rawLuminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
+
+    if (desired === navContrastState.useDarkForeground) {
+        navContrastState.pendingForeground = null;
+        navContrastState.pendingSinceMs = 0;
+        return navContrastState.useDarkForeground;
+    }
+
+    const now = performance.now();
+    if (navContrastState.pendingForeground !== desired) {
+        navContrastState.pendingForeground = desired;
+        navContrastState.pendingSinceMs = now;
+        return navContrastState.useDarkForeground;
+    }
+
+    if ((now - navContrastState.pendingSinceMs) < NAV_CONTRAST_SWITCH_DEBOUNCE_MS) {
+        return navContrastState.useDarkForeground;
+    }
+
+    navContrastState.useDarkForeground = desired;
+    navContrastState.pendingForeground = null;
+    navContrastState.pendingSinceMs = 0;
+    return navContrastState.useDarkForeground;
 }
 
 function _updateNavContrastNow(nav) {
     if (!nav || !document.body) return;
     const logo = document.querySelector('.v2-logo');
-    const occluders = [nav];
-    if (logo) occluders.push(logo);
-
+    const blockers = [nav];
+    if (logo) blockers.push(logo);
     const navRect = nav.getBoundingClientRect();
-    _applyContrastForTarget(
-        nav,
-        {
-            x: navRect.left + (navRect.width * 0.5),
-            y: navRect.top + Math.min(24, Math.max(8, navRect.height * 0.5))
-        },
-        occluders
-    );
+    const logoRect = logo ? logo.getBoundingClientRect() : null;
 
-    if (!logo) return;
-    const logoRect = logo.getBoundingClientRect();
-    _applyContrastForTarget(
-        logo,
-        {
+    const navAnchor = {
+        x: navRect.left + (navRect.width * 0.5),
+        y: navRect.top + (navRect.height * 0.5)
+    };
+    const navLeftAnchor = {
+        x: navRect.left + (navRect.width * 0.2),
+        y: navRect.top + (navRect.height * 0.5)
+    };
+    const navRightAnchor = {
+        x: navRect.left + (navRect.width * 0.8),
+        y: navRect.top + (navRect.height * 0.5)
+    };
+    const logoAnchor = logoRect
+        ? {
             x: logoRect.left + (logoRect.width * 0.5),
             y: logoRect.top + (logoRect.height * 0.5)
-        },
-        occluders
-    );
+        }
+        : navAnchor;
+    const bridgeAnchor = {
+        x: (logoAnchor.x + navAnchor.x) * 0.5,
+        y: (logoAnchor.y + navAnchor.y) * 0.5
+    };
+
+    const luminanceSamples = [
+        _getSampleLuminance(logoAnchor, blockers),
+        _getSampleLuminance(navAnchor, blockers),
+        _getSampleLuminance(navLeftAnchor, blockers),
+        _getSampleLuminance(navRightAnchor, blockers),
+        _getSampleLuminance(bridgeAnchor, blockers)
+    ].filter((value) => typeof value === 'number' && !Number.isNaN(value));
+
+    const rawLuminance = _median(luminanceSamples);
+    const useDarkForeground = _resolveContrastDecision(rawLuminance);
+    _setUnifiedContrast(nav, logo, useDarkForeground);
 }
 
 function scheduleNavContrastUpdate(nav) {
     if (!nav) return;
+    if (navContrastIdleTimer) clearTimeout(navContrastIdleTimer);
+    navContrastIdleTimer = setTimeout(() => {
+        _updateNavContrastNow(nav);
+    }, NAV_CONTRAST_IDLE_UPDATE_MS);
     if (navContrastRaf) return;
     navContrastRaf = requestAnimationFrame(() => {
         _updateNavContrastNow(nav);
@@ -240,8 +282,16 @@ function _applyNavState(nav, currentScrollY, lastScrollY) {
         nav.classList.remove('nav-scrolled');
     }
 
-    // Keep full menu visible while user explicitly opened it via hamburger.
+    // Close expanded menu on real scroll movement, then continue with normal collapse logic.
     if (nav.classList.contains('nav-expanded')) {
+        if (Math.abs(deltaY) >= NAV_COLLAPSE_DIRECTION_EPSILON) {
+            nav.classList.remove('nav-expanded');
+            if (currentScrollY > NAV_COLLAPSE_THRESHOLD) {
+                nav.classList.add('nav-collapsed');
+            } else {
+                nav.classList.remove('nav-collapsed');
+            }
+        }
         _syncHamburgerAria(nav);
         return currentScrollY;
     }

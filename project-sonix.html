@@ -58,17 +58,15 @@
          so the browser morphs it from the Works page card.
     ═══════════════════════════════════════════════════════════ -->
     <section class="ps-hero">
-        <img class="ps-hero-img" src="Projects/SONIX/SONIX - Final (1).png"
-            alt="SONIX — Autonomous vehicle interior concept">
+        <img class="ps-hero-img" src="assets/images/autonomous-vehicle.jpg" alt="SONIX cover image">
 
-        <h1 class="ps-hero-title">SONIX —<br>Your Personal Space<br>On Wheels</h1>
+        <h1 class="ps-hero-title">SONIX — Your Personal Space On Wheels</h1>
 
-        <!-- Subtle scroll hint -->
-        <div class="ps-scroll-hint" aria-hidden="true">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-            <span>Scroll</span>
+        <!-- Animated scroll indicator -->
+        <div class="ps-scroll-indicator" aria-hidden="true">
+            <span class="ps-scroll-mouse">
+                <span class="ps-scroll-wheel"></span>
+            </span>
         </div>
     </section>
 
@@ -185,9 +183,12 @@
     <!-- ════════════════════════════════════════════════════════
          SECTION 3 — Project Images
          Images from Projects/SONIX/ in order (1 → 16).
-         Image 1 is already used as the hero cover, so start from 2.
+         Include image 1 in full size in the main content sequence.
     ═══════════════════════════════════════════════════════════ -->
     <section class="ps-images">
+        <div class="ps-image-full">
+            <img src="Projects/SONIX/SONIX - Final (1).png" alt="SONIX Project — slide 1" loading="lazy">
+        </div>
         <div class="ps-image-full">
             <img src="Projects/SONIX/SONIX - Final (2).png" alt="SONIX Project — slide 2" loading="lazy">
         </div>
@@ -234,6 +235,21 @@
             <img src="Projects/SONIX/SONIX - Final (16).png" alt="SONIX Project — slide 16" loading="lazy">
         </div>
     </section>
+
+    <footer class="ps-footer" id="contact">
+        <div class="ps-footer-inner">
+            <h2 class="ps-footer-headline">
+                <span>LET'S CREATE</span>
+                <span>WHAT'S NEXT,</span>
+                <em>Together.</em>
+            </h2>
+        </div>
+        <nav class="ps-footer-links" aria-label="Footer">
+            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+            <a href="mailto:kginug20@student.scad.edu">Email</a>
+        </nav>
+    </footer>
 
     <script src="project-script.js"></script>
 </body>

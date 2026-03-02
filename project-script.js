@@ -14,13 +14,20 @@ const indexLinks = document.querySelectorAll('.index-link');
 
 const NAV_COLLAPSE_SCROLL_THRESHOLD = 100;
 const NAV_COLLAPSE_DIRECTION_EPSILON = 4;
-const NAV_CONTRAST_LIGHT_ENTER_THRESHOLD = 0.6;
-const NAV_CONTRAST_LIGHT_EXIT_THRESHOLD = 0.5;
+const NAV_CONTRAST_LIGHT_ENTER_THRESHOLD = 0.58;
+const NAV_CONTRAST_LIGHT_EXIT_THRESHOLD = 0.50;
 const NAV_CONTRAST_ALPHA_THRESHOLD = 0.08;
-const NAV_CONTRAST_LUMA_SMOOTHING = 0.35;
+const NAV_CONTRAST_SWITCH_DEBOUNCE_MS = 100;
+const NAV_CONTRAST_IDLE_UPDATE_MS = 120;
 let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
 let navContrastRaf = null;
-const navContrastLumaCache = new WeakMap();
+let navContrastIdleTimer = null;
+const navContrastState = {
+    initialized: false,
+    useDarkForeground: false,
+    pendingForeground: null,
+    pendingSinceMs: 0
+};
 
 function clampValue(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -63,72 +70,115 @@ function resolveBackgroundLuminance(element) {
     return 0;
 }
 
-function elementBelowPoint(x, y, occluders) {
-    const previousStates = occluders.map(el => ({
-        el,
-        pointerEvents: el.style.pointerEvents
-    }));
-
-    previousStates.forEach(({ el }) => {
-        el.style.pointerEvents = 'none';
-    });
-
-    const target = document.elementFromPoint(x, y);
-
-    previousStates.forEach(({ el, pointerEvents }) => {
-        el.style.pointerEvents = pointerEvents;
-    });
-
-    return target;
-}
-
-function setContrastClass(element, luminance) {
-    if (!element) return;
-    const currentlyDark = element.classList.contains('contrast-dark');
-    const shouldUseDarkForeground = currentlyDark
-        ? luminance >= NAV_CONTRAST_LIGHT_EXIT_THRESHOLD
-        : luminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
-    if (shouldUseDarkForeground) {
-        element.classList.add('contrast-dark');
-    } else {
-        element.classList.remove('contrast-dark');
-    }
-}
-
-function applyContrastForTarget(target, anchor, occluders) {
-    if (!target || !anchor) return;
+function sampleLuminance(anchor, blockers) {
+    if (!anchor) return null;
     const x = clampValue(anchor.x, 1, Math.max(1, window.innerWidth - 1));
     const y = clampValue(anchor.y, 1, Math.max(1, window.innerHeight - 1));
-    const underneath = elementBelowPoint(x, y, occluders);
-    const rawLuminance = underneath ? resolveBackgroundLuminance(underneath) : 0;
-    const previousLuminance = navContrastLumaCache.has(target)
-        ? navContrastLumaCache.get(target)
-        : rawLuminance;
-    const smoothedLuminance = previousLuminance + ((rawLuminance - previousLuminance) * NAV_CONTRAST_LUMA_SMOOTHING);
-    navContrastLumaCache.set(target, smoothedLuminance);
-    setContrastClass(target, smoothedLuminance);
+    const stack = document.elementsFromPoint(x, y);
+    const beneath = stack.find((el) => {
+        if (!el) return false;
+        return !blockers.some((blocker) => blocker === el || blocker.contains(el));
+    });
+    if (!beneath) return null;
+    return resolveBackgroundLuminance(beneath);
+}
+
+function median(values) {
+    if (!values.length) return 0;
+    const sorted = [...values].sort((a, b) => a - b);
+    return sorted[Math.floor(sorted.length / 2)];
+}
+
+function setUnifiedContrast(useDarkForeground) {
+    const method = useDarkForeground ? 'add' : 'remove';
+    topNav.classList[method]('contrast-dark');
+    if (kLogo) kLogo.classList[method]('contrast-dark');
+}
+
+function resolveContrastDecision(rawLuminance) {
+    if (!navContrastState.initialized) {
+        navContrastState.initialized = true;
+        navContrastState.useDarkForeground = rawLuminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
+        navContrastState.pendingForeground = null;
+        navContrastState.pendingSinceMs = 0;
+        return navContrastState.useDarkForeground;
+    }
+
+    const desired = navContrastState.useDarkForeground
+        ? rawLuminance >= NAV_CONTRAST_LIGHT_EXIT_THRESHOLD
+        : rawLuminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
+
+    if (desired === navContrastState.useDarkForeground) {
+        navContrastState.pendingForeground = null;
+        navContrastState.pendingSinceMs = 0;
+        return navContrastState.useDarkForeground;
+    }
+
+    const now = performance.now();
+    if (navContrastState.pendingForeground !== desired) {
+        navContrastState.pendingForeground = desired;
+        navContrastState.pendingSinceMs = now;
+        return navContrastState.useDarkForeground;
+    }
+
+    if ((now - navContrastState.pendingSinceMs) < NAV_CONTRAST_SWITCH_DEBOUNCE_MS) {
+        return navContrastState.useDarkForeground;
+    }
+
+    navContrastState.useDarkForeground = desired;
+    navContrastState.pendingForeground = null;
+    navContrastState.pendingSinceMs = 0;
+    return navContrastState.useDarkForeground;
 }
 
 function updateNavContrastNow() {
     if (!topNav) return;
-    const occluders = [topNav];
-    if (kLogo) occluders.push(kLogo);
-
+    const blockers = [topNav];
+    if (kLogo) blockers.push(kLogo);
     const navRect = topNav.getBoundingClientRect();
-    applyContrastForTarget(topNav, {
-        x: navRect.left + (navRect.width * 0.5),
-        y: navRect.top + Math.min(24, Math.max(8, navRect.height * 0.5))
-    }, occluders);
+    const logoRect = kLogo ? kLogo.getBoundingClientRect() : null;
 
-    if (!kLogo) return;
-    const logoRect = kLogo.getBoundingClientRect();
-    applyContrastForTarget(kLogo, {
-        x: logoRect.left + (logoRect.width * 0.5),
-        y: logoRect.top + (logoRect.height * 0.5)
-    }, occluders);
+    const navAnchor = {
+        x: navRect.left + (navRect.width * 0.5),
+        y: navRect.top + (navRect.height * 0.5)
+    };
+    const navLeftAnchor = {
+        x: navRect.left + (navRect.width * 0.2),
+        y: navRect.top + (navRect.height * 0.5)
+    };
+    const navRightAnchor = {
+        x: navRect.left + (navRect.width * 0.8),
+        y: navRect.top + (navRect.height * 0.5)
+    };
+    const logoAnchor = logoRect
+        ? {
+            x: logoRect.left + (logoRect.width * 0.5),
+            y: logoRect.top + (logoRect.height * 0.5)
+        }
+        : navAnchor;
+    const bridgeAnchor = {
+        x: (logoAnchor.x + navAnchor.x) * 0.5,
+        y: (logoAnchor.y + navAnchor.y) * 0.5
+    };
+
+    const luminanceSamples = [
+        sampleLuminance(logoAnchor, blockers),
+        sampleLuminance(navAnchor, blockers),
+        sampleLuminance(navLeftAnchor, blockers),
+        sampleLuminance(navRightAnchor, blockers),
+        sampleLuminance(bridgeAnchor, blockers)
+    ].filter((value) => typeof value === 'number' && !Number.isNaN(value));
+
+    const rawLuminance = median(luminanceSamples);
+    const useDarkForeground = resolveContrastDecision(rawLuminance);
+    setUnifiedContrast(useDarkForeground);
 }
 
 function scheduleNavContrastUpdate() {
+    if (navContrastIdleTimer) clearTimeout(navContrastIdleTimer);
+    navContrastIdleTimer = setTimeout(() => {
+        updateNavContrastNow();
+    }, NAV_CONTRAST_IDLE_UPDATE_MS);
     if (!topNav || navContrastRaf) return;
     navContrastRaf = requestAnimationFrame(() => {
         updateNavContrastNow();
@@ -156,9 +206,8 @@ function expandNav() {
 }
 
 function resetNav() {
-    if (!topNav) return;
-    topNav.classList.remove('nav-collapsed', 'nav-expanded');
-    updateToggleState();
+    // Project pages keep nav collapsed by default.
+    collapseNav();
 }
 
 function updateNavOnScroll() {
@@ -167,19 +216,18 @@ function updateNavOnScroll() {
 
     const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
     const deltaY = currentScrollTop - lastScrollTop;
-    const scrollingDown = deltaY > NAV_COLLAPSE_DIRECTION_EPSILON;
-    const scrollingUp = deltaY < -NAV_COLLAPSE_DIRECTION_EPSILON;
-    const nearTop = currentScrollTop <= NAV_COLLAPSE_SCROLL_THRESHOLD;
 
+    // Close expanded menu on real scroll movement.
     if (topNav.classList.contains('nav-expanded')) {
+        if (Math.abs(deltaY) >= NAV_COLLAPSE_DIRECTION_EPSILON) {
+            collapseNav();
+        }
         lastScrollTop = currentScrollTop;
         return;
     }
 
-    // Keep the current nav state when scroll pauses; only switch on real direction change.
-    if (nearTop || scrollingUp) {
-        resetNav();
-    } else if (scrollingDown) {
+    // Project pages: always keep nav closed unless explicitly opened.
+    if (!topNav.classList.contains('nav-collapsed')) {
         collapseNav();
     }
 
@@ -194,11 +242,7 @@ if (indexToggle) {
         if (!topNav) return;
 
         if (topNav.classList.contains('nav-expanded')) {
-            if ((window.pageYOffset || document.documentElement.scrollTop || 0) > NAV_COLLAPSE_SCROLL_THRESHOLD) {
-                collapseNav();
-            } else {
-                resetNav();
-            }
+            collapseNav();
         } else {
             expandNav();
         }
@@ -219,23 +263,14 @@ if (closeMenu) {
 document.addEventListener('click', (event) => {
     if (!topNav || !topNav.classList.contains('nav-expanded')) return;
     if (topNav.contains(event.target)) return;
-
-    if ((window.pageYOffset || document.documentElement.scrollTop || 0) > NAV_COLLAPSE_SCROLL_THRESHOLD) {
-        collapseNav();
-    } else {
-        resetNav();
-    }
+    collapseNav();
 });
 
 // Collapse expanded nav after selecting a link
 navLinks.forEach((link) => {
     link.addEventListener('click', () => {
         if (!topNav || !topNav.classList.contains('nav-expanded')) return;
-        if ((window.pageYOffset || document.documentElement.scrollTop || 0) > NAV_COLLAPSE_SCROLL_THRESHOLD) {
-            collapseNav();
-        } else {
-            resetNav();
-        }
+        collapseNav();
     });
 });
 
@@ -340,6 +375,7 @@ window.addEventListener('resize', scheduleNavContrastUpdate);
 
 // Initial nav state
 updateToggleState();
+collapseNav();
 updateNavOnScroll();
 scheduleNavContrastUpdate();
 
