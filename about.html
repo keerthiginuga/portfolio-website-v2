@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 
 <body class="v2-about-page">
@@ -29,7 +30,8 @@
                     <div class="v2-about-identity">
                         <h1 class="v2-about-name">Keerthi Ginuga</h1>
                         <p class="v2-about-role">architect | user experience designer</p>
-                        <a href="#" class="v2-about-resume-btn" aria-label="Download Resume">Resume</a>
+                        <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="v2-about-resume-btn"
+                            aria-label="Download Resume">Resume</a>
                     </div>
                 </div>
 
@@ -251,6 +253,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             injectSharedLayout();
+            initNavMenuToggle();
             initNavScroll();
             // Logo rotation for about page
             const logo = document.getElementById('mainLogo');

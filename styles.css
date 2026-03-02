@@ -81,7 +81,7 @@ body.v2-about-page {
   height: clamp(24px, 3vw, 32px);
   display: block;
   transform-origin: center center;
-  transition: opacity 0.3s ease, transform 0.1s ease-out;
+  transition: opacity 0.3s ease, transform 0.1s ease-out, color 0.25s ease;
   will-change: transform, opacity;
 }
 
@@ -108,7 +108,7 @@ body.v2-page-transitioning main {
 
 body.v2-page-transitioning .v2-quote-cursor {
   opacity: 0 !important;
-  transform: scale(0.5) !important;
+  transform: translate(-50%, -50%) scale(0.5) !important;
   transition: opacity 0.3s ease, transform 0.3s ease !important;
 }
 
@@ -117,6 +117,10 @@ body.v2-page-transitioning .v2-quote-cursor {
   top: 40px;
   right: 50px;
   z-index: 1000;
+  --v2-nav-fg: var(--v2-color-white);
+  --v2-nav-muted: #6d6d6d;
+  --v2-nav-resume-fg: var(--v2-color-black);
+  --v2-nav-resume-bg: var(--v2-color-white);
 }
 
 .v2-nav-inner {
@@ -146,7 +150,7 @@ body.v2-page-transitioning .v2-quote-cursor {
 }
 
 .v2-nav-link {
-  color: var(--v2-color-gray);
+  color: var(--v2-nav-muted);
   font-family: var(--v2-font-system);
   font-size: 14px;
   font-weight: 400;
@@ -164,8 +168,8 @@ body.v2-page-transitioning .v2-quote-cursor {
   letter-spacing: 0;
   text-decoration: none;
   text-transform: uppercase;
-  color: var(--v2-color-black);
-  background: var(--v2-color-white);
+  color: var(--v2-nav-resume-fg);
+  background: var(--v2-nav-resume-bg);
   padding: 8px 20px;
   border-radius: 100px;
   transition: transform 0.3s ease, opacity 0.4s ease, max-width 0.5s var(--v2-ease-main);
@@ -192,7 +196,7 @@ body.v2-page-transitioning .v2-quote-cursor {
 
 .v2-nav-link:hover,
 .v2-nav-link.is-active {
-  color: var(--v2-color-white);
+  color: var(--v2-nav-fg);
 }
 
 .v2-hamburger {
@@ -225,10 +229,21 @@ body.v2-page-transitioning .v2-quote-cursor {
   display: block;
   width: 20px;
   height: 2px;
-  background-color: var(--v2-color-white);
+  background-color: var(--v2-nav-fg);
   border-radius: 2px;
   transition: transform 0.3s ease, opacity 0.3s ease;
   flex-shrink: 0;
+}
+
+.v2-logo.v2-contrast-dark {
+  color: var(--v2-color-black);
+}
+
+.v2-nav.v2-contrast-dark {
+  --v2-nav-fg: var(--v2-color-black);
+  --v2-nav-muted: #525252;
+  --v2-nav-resume-fg: var(--v2-color-white);
+  --v2-nav-resume-bg: var(--v2-color-black);
 }
 
 .v2-hero {
@@ -1400,7 +1415,7 @@ body.v2-page-transitioning .v2-quote-cursor {
   position: relative;
   z-index: 3;
   pointer-events: auto;
-  cursor: none;
+  cursor: pointer;
   /* Allow hover on text. Overlaps photo behind slightly */
 }
 
@@ -1465,7 +1480,7 @@ body.v2-page-transitioning .v2-quote-cursor {
   display: block;
   width: 100%;
   height: 100%;
-  cursor: none;
+  cursor: pointer;
   border-radius: 16px;
   /* Image rounded corners live here */
   overflow: hidden;
@@ -1477,40 +1492,31 @@ body.v2-page-transitioning .v2-quote-cursor {
   top: 0;
   left: 0;
   pointer-events: none;
-  z-index: 1000;
-
-  /* SVG Liquid Glass: displacement filter injected by JS */
-  backdrop-filter: url(#v2-liquid-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
-  -webkit-backdrop-filter: url(#v2-liquid-glass-filter) blur(6px) saturate(1.5) brightness(1.06) contrast(1.1);
-
-  /* Subtle edge glow */
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.25),
-    inset 0 -6px 20px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
-
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  margin-top: -60px;
-  margin-left: -60px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: rgba(255, 255, 255, 0.9);
-  font-family: inherit;
+  z-index: 9999;
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%) scale(0);
   opacity: 0;
-  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.2s ease;
+  white-space: nowrap;
+  will-change: transform;
 }
 
-.v2-quote-cursor.is-active {
+.v2-quote-cursor.is-visible {
+  transform: translate(-50%, -50%) scale(1);
   opacity: 1;
 }
 
@@ -1660,11 +1666,16 @@ body.v2-page-transitioning .v2-quote-cursor {
 body.v2-works-page {
   background: #0a0a0a;
   min-height: 100vh;
-  cursor: none;
 }
 
-/* Prevent default cursor on works page */
-body.v2-works-page * {
+/* Hide native cursor only while custom /VIEW cursor is active */
+body.v2-works-page.v2-view-cursor-active,
+body.v2-works-page.v2-view-cursor-active * {
+  cursor: none !important;
+}
+
+body.v2-home.v2-view-cursor-active,
+body.v2-home.v2-view-cursor-active * {
   cursor: none !important;
 }
 
@@ -1978,6 +1989,10 @@ text-transform: uppercase;
   }
 
   .v2-view-cursor {
+    display: none;
+  }
+
+  .v2-quote-cursor {
     display: none;
   }
 
@@ -2423,4 +2438,20 @@ body.v2-about-page .v2-footer {
   bottom: 0;
   z-index: 1;
   /* Lower than v2-about-content which is z-index 10 */
+}
+
+/* ══════════════════════════════════════
+   VIEW TRANSITIONS — cross-document morph
+   Works page opts in; project pages opt in via sonix-styles.css
+══════════════════════════════════════ */
+
+@view-transition {
+  navigation: auto;
+}
+
+/* Tag the SONIX slide (data-slide="0") image so the browser
+   can morph it into the full-screen hero on project-sonix.html */
+.v2-stack-slide[data-slide="0"] .v2-stack-img {
+  view-transition-name: sonix-cover;
+  contain: layout;
 }

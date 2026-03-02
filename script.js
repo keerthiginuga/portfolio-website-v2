@@ -560,31 +560,45 @@ function initQuoteCursor() {
   const targets = [photoLink, quoteText].filter(Boolean);
   if (!targets.length) return;
 
-  /* ── LERP cursor position ── */
-  let mouseX = 0, mouseY = 0;
-  let cursorX = 0, cursorY = 0;
-  let isHovering = false;
+  /* ── Works-page cursor interaction model ── */
+  let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
   let rafId = null;
+  const body = document.body;
 
   const animateCursor = () => {
-    if (!isHovering) return;
     cursorX = lerp(cursorX, mouseX, QUOTE_CURSOR_CONFIG.lerp);
     cursorY = lerp(cursorY, mouseY, QUOTE_CURSOR_CONFIG.lerp);
-    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) scale(1)`;
+    cursor.style.left = `${cursorX}px`;
+    cursor.style.top = `${cursorY}px`;
     rafId = requestAnimationFrame(animateCursor);
   };
 
+  const showCursorAt = (x, y) => {
+    mouseX = x;
+    mouseY = y;
+    cursorX = x;
+    cursorY = y;
+    cursor.style.left = `${cursorX}px`;
+    cursor.style.top = `${cursorY}px`;
+    cursor.classList.add('is-visible');
+    body.classList.add('v2-view-cursor-active');
+    if (!rafId) animateCursor();
+  };
+
+  const hideCursor = () => {
+    cursor.classList.remove('is-visible');
+    body.classList.remove('v2-view-cursor-active');
+  };
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!rafId) animateCursor();
+  });
+
   targets.forEach(target => {
     target.addEventListener('mouseenter', e => {
-      isHovering = true;
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorX = mouseX;
-      cursorY = mouseY;
-      cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) scale(0)`;
-      cursor.classList.add('is-active');
-      if (rafId) cancelAnimationFrame(rafId);
-      animateCursor();
+      showCursorAt(e.clientX, e.clientY);
     });
 
     target.addEventListener('mousemove', e => {
@@ -592,11 +606,13 @@ function initQuoteCursor() {
       mouseY = e.clientY;
     });
 
-    target.addEventListener('mouseleave', () => {
-      isHovering = false;
-      cursor.classList.remove('is-active');
-      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    });
+    target.addEventListener('mouseleave', hideCursor);
+  });
+
+  document.addEventListener('mouseleave', hideCursor);
+  window.addEventListener('blur', hideCursor);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) hideCursor();
   });
 
   if (quoteText) {
@@ -617,6 +633,7 @@ function initQuoteCursor() {
 document.addEventListener('DOMContentLoaded', () => {
   // Inject shared layout (nav, logo, SVG filter)
   injectSharedLayout();
+  initNavMenuToggle();
 
   if (document.body.classList.contains('v2-home')) {
     window.scrollTo(0, 0);

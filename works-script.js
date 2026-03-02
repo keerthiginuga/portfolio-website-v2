@@ -15,6 +15,9 @@
 
 (function () {
     'use strict';
+    if (typeof initNavMenuToggle === 'function') {
+        initNavMenuToggle();
+    }
 
     /* ── Configuration ─────────────────────────────────────────────────── */
     var MAX_VELOCITY = 3000;
@@ -294,25 +297,60 @@
 
     /* ── 8. /VIEW Cursor ───────────────────────────────────────────────── */
     var cursor = document.getElementById('viewCursor');
-    if (!cursor) return;
-    var mx = 0, my = 0, cx = 0, cy = 0, cRaf = null;
+    if (cursor) {
+        var mx = 0, my = 0, cx = 0, cy = 0, cRaf = null;
+        var worksBody = document.body;
 
-    function animCursor() {
-        cx = lerp(cx, mx, CURSOR_LERP);
-        cy = lerp(cy, my, CURSOR_LERP);
-        cursor.style.left = cx + 'px';
-        cursor.style.top = cy + 'px';
-        cRaf = requestAnimationFrame(animCursor);
-    }
+        function animCursor() {
+            cx = lerp(cx, mx, CURSOR_LERP);
+            cy = lerp(cy, my, CURSOR_LERP);
+            cursor.style.left = cx + 'px';
+            cursor.style.top = cy + 'px';
+            cRaf = requestAnimationFrame(animCursor);
+        }
 
-    document.addEventListener('mousemove', function (e) {
-        mx = e.clientX; my = e.clientY;
-        if (!cRaf) animCursor();
-    });
+        function showCustomCursorAt(x, y) {
+            mx = x; my = y; cx = x; cy = y;
+            cursor.style.left = cx + 'px';
+            cursor.style.top = cy + 'px';
+            cursor.classList.add('is-visible');
+            if (worksBody) worksBody.classList.add('v2-view-cursor-active');
+            if (!cRaf) animCursor();
+        }
 
-    if (imgStack) {
-        imgStack.addEventListener('mouseenter', function () { cursor.classList.add('is-visible'); });
-        imgStack.addEventListener('mouseleave', function () { cursor.classList.remove('is-visible'); });
+        function hideCustomCursor() {
+            cursor.classList.remove('is-visible');
+            if (worksBody) worksBody.classList.remove('v2-view-cursor-active');
+        }
+
+        document.addEventListener('mousemove', function (e) {
+            mx = e.clientX; my = e.clientY;
+            if (!cRaf) animCursor();
+        });
+
+        if (imgStack) {
+            imgStack.addEventListener('mouseenter', function (e) {
+                showCustomCursorAt(e.clientX, e.clientY);
+            });
+            imgStack.addEventListener('mouseleave', hideCustomCursor);
+
+            // ── Click: navigate to the active project page ──────────────────────
+            imgStack.addEventListener('click', function () {
+                // Only SONIX (index 0) has a live project page
+                if (hoveredProject === 0) {
+                    window.location.href = 'project-sonix.html';
+                }
+                // Indices 1-4: pages not yet ready — do nothing
+                // Indices 5+:  "Coming soon" — already shown in cursor label
+            });
+        }
+
+        // Failsafes: restore native cursor if focus or pointer state is lost.
+        document.addEventListener('mouseleave', hideCustomCursor);
+        window.addEventListener('blur', hideCustomCursor);
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) hideCustomCursor();
+        });
     }
 
     /* ── 9. Footer Transition Animation ────────────────────────────────── */
