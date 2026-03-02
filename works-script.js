@@ -310,8 +310,8 @@
 
     /* ── 7b. Click to navigate — capture phase so nothing can block it ─── */
     document.addEventListener('pointerup', function (e) {
-        // Only act if pointer is within the image stack bounds
-        var rect = imgStack.getBoundingClientRect();
+        // Act if pointer is within the full sticky section bounds (image + text side)
+        var rect = sticky.getBoundingClientRect();
         var inBounds = (
             e.clientX >= rect.left && e.clientX <= rect.right &&
             e.clientY >= rect.top && e.clientY <= rect.bottom
