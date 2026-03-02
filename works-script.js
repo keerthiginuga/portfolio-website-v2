@@ -37,20 +37,6 @@
     var NUM_TRANSITIONS = NUM_PROJECTS - 1;
 
     var hoveredProject = -1;
-    var lastKnownProject = 0; // Always tracks the currently visible project (from scroll or hover)
-
-    /* ── Project URLs — single source of truth for routing ─────────────── */
-    var ACTIVE_PROJECT_URLS = {
-        0: 'project-sonix.html',
-        1: 'project-imessage.html',
-        2: 'project-sealove.html',
-        3: 'project-nest.html',
-        4: 'project-kroger.html'
-    };
-
-    function isActiveProject(index) {
-        return ACTIVE_PROJECT_URLS.hasOwnProperty(index);
-    }
 
     if (!sticky || !slides.length) return;
 
@@ -156,7 +142,6 @@
             var scrolled = self.progress * pinDist;
             var rawPos = scrolled / SCROLL_PER_ITEM;
             var active = Math.min(NUM_TRANSITIONS, Math.max(0, Math.round(rawPos)));
-            lastKnownProject = active; // Keep lastKnownProject in sync with scroll
             infoItems.forEach(function (item, i) {
                 item.classList.toggle('is-active', i === active);
             });
@@ -293,7 +278,6 @@
                 if (!hasInteracted) hasInteracted = true;
                 if (hit !== hoveredProject) {
                     hoveredProject = hit;
-                    lastKnownProject = hit; // Keep lastKnownProject in sync with hover
                     infoItems.forEach(function (item, i) {
                         item.classList.toggle('is-active', i === hoveredProject);
                     });
@@ -301,28 +285,12 @@
 
                     var cursorEl = document.getElementById('viewCursor');
                     if (cursorEl) {
-                        cursorEl.innerText = isActiveProject(hoveredProject) ? 'view' : 'Coming soon';
+                        cursorEl.innerText = (hoveredProject >= 5) ? 'Coming soon' : 'view';
                     }
                 }
             }
         });
     }
-
-    /* ── 7b. Click to navigate — capture phase so nothing can block it ─── */
-    document.addEventListener('pointerup', function (e) {
-        // Act if pointer is within the full sticky section bounds (image + text side)
-        var rect = sticky.getBoundingClientRect();
-        var inBounds = (
-            e.clientX >= rect.left && e.clientX <= rect.right &&
-            e.clientY >= rect.top && e.clientY <= rect.bottom
-        );
-        if (!inBounds) return;
-
-        var target = lastKnownProject;
-        if (isActiveProject(target)) {
-            window.location.href = ACTIVE_PROJECT_URLS[target];
-        }
-    }, true /* use capture so GSAP layers cannot swallow the event */);
 
     /* ── 8. /VIEW Cursor ───────────────────────────────────────────────── */
     var cursor = document.getElementById('viewCursor');

@@ -480,6 +480,12 @@ body.v2-page-transitioning .v2-quote-cursor {
   height: calc(100svh * (var(--v2-hold-segments) + var(--v2-project-count) - 1 + var(--v2-exit-segments)));
 }
 
+/* Spacer above header — pushes heading down without changing header offsetHeight */
+.v2-select-works-top-spacer {
+  height: clamp(40px, 4vw, 80px);
+  width: 100%;
+}
+
 .v2-select-works-header {
   /* Now sits in normal document flow above the sticky container */
   position: relative;
@@ -504,6 +510,8 @@ body.v2-page-transitioning .v2-quote-cursor {
   overflow: hidden;
   pointer-events: none;
   opacity: var(--v2-marquee-opacity);
+  /* Match card-wrap's transition so both fade at the exact same interpolated rate */
+  transition: opacity 0.18s linear;
   z-index: 0;
 }
 
@@ -517,11 +525,13 @@ body.v2-page-transitioning .v2-quote-cursor {
   min-width: max-content;
   gap: clamp(60px, 8vw, 140px);
   align-items: center;
-  animation: v2-marquee 17s linear infinite;
+  /* 0.7x speed means time takes longer: 17s / 0.7 = 24.3s */
+  animation: v2-marquee 24.3s linear infinite;
 }
 
 .v2-select-works-marquee-track span {
-  font-size: clamp(84px, 11vw, 180px);
+  /* Scaled by 0.6x: 84px->50px, 11vw->6.6vw, 180px->108px */
+  font-size: clamp(50px, 6.6vw, 108px);
   line-height: 0.9;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -536,7 +546,7 @@ body.v2-page-transitioning .v2-quote-cursor {
   margin: 0;
   display: grid;
   gap: 2px;
-  font-size: clamp(54px, 8.2vw, 120px);
+  font-size: clamp(43px, 6.56vw, 96px);
   line-height: 0.95;
   text-transform: uppercase;
   font-weight: 400;
@@ -548,24 +558,33 @@ body.v2-page-transitioning .v2-quote-cursor {
   display: inline-block;
 }
 
-/* Quote mark — lives in text flow, always visible, scales with font */
+/* Quote mark removed from 'Selected' — now lives before 'Works' so it travels with the indent */
 .v2-select-works-title>span:first-child::after {
+  content: none;
+}
+
+.v2-select-works-title>span:last-child {
+  /* 'W' aligned under 'C' in SELECTED: C starts after S-E-L-E (4 chars ~3.1em) */
+  margin-left: clamp(70px, 19vw, 280px);
+}
+
+/* Quote mark after 'WORKS' — lifted via position:relative to align with top of SELECTED */
+.v2-select-works-title>span:last-child::after {
   content: '\201D';
   font-family: 'EB Garamond', Georgia, serif;
   font-size: 1.1em;
   font-style: normal;
   font-weight: 400;
   line-height: 0;
-  vertical-align: super;
+  position: relative;
+  top: -0.9em;
   margin-left: 0.08em;
-}
-
-.v2-select-works-title>span:last-child {
-  margin-left: clamp(24px, 8vw, 280px);
+  display: inline-block;
 }
 
 .v2-select-works-intro {
   margin: 0 0 0 auto;
+  margin-top: clamp(20px, 3vw, 48px);
   max-width: none;
   white-space: nowrap;
   text-transform: uppercase;
@@ -578,11 +597,11 @@ body.v2-page-transitioning .v2-quote-cursor {
 .v2-sonix-card {
   position: relative;
   z-index: 3;
-  width: min(46vw, 640px);
-  max-width: 640px;
+  width: min(55.2vw, 768px);
+  max-width: 768px;
   margin: 0 auto;
   perspective: 1400px;
-  border-radius: 36px;
+  border-radius: 22px;
 }
 
 .v2-sonix-tilt {
@@ -609,7 +628,7 @@ body.v2-page-transitioning .v2-quote-cursor {
 .v2-sonix-face {
   position: relative;
   box-sizing: border-box;
-  border-radius: 36px;
+  border-radius: 22px;
   background: #000;
   border: none;
   padding: 0;
@@ -657,10 +676,10 @@ body.v2-page-transitioning .v2-quote-cursor {
   grid-template-columns: 1.35fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 2px;
-  border-radius: 0;
-  margin-bottom: 0;
+  border-radius: 12px;
+  margin: 16px 18px 0;
   overflow: hidden;
-  min-height: clamp(260px, 32vw, 450px);
+  aspect-ratio: 16 / 9;
   background: #000;
 }
 
@@ -736,7 +755,7 @@ body.v2-page-transitioning .v2-quote-cursor {
 }
 
 .v2-sonix-copy {
-  padding: 20px 22px 24px;
+  padding: 16px 18px 19px;
   background: #000;
 }
 
@@ -785,17 +804,31 @@ body.v2-page-transitioning .v2-quote-cursor {
 }
 
 .v2-see-all-link {
-  display: block;
+  display: inline-block;
+  position: relative;
   text-transform: uppercase;
   color: #000;
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0;
-  text-decoration: underline;
-  text-underline-offset: 6px;
+  text-decoration: none;
   transform: translateY(150%);
   opacity: 0;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+/* Base line */
+.v2-see-all-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background-color: #000;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .v2-see-all-container.is-visible .v2-see-all-link {
@@ -803,15 +836,23 @@ body.v2-page-transitioning .v2-quote-cursor {
   opacity: 1;
 }
 
-.v2-see-all-link:hover {
-  opacity: 0.5;
+/* Hover line expands */
+.v2-see-all-container.is-visible .v2-see-all-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Premium text animation */
+.v2-see-all-container.is-visible .v2-see-all-link:hover {
+  opacity: 0.6;
+  transform: translateY(-2px);
 }
 
 .v2-section-divider {
   width: 100vw;
   height: 1px;
   background-color: rgba(0, 0, 0, 0.15);
-  margin-top: clamp(60px, 8vw, 100px);
+  margin-top: clamp(18px, 2.4vw, 30px);
   margin-bottom: clamp(32px, 3vw, 36px);
   transform-origin: center;
   transform: scaleX(0);
@@ -895,7 +936,7 @@ body.v2-page-transitioning .v2-quote-cursor {
   }
 
   .v2-sonix-card {
-    width: min(82vw, 580px);
+    width: min(98.4vw, 696px);
   }
 }
 
@@ -1015,11 +1056,11 @@ body.v2-page-transitioning .v2-quote-cursor {
   }
 
   .v2-sonix-media {
-    min-height: 220px;
+    /* aspect-ratio: 16/9 handles sizing; no min-height needed */
   }
 
   .v2-sonix-copy {
-    padding: 16px 16px 18px;
+    padding: 13px 13px 14px;
   }
 
   .v2-sonix-copy h3 {
@@ -2382,30 +2423,4 @@ body.v2-about-page .v2-footer {
   bottom: 0;
   z-index: 1;
   /* Lower than v2-about-content which is z-index 10 */
-}
-
-.v2-sonix-media::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 200px;
-  /* Increased from 120px for smoother fade */
-  background: linear-gradient(to bottom, transparent 0%, #111 80%, #111 100%);
-  z-index: 5;
-  pointer-events: none;
-}
-
-.v2-sonix-media::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 200px;
-  /* Increased from 120px for smoother fade */
-  background: linear-gradient(to bottom, transparent 0%, #111 80%, #111 100%);
-  z-index: 5;
-  pointer-events: none;
 }

@@ -242,14 +242,15 @@ function initSelectWorksCard() {
   /* ── Marquee helpers ── */
   const marqueeMarkup = (key) => {
     const safe = escapeHtml(key.trim().toUpperCase());
-    return Array.from({ length: 4 }, () =>
+    // Increased from 4 to 12 to guarantee seamless looping now that fonts are 0.6x smaller and words are shorter
+    return Array.from({ length: 12 }, () =>
       `<span>${safe}</span>`
     ).join('');
   };
 
   const setMarquee = (projectIndex) => {
     const project = projects[projectIndex] || projects[0];
-    const key = project.title.trim().toUpperCase();
+    const key = project.marqueeKey.trim().toUpperCase();
     if (key === activeMarqueeKey) return;
     activeMarqueeKey = key;
     const markup = marqueeMarkup(key);
@@ -335,10 +336,13 @@ function initSelectWorksCard() {
         section.style.setProperty('--v2-card-opacity', (1 - eased).toFixed(4));
         section.style.setProperty('--v2-marquee-opacity', (1 - eased).toFixed(4));
 
-        // Lock the final card flat during exit
+        // Lock the final card flat during exit.
+        // localProgress MUST be 0 here: setting it to 1 would tell the data layer
+        // "flipped 100% to next project", wrapping nextProjectIndex to 0 (SONIX).
+        // At localProgress=0, visibleProjectIndex correctly stays on the last project (NEST).
         angle = 0;
         segmentIndex = projects.length - 1;
-        localProgress = 1;
+        localProgress = 0;
       } else {
         /* Normal rotation phase: fully visible */
         section.style.setProperty('--v2-card-scale', '1');
@@ -461,6 +465,16 @@ function initSkills() {
       if (!wasOpen) {
         item.classList.add('is-open');
         accordion.classList.add('has-active');
+
+        // Scroll down minimally if the expanded content overflows the bottom
+        setTimeout(() => {
+          const rect = item.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          if (rect.bottom > viewportHeight) {
+            const distanceToScroll = rect.bottom - viewportHeight + 40;
+            window.scrollBy({ top: distanceToScroll, behavior: 'smooth' });
+          }
+        }, 450);
       } else {
         accordion.classList.remove('has-active');
       }
