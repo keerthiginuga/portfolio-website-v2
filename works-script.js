@@ -336,11 +336,12 @@
 
             // ── Click: navigate to the active project page ──────────────────────
             imgStack.addEventListener('click', function () {
-                // Only SONIX (index 0) has a live project page
                 if (hoveredProject === 0) {
                     window.location.href = 'project-sonix.html';
+                } else if (hoveredProject === 1) {
+                    window.location.href = 'project-imessage.html';
                 }
-                // Indices 1-4: pages not yet ready — do nothing
+                // Indices 2-4: pages not yet ready — do nothing
                 // Indices 5+:  "Coming soon" — already shown in cursor label
             });
         }

@@ -49,6 +49,16 @@ body {
     display: block;
 }
 
+.ps-hero-img--sonix {
+    view-transition-name: sonix-cover;
+    contain: layout;
+}
+
+.ps-hero-img--imessage {
+    view-transition-name: imessage-cover;
+    contain: layout;
+}
+
 .ps-hero::after {
     content: "";
     position: absolute;

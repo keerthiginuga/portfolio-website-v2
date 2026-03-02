@@ -2455,3 +2455,8 @@ body.v2-about-page .v2-footer {
   view-transition-name: sonix-cover;
   contain: layout;
 }
+
+.v2-stack-slide[data-slide="1"] .v2-stack-img {
+  view-transition-name: imessage-cover;
+  contain: layout;
+}
