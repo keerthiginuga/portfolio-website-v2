@@ -11,10 +11,14 @@
 
 const NAV_SCROLL_THRESHOLD = 20;
 const NAV_COLLAPSE_THRESHOLD = 100;
-const NAV_CONTRAST_LIGHT_THRESHOLD = 0.62;
+const NAV_COLLAPSE_DIRECTION_EPSILON = 4;
+const NAV_CONTRAST_LIGHT_ENTER_THRESHOLD = 0.6;
+const NAV_CONTRAST_LIGHT_EXIT_THRESHOLD = 0.5;
 const NAV_CONTRAST_ALPHA_THRESHOLD = 0.08;
+const NAV_CONTRAST_LUMA_SMOOTHING = 0.35;
 
 let navContrastRaf = null;
+const navContrastLumaCache = new WeakMap();
 
 function _clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -81,8 +85,12 @@ function _elementUnderPoint(x, y, occluders) {
     return target;
 }
 
-function _setContrastClass(element, shouldUseDarkForeground) {
+function _setContrastClass(element, luminance) {
     if (!element) return;
+    const currentlyDark = element.classList.contains('v2-contrast-dark');
+    const shouldUseDarkForeground = currentlyDark
+        ? luminance >= NAV_CONTRAST_LIGHT_EXIT_THRESHOLD
+        : luminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
     if (shouldUseDarkForeground) {
         element.classList.add('v2-contrast-dark');
     } else {
@@ -95,8 +103,13 @@ function _applyContrastForTarget(target, anchor, occluders) {
     const x = _clamp(anchor.x, 1, Math.max(1, window.innerWidth - 1));
     const y = _clamp(anchor.y, 1, Math.max(1, window.innerHeight - 1));
     const underneath = _elementUnderPoint(x, y, occluders);
-    const lum = underneath ? _resolveBackgroundLuminance(underneath) : 0;
-    _setContrastClass(target, lum >= NAV_CONTRAST_LIGHT_THRESHOLD);
+    const rawLum = underneath ? _resolveBackgroundLuminance(underneath) : 0;
+    const prevLum = navContrastLumaCache.has(target)
+        ? navContrastLumaCache.get(target)
+        : rawLum;
+    const smoothedLum = prevLum + ((rawLum - prevLum) * NAV_CONTRAST_LUMA_SMOOTHING);
+    navContrastLumaCache.set(target, smoothedLum);
+    _setContrastClass(target, smoothedLum);
 }
 
 function _updateNavContrastNow(nav) {
@@ -219,6 +232,7 @@ function initNavMenuToggle() {
 function _applyNavState(nav, currentScrollY, lastScrollY) {
     nav.dataset.scrollY = String(Math.max(0, currentScrollY));
     scheduleNavContrastUpdate(nav);
+    const deltaY = currentScrollY - lastScrollY;
 
     if (currentScrollY > NAV_SCROLL_THRESHOLD) {
         nav.classList.add('nav-scrolled');
@@ -232,7 +246,12 @@ function _applyNavState(nav, currentScrollY, lastScrollY) {
         return currentScrollY;
     }
 
-    if (currentScrollY > lastScrollY && currentScrollY > NAV_COLLAPSE_THRESHOLD) {
+    if (Math.abs(deltaY) < NAV_COLLAPSE_DIRECTION_EPSILON) {
+        _syncHamburgerAria(nav);
+        return currentScrollY;
+    }
+
+    if (deltaY > 0 && currentScrollY > NAV_COLLAPSE_THRESHOLD) {
         nav.classList.add('nav-collapsed');
     } else {
         nav.classList.remove('nav-collapsed');

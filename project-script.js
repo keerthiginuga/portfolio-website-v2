@@ -13,10 +13,14 @@ const projectThumbs = document.querySelectorAll('.project-thumb');
 const indexLinks = document.querySelectorAll('.index-link');
 
 const NAV_COLLAPSE_SCROLL_THRESHOLD = 100;
-const NAV_CONTRAST_LIGHT_THRESHOLD = 0.62;
+const NAV_COLLAPSE_DIRECTION_EPSILON = 4;
+const NAV_CONTRAST_LIGHT_ENTER_THRESHOLD = 0.6;
+const NAV_CONTRAST_LIGHT_EXIT_THRESHOLD = 0.5;
 const NAV_CONTRAST_ALPHA_THRESHOLD = 0.08;
+const NAV_CONTRAST_LUMA_SMOOTHING = 0.35;
 let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
 let navContrastRaf = null;
+const navContrastLumaCache = new WeakMap();
 
 function clampValue(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -78,8 +82,12 @@ function elementBelowPoint(x, y, occluders) {
     return target;
 }
 
-function setContrastClass(element, shouldUseDarkForeground) {
+function setContrastClass(element, luminance) {
     if (!element) return;
+    const currentlyDark = element.classList.contains('contrast-dark');
+    const shouldUseDarkForeground = currentlyDark
+        ? luminance >= NAV_CONTRAST_LIGHT_EXIT_THRESHOLD
+        : luminance >= NAV_CONTRAST_LIGHT_ENTER_THRESHOLD;
     if (shouldUseDarkForeground) {
         element.classList.add('contrast-dark');
     } else {
@@ -92,8 +100,13 @@ function applyContrastForTarget(target, anchor, occluders) {
     const x = clampValue(anchor.x, 1, Math.max(1, window.innerWidth - 1));
     const y = clampValue(anchor.y, 1, Math.max(1, window.innerHeight - 1));
     const underneath = elementBelowPoint(x, y, occluders);
-    const luminance = underneath ? resolveBackgroundLuminance(underneath) : 0;
-    setContrastClass(target, luminance >= NAV_CONTRAST_LIGHT_THRESHOLD);
+    const rawLuminance = underneath ? resolveBackgroundLuminance(underneath) : 0;
+    const previousLuminance = navContrastLumaCache.has(target)
+        ? navContrastLumaCache.get(target)
+        : rawLuminance;
+    const smoothedLuminance = previousLuminance + ((rawLuminance - previousLuminance) * NAV_CONTRAST_LUMA_SMOOTHING);
+    navContrastLumaCache.set(target, smoothedLuminance);
+    setContrastClass(target, smoothedLuminance);
 }
 
 function updateNavContrastNow() {
@@ -153,8 +166,9 @@ function updateNavOnScroll() {
     scheduleNavContrastUpdate();
 
     const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-    const scrollingDown = currentScrollTop > lastScrollTop + 1;
-    const scrollingUp = currentScrollTop < lastScrollTop - 1;
+    const deltaY = currentScrollTop - lastScrollTop;
+    const scrollingDown = deltaY > NAV_COLLAPSE_DIRECTION_EPSILON;
+    const scrollingUp = deltaY < -NAV_COLLAPSE_DIRECTION_EPSILON;
     const nearTop = currentScrollTop <= NAV_COLLAPSE_SCROLL_THRESHOLD;
 
     if (topNav.classList.contains('nav-expanded')) {
