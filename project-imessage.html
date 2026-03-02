@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMESSAGE — A Relational Wellness Update · Keerthi Ginuga</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet">
+
+    <!-- Shared site styles (nav, logo, k-logo, etc.) -->
+    <link rel="stylesheet" href="project-styles.css">
+
+    <!-- Sonix-specific layout + view-transition opt-in -->
+    <link rel="stylesheet" href="sonix-styles.css">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+
+<body>
+    <!-- ── K Logo ────────────────────────────────────────────── -->
+    <a href="index.html" class="k-logo">
+        <svg class="k-letter" width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M7.23146e-05 0.299998L2.28621e-05 8.95236C1.02357e-05 11.1615 1.79035 12.9524 3.9995 12.9524H16.4226C18.6266 12.9524 20.653 11.744 21.7009 9.80509L26.8405 0.295096C26.9125 0.161842 26.816 6.16361e-06 26.6646 6.0685e-06L17.9519 0C17.3709 0 16.8421 0.335564 16.5947 0.861302L12.4287 9.71399C11.61 11.4537 9.00001 10.8703 9.00002 8.94755L9.00006 1.50001C9.00007 0.671578 8.3285 0 7.50006 0H0.300072C0.134388 0 7.32616e-05 0.134313 7.23146e-05 0.299998Z"
+                fill="currentColor" />
+            <path
+                d="M7.24429e-05 28.7L2.11513e-05 19C9.46977e-06 16.7908 1.79035 15 3.9995 15H16.292C18.5646 15 20.642 16.284 21.6583 18.3167L26.8553 28.7106C26.9218 28.8435 26.8251 29 26.6764 29L17.9682 29C17.3788 29 16.844 28.6548 16.6013 28.1177L12.3696 18.7533C11.5685 16.9805 8.91488 17.5626 8.92937 19.5079L8.98882 27.4888C8.99502 28.3216 8.32165 29 7.48886 29H0.300072C0.134388 29 7.33191e-05 28.8657 7.24429e-05 28.7Z"
+                fill="currentColor" />
+        </svg>
+    </a>
+
+    <!-- ── Top Navigation ────────────────────────────────────── -->
+    <nav class="top-nav">
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">HOME</a></li>
+            <li><a href="works.html" class="nav-link active">WORKS</a></li>
+            <li><a href="playground.html" class="nav-link">PLAYGROUND</a></li>
+            <li><a href="about.html" class="nav-link">ABOUT ME</a></li>
+        </ul>
+        <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="nav-resume">RESUME</a>
+        <button type="button" class="index-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <span class="sr-only">Menu</span>
+            <span class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </nav>
+
+    <!-- ════════════════════════════════════════════════════════
+         SECTION 1 — Full-Viewport Cover
+         The hero image carries view-transition-name: imessage-cover
+         so the browser morphs it from the Works page card.
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="ps-hero">
+        <img class="ps-hero-img" class="ps-hero-img ps-hero-img--imessage" src="assets/images/imessage.jpg" alt="iMessage cover image">
+
+        <h1 class="ps-hero-title">IMESSAGE — A Relational Wellness Update</h1>
+
+        <!-- Animated scroll indicator -->
+        <div class="ps-scroll-indicator" aria-hidden="true">
+            <span class="ps-scroll-mouse">
+                <span class="ps-scroll-wheel"></span>
+            </span>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════
+         SECTION 2 — Project Info Panel
+         Slides up over the hero on scroll (natural document flow).
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="ps-info">
+
+        <!-- Top meta strip: Role + Timeline -->
+        <div class="ps-meta-row">
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Role</p>
+                <p class="ps-meta-value">UX Researcher<br>UI Designer</p>
+            </div>
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Timeline</p>
+                <p class="ps-meta-value">Jan-Mar 2025</p>
+            </div>
+        </div>
+
+        <!-- Two-column grid: narrative left / process + tools right -->
+        <div class="ps-info-grid">
+
+            <!-- ── Left: Overview, Goal, Challenges, Outcomes ── -->
+            <div class="ps-left">
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Overview</h2>
+                    <p class="ps-section-body">
+                        Sonix reimagines urban mobility through fully autonomous vehicles that deliver
+                        hyper-personalized, luxury-grade experiences for everyone.
+                    </p>
+                    <p class="ps-section-body ps-paragraph-gap">
+                        In a world where ownership fades and on-demand transport dominates, Sonix bridges convenience
+                        and comfort. Each vehicle adapts to user intent - whether to work, relax, play, socialize, or
+                        send packages - using AI-driven personalization that learns from habits, preferences, and
+                        context.
+                    </p>
+                </div>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Goal</h2>
+                    <p class="ps-section-body">
+                        The goal was to craft a system and service that turns every ride into a meaningful experience,
+                        transforming transit time into productive, restorative, or social moments.
+                    </p>
+                </div>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Challenges</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Humanizing fully autonomous travel experiences</li>
+                            <li>Creating seamless transitions between adaptive ride modes</li>
+                            <li>Integrating personalization across digital and physical touchpoints</li>
+                            <li>Balancing advanced technology with comfort and accessibility</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Outcomes</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Defined a unified ecosystem for autonomous mobility</li>
+                            <li>Designed five adaptive modes — Work, Relax, Play, Socialize, Send</li>
+                            <li>Built cohesive interactions across the app, AI, and vehicle interface</li>
+                            <li>Positioned Sonix as a vision for intuitive, immersive, human-centered travel</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── Right: Process + Tools ── -->
+            <div class="ps-right">
+
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Understanding the Process</h3>
+                    <ul class="ps-detail-list">
+                        <li>Future scenario exploration</li>
+                        <li>Secondary research</li>
+                        <li>Interviews</li>
+                        <li>Surveys</li>
+                        <li>Affinitization</li>
+                        <li>Define How might we's</li>
+                        <li>Crazy 8's ideation</li>
+                        <li>User flows - Car and App</li>
+                        <li>Low-fidelity wireframes</li>
+                        <li>Initial user testing</li>
+                        <li>Branding</li>
+                        <li>Information architecture</li>
+                        <li>High-fidelity wireframes</li>
+                        <li>Prototyping interfaces</li>
+                        <li>Concept pitch</li>
+                    </ul>
+                </div>
+
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Tools &amp; Technologies</h3>
+                    <ul class="ps-detail-list">
+                        <li>Figma</li>
+                        <li>Adobe Illustrator</li>
+                        <li>Premiere Pro</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div><!-- .ps-info-grid -->
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════
+         SECTION 3 — Project Images
+         Images from Projects/iMessage/ in order (1 → 17).
+         Include image 1 in full size in the main content sequence.
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="ps-images">
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (1).png" alt="iMessage Project — slide 1" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (2).png" alt="iMessage Project — slide 2" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (3).png" alt="iMessage Project — slide 3" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (4).png" alt="iMessage Project — slide 4" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (5).png" alt="iMessage Project — slide 5" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (6).png" alt="iMessage Project — slide 6" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (7).png" alt="iMessage Project — slide 7" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (8).png" alt="iMessage Project — slide 8" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (9).png" alt="iMessage Project — slide 9" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (10).png" alt="iMessage Project — slide 10" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (11).png" alt="iMessage Project — slide 11" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (12).png" alt="iMessage Project — slide 12" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (13).png" alt="iMessage Project — slide 13" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (14).png" alt="iMessage Project — slide 14" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (15).png" alt="iMessage Project — slide 15" loading="lazy">
+        </div>
+        <div class="ps-image-full">
+            <img src="Projects/iMessage/iMessage (16).png" alt="iMessage Project — slide 16" loading="lazy">
+        </div>
+    </section>
+
+    <footer class="ps-footer" id="contact">
+        <div class="ps-footer-inner">
+            <h2 class="ps-footer-headline">
+                <span>LET'S CREATE</span>
+                <span>WHAT'S NEXT,</span>
+                <em>Together.</em>
+            </h2>
+        </div>
+        <nav class="ps-footer-links" aria-label="Footer">
+            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+            <a href="mailto:kginug20@student.scad.edu">Email</a>
+        </nav>
+    </footer>
+
+    <script src="project-script.js"></script>
+</body>
+
+</html>
