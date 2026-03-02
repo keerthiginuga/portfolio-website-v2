@@ -22,6 +22,8 @@ const NAV_CONTRAST_IDLE_UPDATE_MS = 120;
 let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
 let navContrastRaf = null;
 let navContrastIdleTimer = null;
+const navContrastPixelCanvas = document.createElement('canvas');
+const navContrastPixelCtx = navContrastPixelCanvas.getContext('2d', { willReadFrequently: true });
 const navContrastState = {
     initialized: false,
     useDarkForeground: false,
@@ -70,17 +72,65 @@ function resolveBackgroundLuminance(element) {
     return 0;
 }
 
+function getOwnBackgroundLuminance(element) {
+    if (!element) return null;
+    const style = window.getComputedStyle(element);
+    const parsed = parseCssColor(style.backgroundColor);
+    if (!parsed || parsed.a <= NAV_CONTRAST_ALPHA_THRESHOLD) return null;
+    return getLuminance(parsed);
+}
+
+function sampleMediaLuminance(element, viewportX, viewportY) {
+    if (!navContrastPixelCtx) return null;
+    if (!(element instanceof HTMLImageElement || element instanceof HTMLVideoElement)) return null;
+
+    const rect = element.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+
+    const mediaW = element instanceof HTMLImageElement ? element.naturalWidth : element.videoWidth;
+    const mediaH = element instanceof HTMLImageElement ? element.naturalHeight : element.videoHeight;
+    if (!mediaW || !mediaH) return null;
+
+    const relX = clampValue(viewportX - rect.left, 0, rect.width);
+    const relY = clampValue(viewportY - rect.top, 0, rect.height);
+
+    const scale = Math.max(rect.width / mediaW, rect.height / mediaH);
+    const drawW = mediaW * scale;
+    const drawH = mediaH * scale;
+    const cropX = (drawW - rect.width) / 2;
+    const cropY = (drawH - rect.height) / 2;
+
+    const srcX = clampValue((relX + cropX) / scale, 0, mediaW - 1);
+    const srcY = clampValue((relY + cropY) / scale, 0, mediaH - 1);
+
+    try {
+        navContrastPixelCtx.clearRect(0, 0, 1, 1);
+        navContrastPixelCtx.drawImage(element, srcX, srcY, 1, 1, 0, 0, 1, 1);
+        const pixel = navContrastPixelCtx.getImageData(0, 0, 1, 1).data;
+        return getLuminance({ r: pixel[0], g: pixel[1], b: pixel[2] });
+    } catch (_err) {
+        return null;
+    }
+}
+
 function sampleLuminance(anchor, blockers) {
     if (!anchor) return null;
     const x = clampValue(anchor.x, 1, Math.max(1, window.innerWidth - 1));
     const y = clampValue(anchor.y, 1, Math.max(1, window.innerHeight - 1));
     const stack = document.elementsFromPoint(x, y);
-    const beneath = stack.find((el) => {
-        if (!el) return false;
-        return !blockers.some((blocker) => blocker === el || blocker.contains(el));
-    });
-    if (!beneath) return null;
-    return resolveBackgroundLuminance(beneath);
+
+    for (const el of stack) {
+        if (!el) continue;
+        if (blockers.some((blocker) => blocker === el || blocker.contains(el))) continue;
+
+        const mediaLum = sampleMediaLuminance(el, x, y);
+        if (typeof mediaLum === 'number' && !Number.isNaN(mediaLum)) return mediaLum;
+
+        const ownBgLum = getOwnBackgroundLuminance(el);
+        if (typeof ownBgLum === 'number' && !Number.isNaN(ownBgLum)) return ownBgLum;
+    }
+
+    return resolveBackgroundLuminance(document.body);
 }
 
 function median(values) {
@@ -137,23 +187,28 @@ function updateNavContrastNow() {
     if (kLogo) blockers.push(kLogo);
     const navRect = topNav.getBoundingClientRect();
     const logoRect = kLogo ? kLogo.getBoundingClientRect() : null;
+    const probeY = clampValue(
+        Math.max(navRect.bottom + 8, (logoRect ? logoRect.bottom + 8 : navRect.bottom + 8)),
+        1,
+        Math.max(1, window.innerHeight - 1)
+    );
 
     const navAnchor = {
         x: navRect.left + (navRect.width * 0.5),
-        y: navRect.top + (navRect.height * 0.5)
+        y: probeY
     };
     const navLeftAnchor = {
         x: navRect.left + (navRect.width * 0.2),
-        y: navRect.top + (navRect.height * 0.5)
+        y: probeY
     };
     const navRightAnchor = {
         x: navRect.left + (navRect.width * 0.8),
-        y: navRect.top + (navRect.height * 0.5)
+        y: probeY
     };
     const logoAnchor = logoRect
         ? {
             x: logoRect.left + (logoRect.width * 0.5),
-            y: logoRect.top + (logoRect.height * 0.5)
+            y: probeY
         }
         : navAnchor;
     const bridgeAnchor = {

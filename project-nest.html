@@ -4,18 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Nest Thermostat for Office Space</title>
-    <link rel="stylesheet" href="project-styles.css">
+    <title>GOOGLE NEST THERMOSTAT FOR OFFICE SPACE · Keerthi Ginuga</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
         rel="stylesheet">
+
+    <link rel="stylesheet" href="project-styles.css">
+    <link rel="stylesheet" href="sonix-styles.css">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 
 <body>
-    <!-- K Logo -->
     <a href="index.html" class="k-logo">
         <svg class="k-letter" width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -27,249 +29,154 @@
         </svg>
     </a>
 
-    <!-- Top Navigation -->
     <nav class="top-nav">
         <ul class="nav-links">
             <li><a href="index.html" class="nav-link">HOME</a></li>
-            <li><a href="works.html" class="nav-link">WORKS</a></li>
+            <li><a href="works.html" class="nav-link active">WORKS</a></li>
             <li><a href="playground.html" class="nav-link">PLAYGROUND</a></li>
             <li><a href="about.html" class="nav-link">ABOUT ME</a></li>
         </ul>
+        <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="nav-resume">RESUME</a>
+        <button type="button" class="index-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <span class="sr-only">Menu</span>
+            <span class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
     </nav>
 
-    <!-- Index Menu Overlay -->
-    <div class="index-overlay">
-        <button class="close-menu">&times;</button>
+    <section class="ps-hero">
+        <img class="ps-hero-img ps-hero-img--nest" src="assets/images/google-nest.jpg" alt="Google Nest project cover image">
 
-        <!-- Project Thumbnails Background -->
-        <div class="project-thumbnails">
-            <div class="project-thumb" data-project="sonix">
-                <img src="assets/images/autonomous-vehicle.jpg" alt="SONIX">
-            </div>
-            <div class="project-thumb" data-project="7west">
-                <img src="assets/images/7west.jpg" alt="7WEST">
-            </div>
-            <div class="project-thumb" data-project="sealove">
-                <img src="assets/images/sea-love.jpg" alt="SeaLove Candle Bar">
-            </div>
-            <div class="project-thumb" data-project="nest">
-                <img src="assets/images/google-nest.jpg" alt="Google Nest Thermostat">
-            </div>
-            <div class="project-thumb" data-project="kroger">
-                <img src="assets/images/kroger.jpg" alt="Kroger Self-Checkout">
-            </div>
-            <div class="project-thumb" data-project="kohler">
-                <img src="assets/images/kohler-scadpro.jpg" alt="Kohler x SCADpro">
-            </div>
-        </div>
+        <h1 class="ps-hero-title">GOOGLE NEST THERMOSTAT FOR OFFICE SPACE</h1>
 
-        <!-- Left Side: Projects -->
-        <div class="index-left">
-            <h2 class="index-section-title">PROJECTS</h2>
-            <ul class="projects-list">
-                <li class="project-link" data-project="sonix">
-                    <a href="project-sonix.html">
-                        <span class="project-name">SONIX — Your Personal Space On Wheels</span>
-                        <span class="project-desc">Branding & User Experience</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="7west">
-                    <a href="project-7west.html">
-                        <span class="project-name">7WEST — Your All-In-One Student Ecosystem</span>
-                        <span class="project-desc">UX Design, Co-founder</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="sealove">
-                    <a href="project-sealove.html">
-                        <span class="project-name">SeaLove Candle Bar</span>
-                        <span class="project-desc">Web Design</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="nest">
-                    <a href="project-nest.html">
-                        <span class="project-name">Google Nest Thermostat for Office Space</span>
-                        <span class="project-desc">Branding & User Experience</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="kroger">
-                    <a href="project-kroger.html">
-                        <span class="project-name">Rethinking the Self-Checkout Experience at Kroger</span>
-                        <span class="project-desc">Service Design</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="kohler">
-                    <a href="project-kohler.html">
-                        <span class="project-name">Kohler x SCADpro — Future of Hydrotherapy</span>
-                        <span class="project-desc">UX Research & Design</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="ps-scroll-indicator" aria-hidden="true">
+            <span class="ps-scroll-mouse">
+                <span class="ps-scroll-wheel"></span>
+            </span>
         </div>
-
-        <!-- Right Side: About Me -->
-        <div class="index-right">
-            <h2 class="index-section-title">ABOUT ME</h2>
-            <div class="about-content-index">
-                <p>Hello! I'm Keerthi, a UX Designer and Architect based in Savannah, GA. I thrive on crafting solutions
-                    that not only look beautiful but function seamlessly—ensuring that every interaction feels intuitive
-                    and meaningful.</p>
-                <p>Dive into my world of design, where strategy meets creativity, and each project tells a story of
-                    innovation and impact.</p>
-                <div class="about-links-index">
-                    <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="index-link">View My Resume <span
-                            class="arrow">→</span></a>
-                    <a href="index.html#contact" class="index-link">Contact Me <span class="arrow">→</span></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project Hero Section -->
-    <section class="project-hero">
-        <div class="project-hero-image">
-            <img src="assets/images/google-nest.jpg" alt="Google Nest Thermostat">
-        </div>
-        <h1 class="project-hero-title">Google Nest Thermostat for Office Space</h1>
     </section>
 
-    <!-- Project Content Section -->
-    <section class="project-content">
-        <div class="project-content-grid">
-            <!-- Left Column: Description -->
-            <div class="project-description-column">
-                <div class="description-section">
-                    <p class="project-intro">Adapting the Google Nest Thermostat for office environments, creating a
-                        smart climate control system that balances individual comfort preferences with energy efficiency
-                        in shared workspaces.</p>
+    <section class="ps-info">
+        <div class="ps-meta-row">
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Role</p>
+                <p class="ps-meta-value">UX Researcher<br>UI Designer</p>
+            </div>
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Timeline</p>
+                <p class="ps-meta-value">Jan-Mar 2025</p>
+            </div>
+        </div>
+
+        <div class="ps-info-grid">
+            <div class="ps-left">
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Overview</h2>
+                    <p class="ps-section-body">
+                        Redesigned the Nest Thermostat to make office environments more cheerful and collaborative. The
+                        concept introduces a shared temperature-setting experience where employees can vote, react, and
+                        communicate preferences, turning everyday climate control into a collective, engaging activity.
+                    </p>
                 </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Our Goal</h2>
-                    <p>To redesign the Nest Thermostat experience for office environments where multiple users with
-                        different temperature preferences need to coexist comfortably while maintaining energy
-                        efficiency and allowing facility managers centralized control.</p>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Goal</h2>
+                    <p class="ps-section-body">
+                        Transform temperature control from a single-user action into a team-driven interaction that
+                        enhances comfort, inclusivity, and overall workplace well-being.
+                    </p>
                 </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Constraints</h2>
-                    <p>A 10-week timeline to adapt a consumer-focused product for commercial use, requiring extensive
-                        research into office dynamics and facilities management needs. The challenge was maintaining
-                        Nest's intuitive interface while adding enterprise-level features.</p>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Challenges</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Managing diverse comfort levels across teams</li>
+                            <li>Encouraging participation without creating friction</li>
+                            <li>Keeping the experience simple yet expressive</li>
+                            <li>Aligning physical interaction with digital feedback</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Our Outcome</h2>
-                    <p>The office-optimized Nest system introduces zone-based climate control, voting mechanisms for
-                        shared spaces, and administrative dashboards for facility managers. The solution learns from
-                        occupancy patterns and user preferences to optimize comfort and energy usage automatically.</p>
-                </div>
-                <div class="description-section">
-                    <h2 class="section-heading">What was the challenge?</h2>
-                    <p>Office temperature control is a constant source of workplace conflict, with individuals having
-                        vastly different comfort preferences. Traditional systems offer limited personalization and poor
-                        energy management, leading to discomfort, decreased productivity, and wasted resources.</p>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Outcomes</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Introduced temperature voting and group feedback features</li>
+                            <li>Designed a bright, friendly visual identity suited for office environments</li>
+                            <li>Built seamless mobile and device interfaces for collaborative control</li>
+                            <li>Promoted a sense of shared comfort and connection among employees</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <!-- Right Column: Details -->
-            <div class="project-details-column">
-                <div class="detail-group">
-                    <h3 class="detail-label">Role</h3>
-                    <p class="detail-value">UX Designer</p>
-                </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Timeline</h3>
-                    <p class="detail-value">10 Weeks</p>
-                </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Understanding the Process</h3>
-                    <ul class="process-list">
-                        <li>Workplace Research</li>
-                        <li>User Interviews</li>
-                        <li>Persona Development</li>
-                        <li>Feature Analysis</li>
-                        <li>Interface Design</li>
-                        <li>Usability Testing</li>
-                        <li>Iteration</li>
-                        <li>Final Product Design</li>
+            <div class="ps-right">
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Understanding the Process</h3>
+                    <ul class="ps-detail-list">
+                        <li>Secondary Research</li>
+                        <li>Problem Definition</li>
+                        <li>Insight Generation</li>
+                        <li>Ideation &amp; Sketching</li>
+                        <li>Surveys &amp; Data Analysis</li>
+                        <li>User Journey Mapping</li>
+                        <li>User Flows</li>
+                        <li>Wireframing</li>
+                        <li>UI Design</li>
+                        <li>Visual Design System</li>
+                        <li>Prototype Development</li>
+                        <li>User Testing</li>
+                        <li>Final Concept Delivery</li>
                     </ul>
                 </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Tools & Technologies</h3>
-                    <ul class="tools-list">
+
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Tools &amp; Technologies</h3>
+                    <ul class="ps-detail-list">
                         <li>Figma</li>
-                        <li>Adobe Illustrator</li>
-                        <li>Principle</li>
-                        <li>Miro</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Project Images Section -->
-    <section class="project-images">
-        <div class="project-image-full">
-            <img src="assets/images/nest (1).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (2).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (3).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (4).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (5).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (6).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (7).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (8).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (9).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (10).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (11).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (12).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (13).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (14).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (15).png" alt="Google Nest Thermostat">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/nest (16).png" alt="Google Nest Thermostat">
-        </div>
+    <section class="ps-images">
+        <div class="ps-image-full"><img src="assets/images/nest (1).png" alt="Nest Project — slide 1" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (2).png" alt="Nest Project — slide 2" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (3).png" alt="Nest Project — slide 3" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (4).png" alt="Nest Project — slide 4" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (5).png" alt="Nest Project — slide 5" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (6).png" alt="Nest Project — slide 6" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (7).png" alt="Nest Project — slide 7" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (8).png" alt="Nest Project — slide 8" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (9).png" alt="Nest Project — slide 9" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (10).png" alt="Nest Project — slide 10" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (11).png" alt="Nest Project — slide 11" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (12).png" alt="Nest Project — slide 12" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (13).png" alt="Nest Project — slide 13" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (14).png" alt="Nest Project — slide 14" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (15).png" alt="Nest Project — slide 15" loading="lazy"></div>
+        <div class="ps-image-full"><img src="assets/images/nest (16).png" alt="Nest Project — slide 16" loading="lazy"></div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <h2 class="contact-title">Ready to turn your vision into a great product?</h2>
-        <a href="mailto:kginug20@student.scad.edu" class="contact-btn">Let's Discuss</a>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-name">KEERTHI GINUGA</div>
-        <div class="footer-links">
-            <a href="KeerthiGinuga_Resume.pdf" target="_blank">RESUME</a>
-            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank">LINKEDIN</a>
-            <a href="mailto:kginug20@student.scad.edu">EMAIL</a>
+    <footer class="ps-footer" id="contact">
+        <div class="ps-footer-inner">
+            <h2 class="ps-footer-headline">
+                <span>LET'S CREATE</span>
+                <span>WHAT'S NEXT,</span>
+                <em>Together.</em>
+            </h2>
         </div>
+        <nav class="ps-footer-links" aria-label="Footer">
+            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+            <a href="mailto:kginug20@student.scad.edu">Email</a>
+        </nav>
     </footer>
 
     <script src="project-script.js"></script>

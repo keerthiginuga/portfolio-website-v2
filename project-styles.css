@@ -107,8 +107,8 @@ body {
     transition: transform 0.3s ease, opacity 0.3s ease;
     --nav-fg: var(--color-white);
     --nav-muted: #6d6d6d;
-    --nav-resume-fg: var(--color-white);
-    --nav-resume-border: var(--color-white);
+    --nav-resume-fg: var(--color-black);
+    --nav-resume-bg: var(--color-white);
 }
 
 .top-nav.nav-hidden {
@@ -151,12 +151,13 @@ body {
 .nav-resume {
     color: var(--nav-resume-fg);
     text-decoration: none;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.03em;
-    padding: 10px 20px;
+    letter-spacing: 0;
+    padding: 8px 20px;
     border-radius: 999px;
-    border: 1px solid var(--nav-resume-border);
+    border: none;
+    background: var(--nav-resume-bg);
     white-space: nowrap;
     transition: transform 0.3s ease, max-width 0.35s ease, opacity 0.3s ease, padding 0.35s ease;
     max-width: 130px;
@@ -210,8 +211,8 @@ body {
 .top-nav.contrast-dark {
     --nav-fg: var(--color-black);
     --nav-muted: #4f4f4f;
-    --nav-resume-fg: var(--color-black);
-    --nav-resume-border: var(--color-black);
+    --nav-resume-fg: var(--color-white);
+    --nav-resume-bg: var(--color-black);
 }
 
 .top-nav.nav-collapsed .nav-links {

@@ -45,9 +45,37 @@ if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
 
-window.addEventListener('beforeunload', () => {
-  if (document.body.classList.contains('v2-home')) {
-    window.scrollTo(0, 0);
+let pageTransitionTimer = null;
+
+function clearPageTransitionState() {
+  if (pageTransitionTimer) {
+    window.clearTimeout(pageTransitionTimer);
+    pageTransitionTimer = null;
+  }
+  if (document.body) {
+    document.body.classList.remove('v2-page-transitioning');
+  }
+}
+
+function navigateWithPageTransition(url, delay = 400) {
+  if (!url) return;
+  if (document.body.classList.contains('v2-page-transitioning')) return;
+  clearPageTransitionState();
+  document.body.classList.add('v2-page-transitioning');
+  pageTransitionTimer = window.setTimeout(() => {
+    pageTransitionTimer = null;
+    window.location.assign(url);
+  }, delay);
+}
+
+window.addEventListener('pageshow', () => {
+  clearPageTransitionState();
+});
+
+window.addEventListener('pagehide', () => {
+  if (pageTransitionTimer) {
+    window.clearTimeout(pageTransitionTimer);
+    pageTransitionTimer = null;
   }
 });
 
@@ -165,6 +193,12 @@ function initSelectWorksCard() {
   tilt.appendChild(flip);
   card.appendChild(tilt);
 
+  const hitLink = document.createElement('a');
+  hitLink.className = 'v2-sonix-hitarea';
+  hitLink.setAttribute('data-card-link', '');
+  hitLink.href = 'project-sonix.html';
+  card.appendChild(hitLink);
+
   /* ── Face references ── */
   const getFaceRefs = (faceNode) => ({
     stage: faceNode.querySelector('[data-card-stage]'),
@@ -201,10 +235,39 @@ function initSelectWorksCard() {
   let activeFrontKey = '';
   let activeBackKey = '';
   let activeMarqueeKey = '';
+  let activeClickableIndex = 0;
 
   const isReducedMotion = prefersReducedMotion();
   const motionScale = getMotionScale(SELECT_WORKS_CONFIG.touchScale);
   let sectionTop = section.offsetTop;
+
+  const getProjectUrl = (index) => {
+    const project = projects[index] || projects[0];
+    return project && project.projectUrl ? project.projectUrl : 'works.html';
+  };
+
+  const getVisibleProjectIndexFromState = () => {
+    const rotationFloat = Math.max(0, scrollProgress - holdSegments);
+    if (rotationFloat >= projects.length - 1) return projects.length - 1;
+    const currentIndex = Math.floor(Math.min(rotationFloat, projects.length - 1));
+    const local = rotationFloat - currentIndex;
+    return local >= 0.5 ? (currentIndex + 1) % projects.length : currentIndex;
+  };
+
+  const updateCardAccessibility = (index) => {
+    const project = projects[index] || projects[0];
+    const label = project ? `View ${project.title}` : 'View project';
+    const projectUrl = getProjectUrl(index);
+    hitLink.href = projectUrl;
+    hitLink.setAttribute('aria-label', label);
+    card.setAttribute('aria-label', label);
+  };
+
+  const navigateToActiveProject = () => {
+    activeClickableIndex = getVisibleProjectIndexFromState();
+    updateCardAccessibility(activeClickableIndex);
+    window.location.assign(getProjectUrl(activeClickableIndex));
+  };
 
   /* ── Apply project to a card face ── */
   const applyProjectToFace = (refs, index, side = 'front') => {
@@ -258,6 +321,19 @@ function initSelectWorksCard() {
   };
 
   setMarquee(0);
+  updateCardAccessibility(0);
+
+  hitLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigateToActiveProject();
+  });
+
+  hitLink.addEventListener('keydown', (e) => {
+    if (e.key === ' ') {
+      e.preventDefault();
+      navigateToActiveProject();
+    }
+  });
 
   /* ── Layout sync ── */
   const syncFlipHeight = () => {
@@ -374,6 +450,10 @@ function initSelectWorksCard() {
 
     if (didUpdateFront || didUpdateBack) syncFlipHeight();
     if (marqueeTracks.length) setMarquee(visibleProjectIndex);
+    if (activeClickableIndex !== visibleProjectIndex) {
+      activeClickableIndex = visibleProjectIndex;
+      updateCardAccessibility(activeClickableIndex);
+    }
 
     /* ── Flip geometry ── */
     const effectiveAngle = (isReducedMotion || !rotationStarted) ? 0 : angle;
@@ -532,6 +612,7 @@ function initQuote() {
 function initSeeAllAnimation() {
   const container = document.querySelector('.v2-see-all-container');
   if (!container) return;
+  const seeAllLink = container.querySelector('.v2-see-all-link');
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -544,6 +625,16 @@ function initSeeAllAnimation() {
   }, { threshold: [0, 0.6] });
 
   observer.observe(container);
+
+  if (seeAllLink) {
+    seeAllLink.addEventListener('click', (e) => {
+      if (e.defaultPrevented) return;
+      if (e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      navigateWithPageTransition(seeAllLink.href, 400);
+    });
+  }
 }
 
 /* ══════════════════════════════════════
@@ -618,10 +709,7 @@ function initQuoteCursor() {
   if (quoteText) {
     quoteText.addEventListener('click', (e) => {
       e.preventDefault();
-      document.body.classList.add('v2-page-transitioning');
-      setTimeout(() => {
-        window.location.href = 'about.html';
-      }, 400); // Wait for fade-out animation
+      navigateWithPageTransition('about.html', 400);
     });
   }
 }

@@ -4,18 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rethinking the Self-Checkout Experience at Kroger</title>
-    <link rel="stylesheet" href="project-styles.css">
+    <title>RETHINKING THE SELF-CHECKOUT EXPERIENCE AT KROGER · Keerthi Ginuga</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
         rel="stylesheet">
+
+    <link rel="stylesheet" href="project-styles.css">
+    <link rel="stylesheet" href="sonix-styles.css">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 
 <body>
-    <!-- K Logo -->
     <a href="index.html" class="k-logo">
         <svg class="k-letter" width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -27,229 +29,187 @@
         </svg>
     </a>
 
-    <!-- Top Navigation -->
     <nav class="top-nav">
         <ul class="nav-links">
             <li><a href="index.html" class="nav-link">HOME</a></li>
-            <li><a href="works.html" class="nav-link">WORKS</a></li>
+            <li><a href="works.html" class="nav-link active">WORKS</a></li>
             <li><a href="playground.html" class="nav-link">PLAYGROUND</a></li>
             <li><a href="about.html" class="nav-link">ABOUT ME</a></li>
         </ul>
+        <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="nav-resume">RESUME</a>
+        <button type="button" class="index-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <span class="sr-only">Menu</span>
+            <span class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
     </nav>
 
-    <!-- Index Menu Overlay -->
-    <div class="index-overlay">
-        <button class="close-menu">&times;</button>
+    <section class="ps-hero">
+        <img class="ps-hero-img ps-hero-img--kroger" src="assets/images/kroger.jpg" alt="Kroger project cover image">
 
-        <!-- Project Thumbnails Background -->
-        <div class="project-thumbnails">
-            <div class="project-thumb" data-project="sonix">
-                <img src="assets/images/autonomous-vehicle.jpg" alt="SONIX">
-            </div>
-            <div class="project-thumb" data-project="7west">
-                <img src="assets/images/7west.jpg" alt="7WEST">
-            </div>
-            <div class="project-thumb" data-project="sealove">
-                <img src="assets/images/sea-love.jpg" alt="SeaLove Candle Bar">
-            </div>
-            <div class="project-thumb" data-project="nest">
-                <img src="assets/images/google-nest.jpg" alt="Google Nest Thermostat">
-            </div>
-            <div class="project-thumb" data-project="kroger">
-                <img src="assets/images/kroger.jpg" alt="Kroger Self-Checkout">
-            </div>
-            <div class="project-thumb" data-project="kohler">
-                <img src="assets/images/kohler-scadpro.jpg" alt="Kohler x SCADpro">
-            </div>
-        </div>
+        <h1 class="ps-hero-title">RETHINKING THE SELF-CHECKOUT EXPERIENCE AT KROGER</h1>
 
-        <!-- Left Side: Projects -->
-        <div class="index-left">
-            <h2 class="index-section-title">PROJECTS</h2>
-            <ul class="projects-list">
-                <li class="project-link" data-project="sonix">
-                    <a href="project-sonix.html">
-                        <span class="project-name">SONIX — Your Personal Space On Wheels</span>
-                        <span class="project-desc">Branding & User Experience</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="7west">
-                    <a href="project-7west.html">
-                        <span class="project-name">7WEST — Your All-In-One Student Ecosystem</span>
-                        <span class="project-desc">UX Design, Co-founder</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="sealove">
-                    <a href="project-sealove.html">
-                        <span class="project-name">SeaLove Candle Bar</span>
-                        <span class="project-desc">Web Design</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="nest">
-                    <a href="project-nest.html">
-                        <span class="project-name">Google Nest Thermostat for Office Space</span>
-                        <span class="project-desc">Branding & User Experience</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="kroger">
-                    <a href="project-kroger.html">
-                        <span class="project-name">Rethinking the Self-Checkout Experience at Kroger</span>
-                        <span class="project-desc">Service Design</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="kohler">
-                    <a href="project-kohler.html">
-                        <span class="project-name">Kohler x SCADpro — Future of Hydrotherapy</span>
-                        <span class="project-desc">UX Research & Design</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="ps-scroll-indicator" aria-hidden="true">
+            <span class="ps-scroll-mouse">
+                <span class="ps-scroll-wheel"></span>
+            </span>
         </div>
-
-        <!-- Right Side: About Me -->
-        <div class="index-right">
-            <h2 class="index-section-title">ABOUT ME</h2>
-            <div class="about-content-index">
-                <p>Hello! I'm Keerthi, a UX Designer and Architect based in Savannah, GA. I thrive on crafting solutions
-                    that not only look beautiful but function seamlessly—ensuring that every interaction feels intuitive
-                    and meaningful.</p>
-                <p>Dive into my world of design, where strategy meets creativity, and each project tells a story of
-                    innovation and impact.</p>
-                <div class="about-links-index">
-                    <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="index-link">View My Resume <span
-                            class="arrow">→</span></a>
-                    <a href="index.html#contact" class="index-link">Contact Me <span class="arrow">→</span></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project Hero Section -->
-    <section class="project-hero">
-        <div class="project-hero-image">
-            <img src="assets/images/kroger.jpg" alt="Kroger Self-Checkout">
-        </div>
-        <h1 class="project-hero-title">Rethinking the Self-Checkout Experience at Kroger</h1>
     </section>
 
-    <!-- Project Content Section -->
-    <section class="project-content">
-        <div class="project-content-grid">
-            <!-- Left Column: Description -->
-            <div class="project-description-column">
-                <div class="description-section">
-                    <p class="project-intro">A comprehensive service design project reimagining the self-checkout
-                        experience at Kroger to reduce friction, increase efficiency, and improve customer satisfaction
-                        throughout the entire shopping journey.</p>
-                </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Our Goal</h2>
-                    <p>To transform the self-checkout experience from a frustrating necessity into a seamless,
-                        empowering option that reduces wait times, minimizes errors, and provides personalized
-                        assistance when needed, enhancing overall customer satisfaction.</p>
-                </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Constraints</h2>
-                    <p>A 14-week timeline to research, design, and prototype improvements to a complex service system
-                        with multiple stakeholders including customers, staff, and management. Solutions needed to
-                        balance cost-effectiveness with technological innovation while ensuring accessibility for
-                        diverse user groups.</p>
-                </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Our Outcome</h2>
-                    <p>The redesigned service introduces smart cart technology, intuitive interfaces with visual
-                        guidance, AI-powered assistance for common issues, and a flexible hybrid model that seamlessly
-                        blends self-service with staff support. The solution reduces checkout time by 40% while
-                        improving user confidence and satisfaction.</p>
-                </div>
-                <div class="description-section">
-                    <h2 class="section-heading">What was the challenge?</h2>
-                    <p>Self-checkout systems often create frustration through unclear interfaces, frequent errors
-                        requiring assistance, and lack of guidance for first-time users. The impersonal nature of the
-                        experience leaves customers feeling abandoned while staff members struggle to assist multiple
-                        stations simultaneously.</p>
-                </div>
+    <section class="ps-info">
+        <div class="ps-meta-row">
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Role</p>
+                <p class="ps-meta-value">Service Designer<br>Research Lead</p>
             </div>
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Timeline</p>
+                <p class="ps-meta-value">May-July 2025</p>
+            </div>
+        </div>
 
-            <!-- Right Column: Details -->
-            <div class="project-details-column">
-                <div class="detail-group">
-                    <h3 class="detail-label">Role</h3>
-                    <p class="detail-value">Service Designer</p>
+        <div class="ps-info-grid">
+            <div class="ps-left">
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Overview</h2>
+                    <p class="ps-section-body">
+                        An in-depth service design investigation addressing the <strong>rising theft, employee stress,
+                            and customer frustration surrounding Kroger's self-checkout systems.</strong> The study
+                        examined how accountability gaps, flawed alert systems, and under-supported staff contribute to
+                        loss, inefficiency, and mistrust.
+                    </p>
                 </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Timeline</h3>
-                    <p class="detail-value">14 Weeks</p>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Goal</h2>
+                    <p class="ps-section-body">
+                        Reimagine the self-checkout experience as a <strong>human-centered service</strong>, balancing
+                        efficiency, empathy, and accountability while reducing shrinkage and restoring customer trust.
+                    </p>
                 </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Understanding the Process</h3>
-                    <ul class="process-list">
-                        <li>Ethnographic Research</li>
-                        <li>Customer Journey Mapping</li>
-                        <li>Pain Point Analysis</li>
-                        <li>Service Blueprint Development</li>
-                        <li>Stakeholder Interviews</li>
-                        <li>Concept Development</li>
-                        <li>Prototyping & Testing</li>
-                        <li>Implementation Strategy</li>
-                    </ul>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Challenges</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Overwhelmed staff managing multiple kiosks simultaneously</li>
+                            <li>Confusing UI and error-prone systems causing misuse</li>
+                            <li>Lack of real-time accountability and training protocols</li>
+                            <li>Biased surveillance and reactive management policies</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Tools & Technologies</h3>
-                    <ul class="tools-list">
-                        <li>Miro</li>
-                        <li>Figma</li>
-                        <li>Adobe Illustrator</li>
-                        <li>Service Design Toolkit</li>
-                    </ul>
-                </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Additional Resources</h3>
-                    <div class="resource-buttons">
-                        <a href="images/processbook.pdf" class="resource-btn" target="_blank">
-                            <span>Process Book</span>
-                            <span class="btn-arrow">→</span>
-                        </a>
-                        <a href="images/whitepaper.pdf" class="resource-btn" target="_blank">
-                            <span>Whitepaper</span>
-                            <span class="btn-arrow">→</span>
-                        </a>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Outcomes</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Proposed a multi-layered intervention framework addressing policy, process, and technology</li>
+                            <li>Designed a Smart Alert Prioritization System and Accountability-Linked Resolution Protocol</li>
+                            <li>Created Oversight Dashboards for real-time visibility and support</li>
+                            <li>Introduced training and recognition loops to reduce stress and empower employees</li>
+                            <li>Reframed self-checkout from a friction point to a trust-driven retail service</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+
+            <div class="ps-right">
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Understanding the Process</h3>
+                    <ul class="ps-detail-list">
+                        <li>Field observations</li>
+                        <li>Stakeholder interviews</li>
+                        <li>Secondary research</li>
+                        <li>Data analysis</li>
+                        <li>Service blueprint</li>
+                        <li>System mapping</li>
+                        <li>Gap analysis of policy and operations</li>
+                        <li>Co-creation of opportunity areas</li>
+                        <li>Concept development</li>
+                        <li>Impact projection</li>
+                        <li>Final white paper</li>
+                        <li>Presentation</li>
+                    </ul>
+                </div>
+
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Tools &amp; Technologies</h3>
+                    <ul class="ps-detail-list">
+                        <li>Miro</li>
+                        <li>Figma</li>
+                        <li>Illustrator</li>
+                        <li>InDesign</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Project Images Section -->
-    <section class="project-images">
-        <div class="project-image-full">
-            <img src="assets/images/kroger1.png" alt="Kroger Self-Checkout">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/kroger2.png" alt="Kroger Self-Checkout">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/kroger3.png" alt="Kroger Self-Checkout">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/kroger4.png" alt="Kroger Self-Checkout">
+    <section class="ps-images">
+        <div class="ps-image-full">
+            <img src="Projects/KROGER/KROGER - Final (1).png" alt="Kroger Project — slide 1" loading="lazy">
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <h2 class="contact-title">Ready to turn your vision into a great product?</h2>
-        <a href="mailto:kginug20@student.scad.edu" class="contact-btn">Let's Discuss</a>
+    <section class="pk-gallery" aria-label="Kroger in-store photo gallery">
+        <div class="pk-gallery-head">
+            <p class="pk-gallery-eyebrow">Co-Creation Workshop</p>
+        </div>
+
+        <div class="pk-carousel">
+            <div class="pk-carousel-track">
+                <div class="pk-carousel-group">
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 1.jpeg" alt="Kroger field photo 1" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 2.jpg" alt="Kroger field photo 2" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 3.jpeg" alt="Kroger field photo 3" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 4.jpeg" alt="Kroger field photo 4" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 5.jpg" alt="Kroger field photo 5" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 6.jpeg" alt="Kroger field photo 6" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 7.jpg" alt="Kroger field photo 7" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 8.jpg" alt="Kroger field photo 8" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 9.jpg" alt="Kroger field photo 9" loading="lazy"></figure>
+                </div>
+
+                <div class="pk-carousel-group" aria-hidden="true">
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 1.jpeg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 2.jpg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 3.jpeg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 4.jpeg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 5.jpg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 6.jpeg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 7.jpg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 8.jpg" alt="" loading="lazy"></figure>
+                    <figure class="pk-shot"><img src="Projects/kroger_pics/Kroger 9.jpg" alt="" loading="lazy"></figure>
+                </div>
+            </div>
+        </div>
+
+        <div class="pk-case-cta">
+            <div class="pk-case-link-mask">
+                <a class="pk-case-link"
+                    href="https://drive.google.com/drive/folders/1dNr0JYO_pzEHX2PLzgP4Cgr345yohftZ?usp=sharing"
+                    target="_blank" rel="noopener">EXPLORE FULL CASE STUDY</a>
+            </div>
+        </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-name">KEERTHI GINUGA</div>
-        <div class="footer-links">
-            <a href="KeerthiGinuga_Resume.pdf" target="_blank">RESUME</a>
-            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank">LINKEDIN</a>
-            <a href="mailto:kginug20@student.scad.edu">EMAIL</a>
+    <footer class="ps-footer" id="contact">
+        <div class="ps-footer-inner">
+            <h2 class="ps-footer-headline">
+                <span>LET'S CREATE</span>
+                <span>WHAT'S NEXT,</span>
+                <em>Together.</em>
+            </h2>
         </div>
+        <nav class="ps-footer-links" aria-label="Footer">
+            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+            <a href="mailto:kginug20@student.scad.edu">Email</a>
+        </nav>
     </footer>
 
     <script src="project-script.js"></script>

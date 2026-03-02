@@ -11,7 +11,7 @@
 const NAV_LINKS = [
   { label: 'Home', href: 'index.html' },
   { label: 'Works', href: 'works.html' },
-  { label: 'Playground', href: '#' },
+  { label: 'Playground', href: 'playground.html' },
   { label: 'About Me', href: 'about.html' }
 ];
 
@@ -38,7 +38,7 @@ function _getActiveHref() {
   const path = window.location.pathname;
   if (path.includes('works')) return 'works.html';
   if (path.includes('about')) return 'about.html';
-  if (path.includes('playground')) return '#';
+  if (path.includes('playground')) return 'playground.html';
   return 'index.html';
 }
 
@@ -71,7 +71,7 @@ function injectSharedLayout() {
     <ul class="v2-nav-links">
       ${_buildNavLinks()}
     </ul>
-    <a href="assets/resume.pdf" target="_blank" class="v2-nav-resume">RESUME</a>
+    <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="v2-nav-resume">RESUME</a>
     <button class="v2-hamburger" aria-label="Toggle menu" aria-expanded="false">
       <span class="v2-hamburger-line"></span>
       <span class="v2-hamburger-line"></span>

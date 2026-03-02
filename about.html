@@ -23,28 +23,40 @@
         <!-- Wrapper for parallax reveal to prevent footer from showing through gaps -->
         <div class="v2-main-content-wrapper" style="position: relative; z-index: 2; background: #000;">
             <!-- ── Hero Section ── -->
-            <section class="v2-about-hero" id="about-hero">
+            <div class="v2-about-hero-scroll" id="about-hero-scroll">
+                <section class="v2-about-hero" id="about-hero">
 
-                <!-- Left column: Name, role, resume -->
-                <div class="v2-about-left">
-                    <div class="v2-about-identity">
-                        <h1 class="v2-about-name">Keerthi Ginuga</h1>
-                        <p class="v2-about-role">architect | user experience designer</p>
-                        <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="v2-about-resume-btn"
-                            aria-label="Download Resume">Resume</a>
+                    <!-- Left column: Name, role, resume -->
+                    <div class="v2-about-left">
+                        <div class="v2-about-identity">
+                            <h1 class="v2-about-name">Keerthi Ginuga</h1>
+                            <p class="v2-about-role">architect | user experience designer</p>
+                            <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="v2-about-resume-btn"
+                                aria-label="Download Resume">Resume</a>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Right column: large statement quote -->
-                <div class="v2-about-right">
-                    <blockquote class="v2-about-quote">
-                        I'm passionate about designing
-                        <em>seamless technology</em> that
-                        understands, not interrupts.<span class="v2-about-quote-mark">"</span>
-                    </blockquote>
-                </div>
+                    <!-- Right column: large statement quote -->
+                    <div class="v2-about-right">
+                        <blockquote class="v2-about-quote">
+                            I'm passionate about designing
+                            <em>seamless technology</em> that
+                            understands, not interrupts.<span class="v2-about-quote-mark">"</span>
+                        </blockquote>
+                    </div>
 
-            </section>
+                    <!-- Sequential reveal photos -->
+                    <div class="v2-about-photo-track" aria-hidden="true">
+                        <figure class="v2-about-photo v2-about-photo--one" data-about-photo="one">
+                            <img src="assets/images/About me (1).jpeg" alt="">
+                        </figure>
+                        <figure class="v2-about-photo v2-about-photo--two" data-about-photo="two">
+                            <img src="assets/images/About me (2).jpeg" alt="">
+                        </figure>
+                    </div>
+
+                </section>
+            </div>
 
             <!-- ── About Page Content (Process & Accomplishments) ── -->
             <div class="v2-about-content">
@@ -60,7 +72,7 @@
                                     <div class="v2-process-row-left">
                                         <span class="v2-process-heading">I start with curiosity.</span>
                                         <div class="v2-process-thumb">
-                                            <img src="assets/images/autonomous-vehicle.jpg" alt="Curiosity">
+                                            <img src="assets/images/How I Enjoy the Process/1.jpg" alt="Curiosity">
                                         </div>
                                     </div>
                                     <span class="v2-process-index">
@@ -82,7 +94,7 @@
                                     <div class="v2-process-row-left">
                                         <span class="v2-process-heading">I collect stories, not just data.</span>
                                         <div class="v2-process-thumb">
-                                            <img src="assets/images/google-nest.jpg" alt="Stories">
+                                            <img src="assets/images/How I Enjoy the Process/2.jpg" alt="Stories">
                                         </div>
                                     </div>
                                     <span class="v2-process-index">
@@ -104,7 +116,7 @@
                                     <div class="v2-process-row-left">
                                         <span class="v2-process-heading">I learn by listening.</span>
                                         <div class="v2-process-thumb">
-                                            <img src="assets/images/sea-love.jpg" alt="Listening">
+                                            <img src="assets/images/How I Enjoy the Process/3.png" alt="Listening">
                                         </div>
                                     </div>
                                     <span class="v2-process-index">
@@ -126,7 +138,7 @@
                                     <div class="v2-process-row-left">
                                         <span class="v2-process-heading">I think best with a pen and a timer.</span>
                                         <div class="v2-process-thumb">
-                                            <img src="assets/images/imessage.jpg" alt="Pen and Timer">
+                                            <img src="assets/images/How I Enjoy the Process/4.jpg" alt="Pen and Timer">
                                         </div>
                                     </div>
                                     <span class="v2-process-index">
@@ -148,7 +160,7 @@
                                     <div class="v2-process-row-left">
                                         <span class="v2-process-heading">I trust testing to shape the work.</span>
                                         <div class="v2-process-thumb">
-                                            <img src="assets/images/word-clock.jpg" alt="Testing">
+                                            <img src="assets/images/How I Enjoy the Process/5.png" alt="Testing">
                                         </div>
                                     </div>
                                     <span class="v2-process-index">
@@ -170,7 +182,7 @@
                                     <div class="v2-process-row-left">
                                         <span class="v2-process-heading">I believe design is a team sport.</span>
                                         <div class="v2-process-thumb">
-                                            <img src="assets/images/7west.jpg" alt="Team Sport">
+                                            <img src="assets/images/How I Enjoy the Process/6.jpg" alt="Team Sport">
                                         </div>
                                     </div>
                                     <span class="v2-process-index">
@@ -239,8 +251,8 @@
             </div>
             <nav class="v2-footer-links" aria-label="Footer">
                 <a href="https://linkedin.com/in/keerthiginuga" target="_blank" rel="noopener">LinkedIn</a>
-                <a href="#" target="_blank" rel="noopener">Résumé</a>
-                <a href="mailto:keerthi@example.com">Email</a>
+                <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+                <a href="mailto:kginug20@student.scad.edu">Email</a>
             </nav>
         </footer>
     </main>
@@ -255,6 +267,94 @@
             injectSharedLayout();
             initNavMenuToggle();
             initNavScroll();
+
+            // About hero photo sequence: image 1 rises first, then image 2.
+            const initAboutHeroPhotoSequence = () => {
+                const heroScroll = document.getElementById('about-hero-scroll');
+                const photoOne = document.querySelector('[data-about-photo="one"]');
+                const photoTwo = document.querySelector('[data-about-photo="two"]');
+                if (!heroScroll || !photoOne || !photoTwo) return;
+
+                const PHOTO_SPEED = 0.6;
+                const SECOND_IMAGE_SPEED_MULT = 0.8;
+                const firstStart = 0.10;
+                const secondStart = 0.46;
+                const firstDuration = 0.36 / PHOTO_SPEED;
+                const secondDuration = 0.38 / (PHOTO_SPEED * SECOND_IMAGE_SPEED_MULT);
+
+                let heroStart = 0;
+                let heroScrollDistance = 1;
+                let rafQueued = false;
+                let hasScrollStarted = false;
+
+                const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+                const setPhotoProgress = (el, progress) => {
+                    const clamped = clampValue(progress, 0, 1);
+                    const eased = easeOutCubic(clamped);
+                    const yShift = (1 - eased) * window.innerHeight * 0.95;
+                    const scale = 0.84 + (0.16 * eased);
+                    const opacity = clampValue((eased - 0.12) / 0.88, 0, 1);
+
+                    el.style.setProperty('--about-photo-y', `${yShift.toFixed(1)}px`);
+                    el.style.setProperty('--about-photo-scale', scale.toFixed(3));
+                    el.style.setProperty('--about-photo-opacity', opacity.toFixed(3));
+                };
+
+                const measure = () => {
+                    const rect = heroScroll.getBoundingClientRect();
+                    heroStart = window.scrollY + rect.top;
+                    heroScrollDistance = Math.max(heroScroll.offsetHeight - window.innerHeight, 1);
+                };
+
+                const render = () => {
+                    rafQueued = false;
+
+                    const scrollDelta = window.scrollY - heroStart;
+                    if (scrollDelta <= 1) {
+                        setPhotoProgress(photoOne, 0);
+                        setPhotoProgress(photoTwo, 0);
+                        return;
+                    }
+
+                    const heroProgress = clampValue((window.scrollY - heroStart) / heroScrollDistance, 0, 1);
+                    const firstPhotoProgress = clampValue((heroProgress - firstStart) / firstDuration, 0, 1);
+                    const secondPhotoProgress = clampValue((heroProgress - secondStart) / secondDuration, 0, 1);
+
+                    setPhotoProgress(photoOne, firstPhotoProgress);
+                    setPhotoProgress(photoTwo, secondPhotoProgress);
+                };
+
+                const requestRender = () => {
+                    if (!hasScrollStarted) return;
+                    if (rafQueued) return;
+                    rafQueued = true;
+                    requestAnimationFrame(render);
+                };
+
+                const onResize = () => {
+                    measure();
+                    if (!hasScrollStarted) {
+                        setPhotoProgress(photoOne, 0);
+                        setPhotoProgress(photoTwo, 0);
+                        return;
+                    }
+                    requestRender();
+                };
+
+                measure();
+                setPhotoProgress(photoOne, 0);
+                setPhotoProgress(photoTwo, 0);
+
+                window.addEventListener('scroll', () => {
+                    hasScrollStarted = true;
+                    requestRender();
+                }, { passive: true });
+                window.addEventListener('resize', onResize);
+            };
+
+            initAboutHeroPhotoSequence();
+
             // Logo rotation for about page
             const logo = document.getElementById('mainLogo');
             if (logo) {

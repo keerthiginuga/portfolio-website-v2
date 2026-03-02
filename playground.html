@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playground — Keerthi Ginuga</title>
+  <meta name="description" content="Playground experiments by Keerthi Ginuga. New UX concepts and interaction studies are coming soon.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body class="v2-home v2-playground-page">
+  <div id="shared-layout"></div>
+
+  <main class="v2-playground-main">
+    <div class="v2-playground-glow v2-playground-glow--one" aria-hidden="true"></div>
+    <div class="v2-playground-glow v2-playground-glow--two" aria-hidden="true"></div>
+
+    <section class="v2-playground-layout" aria-label="Playground coming soon">
+      <div class="v2-playground-content">
+        <p class="v2-playground-kicker">In Progress / Studio Playground</p>
+        <h1 class="v2-playground-title">
+          <span><em>Coming</em></span>
+          <span><em>Soon</em></span>
+        </h1>
+        <p class="v2-playground-copy">
+          I am crafting a living playground of interaction experiments, speculative UX systems, and micro-prototypes
+          that test how digital products can feel more human, expressive, and useful.
+        </p>
+
+        <div class="v2-playground-chip-row" aria-label="Focus areas">
+          <span class="v2-playground-chip">Motion Prototypes</span>
+          <span class="v2-playground-chip">UX Systems</span>
+          <span class="v2-playground-chip">Design Engineering</span>
+          <span class="v2-playground-chip">Interaction Studies</span>
+        </div>
+
+        <div class="v2-playground-actions">
+          <a href="works.html" class="v2-playground-btn v2-playground-btn--solid">See Selected Works</a>
+          <a href="about.html" class="v2-playground-btn v2-playground-btn--ghost">About My Process</a>
+        </div>
+      </div>
+
+      <div class="v2-playground-orbit" aria-hidden="true">
+        <div class="v2-playground-orbit-core"></div>
+        <div class="v2-playground-pulse"></div>
+        <div class="v2-playground-note v2-playground-note--one"><b>Experiment 01</b>Spatial Nav Systems</div>
+        <div class="v2-playground-note v2-playground-note--two"><b>Experiment 02</b>Emotive UI States</div>
+        <div class="v2-playground-note v2-playground-note--three"><b>Experiment 03</b>Adaptive Workflows</div>
+        <div class="v2-playground-note v2-playground-note--four"><b>Experiment 04</b>Future Interactions</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      injectSharedLayout();
+      initNavMenuToggle();
+      initNavScroll();
+    });
+  </script>
+</body>
+</html>

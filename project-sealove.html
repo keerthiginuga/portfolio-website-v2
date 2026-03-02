@@ -4,18 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeaLove Candle Bar</title>
-    <link rel="stylesheet" href="project-styles.css">
+    <title>SEALOVE CANDLE BAR WEBSITE REDESIGN · Keerthi Ginuga</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
         rel="stylesheet">
+
+    <link rel="stylesheet" href="project-styles.css">
+    <link rel="stylesheet" href="sonix-styles.css">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 
 <body>
-    <!-- K Logo -->
     <a href="index.html" class="k-logo">
         <svg class="k-letter" width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -27,255 +29,184 @@
         </svg>
     </a>
 
-    <!-- Top Navigation -->
     <nav class="top-nav">
         <ul class="nav-links">
             <li><a href="index.html" class="nav-link">HOME</a></li>
-            <li><a href="works.html" class="nav-link">WORKS</a></li>
+            <li><a href="works.html" class="nav-link active">WORKS</a></li>
             <li><a href="playground.html" class="nav-link">PLAYGROUND</a></li>
             <li><a href="about.html" class="nav-link">ABOUT ME</a></li>
         </ul>
+        <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="nav-resume">RESUME</a>
+        <button type="button" class="index-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <span class="sr-only">Menu</span>
+            <span class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
     </nav>
 
-    <!-- Index Menu Overlay -->
-    <div class="index-overlay">
-        <button class="close-menu">&times;</button>
+    <section class="ps-hero">
+        <img class="ps-hero-img ps-hero-img--sealove" src="assets/images/sea-love.jpg" alt="SeaLove project cover image">
 
-        <!-- Project Thumbnails Background -->
-        <div class="project-thumbnails">
-            <div class="project-thumb" data-project="sonix">
-                <img src="assets/images/autonomous-vehicle.jpg" alt="SONIX">
-            </div>
-            <div class="project-thumb" data-project="7west">
-                <img src="assets/images/7west.jpg" alt="7WEST">
-            </div>
-            <div class="project-thumb" data-project="sealove">
-                <img src="assets/images/sea-love.jpg" alt="SeaLove Candle Bar">
-            </div>
-            <div class="project-thumb" data-project="nest">
-                <img src="assets/images/google-nest.jpg" alt="Google Nest Thermostat">
-            </div>
-            <div class="project-thumb" data-project="kroger">
-                <img src="assets/images/kroger.jpg" alt="Kroger Self-Checkout">
-            </div>
-            <div class="project-thumb" data-project="kohler">
-                <img src="assets/images/kohler-scadpro.jpg" alt="Kohler x SCADpro">
-            </div>
-        </div>
+        <h1 class="ps-hero-title">SEALOVE CANDLE BAR WEBSITE REDESIGN</h1>
 
-        <!-- Left Side: Projects -->
-        <div class="index-left">
-            <h2 class="index-section-title">PROJECTS</h2>
-            <ul class="projects-list">
-                <li class="project-link" data-project="sonix">
-                    <a href="project-sonix.html">
-                        <span class="project-name">SONIX — Your Personal Space On Wheels</span>
-                        <span class="project-desc">Branding & User Experience</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="7west">
-                    <a href="project-7west.html">
-                        <span class="project-name">7WEST — Your All-In-One Student Ecosystem</span>
-                        <span class="project-desc">UX Design, Co-founder</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="sealove">
-                    <a href="project-sealove.html">
-                        <span class="project-name">SeaLove Candle Bar</span>
-                        <span class="project-desc">Web Design</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="nest">
-                    <a href="project-nest.html">
-                        <span class="project-name">Google Nest Thermostat for Office Space</span>
-                        <span class="project-desc">Branding & User Experience</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="kroger">
-                    <a href="project-kroger.html">
-                        <span class="project-name">Rethinking the Self-Checkout Experience at Kroger</span>
-                        <span class="project-desc">Service Design</span>
-                    </a>
-                </li>
-                <li class="project-link" data-project="kohler">
-                    <a href="project-kohler.html">
-                        <span class="project-name">Kohler x SCADpro — Future of Hydrotherapy</span>
-                        <span class="project-desc">UX Research & Design</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="ps-scroll-indicator" aria-hidden="true">
+            <span class="ps-scroll-mouse">
+                <span class="ps-scroll-wheel"></span>
+            </span>
         </div>
-
-        <!-- Right Side: About Me -->
-        <div class="index-right">
-            <h2 class="index-section-title">ABOUT ME</h2>
-            <div class="about-content-index">
-                <p>Hello! I'm Keerthi, a UX Designer and Architect based in Savannah, GA. I thrive on crafting solutions
-                    that not only look beautiful but function seamlessly—ensuring that every interaction feels intuitive
-                    and meaningful.</p>
-                <p>Dive into my world of design, where strategy meets creativity, and each project tells a story of
-                    innovation and impact.</p>
-                <div class="about-links-index">
-                    <a href="KeerthiGinuga_Resume.pdf" target="_blank" class="index-link">View My Resume <span
-                            class="arrow">→</span></a>
-                    <a href="index.html#contact" class="index-link">Contact Me <span class="arrow">→</span></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project Hero Section -->
-    <section class="project-hero">
-        <div class="project-hero-image">
-            <img src="assets/images/sea-love.jpg" alt="SeaLove Candle Bar">
-        </div>
-        <h1 class="project-hero-title">SeaLove Candle Bar</h1>
     </section>
 
-    <!-- Project Content Section -->
-    <section class="project-content">
-        <div class="project-content-grid">
-            <!-- Left Column: Description -->
-            <div class="project-description-column">
-                <div class="description-section">
-                    <p class="project-intro">SeaLove Candle Bar is a boutique candle-making experience that combines
-                        artisanal craftsmanship with coastal aesthetics, offering customers a unique way to create
-                        personalized scented candles.</p>
+    <section class="ps-info">
+        <div class="ps-meta-row">
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Role</p>
+                <p class="ps-meta-value">UX Researcher<br>UI Designer<br>UX Writer</p>
+            </div>
+            <div class="ps-meta-item">
+                <p class="ps-meta-label">Timeline</p>
+                <p class="ps-meta-value">Mar-May 2025</p>
+            </div>
+        </div>
+
+        <div class="ps-info-grid">
+            <div class="ps-left">
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Overview</h2>
+                    <p class="ps-section-body">
+                        A strategic redesign of <strong>SeaLove Candle Bar's</strong> website to create a seamless,
+                        intuitive, and calming shopping and booking experience for a DIY candle brand known for its
+                        serene, sensory aesthetic.
+                    </p>
                 </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Our Goal</h2>
-                    <p>To create an engaging web presence that captures the essence of the coastal-inspired brand while
-                        providing an intuitive booking experience for custom candle-making sessions and seamless
-                        e-commerce functionality for pre-made products.</p>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Goal</h2>
+                    <p class="ps-section-body">
+                        Transform SeaLove's digital presence by <strong>aligning the interface with its in-store
+                            essence</strong> - clean, intentional, and relaxing while simplifying navigation and
+                        booking to enhance user confidence and retention.
+                    </p>
                 </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Constraints</h2>
-                    <p>An 8-week timeline to design and develop a full-featured website that needed to balance aesthetic
-                        appeal with e-commerce functionality. The site required integration of booking systems, product
-                        catalogs, and responsive design across all devices.</p>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Challenges</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Overwhelming information and confusing navigation</li>
+                            <li>Disconnected booking system with external redirects</li>
+                            <li>Poor differentiation between workshops, events, and products</li>
+                            <li>Inconsistent branding and visual hierarchy</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="description-section">
-                    <h2 class="section-heading">Our Outcome</h2>
-                    <p>The SeaLove website creates an immersive brand experience that reflects the coastal, artisanal
-                        nature of the business. Users can easily browse products, book custom candle-making sessions,
-                        and learn about the brand's story through an elegant, user-friendly interface.</p>
-                </div>
-                <div class="description-section">
-                    <h2 class="section-heading">What was the challenge?</h2>
-                    <p>Small boutique businesses often struggle with generic e-commerce solutions that don't capture
-                        their unique brand identity. SeaLove needed a web presence that felt as personal and curated as
-                        their in-store experience while providing modern online shopping functionality.</p>
+
+                <div class="ps-section">
+                    <h2 class="ps-section-heading">Outcomes</h2>
+                    <div class="ps-section-body">
+                        <ul>
+                            <li>Streamlined navigation and booking flow integrated directly on-site</li>
+                            <li>Reorganized product catalog with filters and guided browsing</li>
+                            <li>Clarified hierarchy with focused CTAs and accessible structure</li>
+                            <li>Reinforced brand values of sustainability, craftsmanship, and calm</li>
+                            <li>Improved usability reflected in reduced drop-offs and higher engagement</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <!-- Right Column: Details -->
-            <div class="project-details-column">
-                <div class="detail-group">
-                    <h3 class="detail-label">Role</h3>
-                    <p class="detail-value">Web Designer</p>
-                </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Timeline</h3>
-                    <p class="detail-value">8 Weeks</p>
-                </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Understanding the Process</h3>
-                    <ul class="process-list">
-                        <li>Client Discovery</li>
-                        <li>Brand Analysis</li>
-                        <li>Competitor Research</li>
-                        <li>User Flow Mapping</li>
-                        <li>Visual Design</li>
-                        <li>Prototyping</li>
-                        <li>Responsive Design</li>
-                        <li>Client Feedback & Iteration</li>
+            <div class="ps-right">
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Understanding the Process</h3>
+                    <ul class="ps-detail-list">
+                        <li>Secondary research</li>
+                        <li>Competitor benchmarking</li>
+                        <li>User interviews and surveys</li>
+                        <li>Card sorting &amp; tree testing</li>
+                        <li>Information architecture redesign</li>
+                        <li>UX writing and content strategy</li>
+                        <li>Wireframing and visual exploration</li>
+                        <li>High-fidelity UI design</li>
+                        <li>Usability testing and iteration</li>
                     </ul>
                 </div>
-                <div class="detail-group">
-                    <h3 class="detail-label">Tools & Technologies</h3>
-                    <ul class="tools-list">
+
+                <div class="ps-detail-group">
+                    <h3 class="ps-detail-label">Tools &amp; Technologies</h3>
+                    <ul class="ps-detail-list">
                         <li>Figma</li>
-                        <li>Adobe Photoshop</li>
-                        <li>HTML/CSS</li>
-                        <li>JavaScript</li>
+                        <li>Miro</li>
+                        <li>KardSort</li>
+                        <li>UXtweak</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Project Images Section -->
-    <section class="project-images">
-        <div class="project-image-full">
-            <img src="assets/images/Sealove.png" alt="SeaLove Candle Bar">
+    <section class="ps-images">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (1).png" alt="SeaLove Project — slide 1" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-0.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (2).png" alt="SeaLove Project — slide 2" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-1.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (3).png" alt="SeaLove Project — slide 3" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-2.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (4).png" alt="SeaLove Project — slide 4" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-3.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (5).png" alt="SeaLove Project — slide 5" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-4.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (6).png" alt="SeaLove Project — slide 6" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-5.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (7).png" alt="SeaLove Project — slide 7" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-6.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (8).png" alt="SeaLove Project — slide 8" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-7.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (9).png" alt="SeaLove Project — slide 9" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-8.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (10).png" alt="SeaLove Project — slide 10" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-9.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (11).png" alt="SeaLove Project — slide 11" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-10.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (12).png" alt="SeaLove Project — slide 12" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-11.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (13).png" alt="SeaLove Project — slide 13" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-12.png" alt="SeaLove Candle Bar">
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (14).png" alt="SeaLove Project — slide 14" loading="lazy">
         </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-13.png" alt="SeaLove Candle Bar">
-        </div>
-        <div class="project-image-full">
-            <img src="assets/images/Sealove-14.png" alt="SeaLove Candle Bar">
-        </div>
-        <div class="project-image-full">
-            <video width="100%" controls autoplay muted loop playsinline>
-                <source src="assets/images/sealove-video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+        <div class="ps-image-full">
+            <img src="Projects/Sealove/Sea Love (15).png" alt="SeaLove Project — slide 15" loading="lazy">
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <h2 class="contact-title">Ready to turn your vision into a great product?</h2>
-        <a href="mailto:kginug20@student.scad.edu" class="contact-btn">Let's Discuss</a>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-name">KEERTHI GINUGA</div>
-        <div class="footer-links">
-            <a href="KeerthiGinuga_Resume.pdf" target="_blank">RESUME</a>
-            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank">LINKEDIN</a>
-            <a href="mailto:kginug20@student.scad.edu">EMAIL</a>
+    <footer class="ps-footer" id="contact">
+        <div class="ps-footer-inner">
+            <h2 class="ps-footer-headline">
+                <span>LET'S CREATE</span>
+                <span>WHAT'S NEXT,</span>
+                <em>Together.</em>
+            </h2>
         </div>
+        <nav class="ps-footer-links" aria-label="Footer">
+            <a href="https://www.linkedin.com/in/keerthi-g-079b37239/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+            <a href="mailto:kginug20@student.scad.edu">Email</a>
+        </nav>
     </footer>
 
     <script src="project-script.js"></script>

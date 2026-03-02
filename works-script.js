@@ -340,8 +340,13 @@
                     window.location.href = 'project-sonix.html';
                 } else if (hoveredProject === 1) {
                     window.location.href = 'project-imessage.html';
+                } else if (hoveredProject === 2) {
+                    window.location.href = 'project-sealove.html';
+                } else if (hoveredProject === 3) {
+                    window.location.href = 'project-nest.html';
+                } else if (hoveredProject === 4) {
+                    window.location.href = 'project-kroger.html';
                 }
-                // Indices 2-4: pages not yet ready — do nothing
                 // Indices 5+:  "Coming soon" — already shown in cursor label
             });
         }
