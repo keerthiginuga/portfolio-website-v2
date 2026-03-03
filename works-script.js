@@ -21,49 +21,126 @@
 
     /* ── Configuration ─────────────────────────────────────────────────── */
     var MAX_VELOCITY = 3000;
-    var MAX_BOOST = 0.40;
-    var FAST_LERP = 0.085;
+    var MAX_BOOST = 0.34;
+    var FAST_LERP = 0.078;
     var SLOW_LERP = 0.025;
     var SETTLE_FRACTION = 0.25;
     var HOVER_RANGE = 80;
     var CURSOR_LERP = 0.14;
+    var VELOCITY_SMOOTHING = 0.14;
 
     /* ── DOM refs ──────────────────────────────────────────────────────── */
     var main = document.getElementById('worksMain');
     var sticky = document.getElementById('worksSticky');
     var imgStack = document.getElementById('imgStack');
+    var row = document.querySelector('.v2-works-row');
     var slides = document.querySelectorAll('.v2-stack-slide');
     var infoItems = document.querySelectorAll('.v2-stack-info-item');
+    var infoTopEls = document.querySelectorAll('.v2-works-info-top');
+    var infoTop0 = document.getElementById('infoTop0');
+    var cursorEl = document.getElementById('viewCursor');
+
+    if (!sticky || !slides.length || !imgStack) return;
 
     /* Drive transition count from the actual DOM so HTML is the single source of truth */
     var NUM_PROJECTS = slides.length;
     var NUM_TRANSITIONS = NUM_PROJECTS - 1;
 
     var hoveredProject = -1;
+    var lastPointerX = null;
+    var lastPointerY = null;
+    var hasInteracted = false;
+    var pointerInStack = false;
 
-    if (!sticky || !slides.length) return;
+    var activeInfoIndex = -1;
+    var lastTaggedIndex = -1;
+
+    var hoverSyncRaf = null;
+    var resizeTimer = null;
 
     /* ── Global Tags Helper ─────────────────────────────────────────────── */
     var tagSpans = document.querySelectorAll('#globalTags [data-tag]');
     var sepSpans = document.querySelectorAll('#globalTags .v2-tag-sep');
 
     function updateGlobalTags(activeIndex) {
+        if (activeIndex === lastTaggedIndex) return;
         var item = infoItems[activeIndex];
         if (!item) return;
+
         var rawTags = item.getAttribute('data-tags') || '';
         var activeTags = rawTags.split(',').map(function (t) { return t.trim(); });
 
-        tagSpans.forEach(function (span, i) {
+        for (var i = 0; i < tagSpans.length; i++) {
+            var span = tagSpans[i];
             var tag = span.getAttribute('data-tag');
             var isDim = activeTags.indexOf(tag) === -1;
             span.classList.toggle('is-dim', isDim);
-            /* Dim the separator that follows this tag if the tag is dimmed */
             if (sepSpans[i]) sepSpans[i].classList.toggle('is-dim', isDim);
-        });
+        }
+
+        lastTaggedIndex = activeIndex;
     }
 
-    /* Initialise tags for first project */
-    // updateGlobalTags(0); - Removed so that all tags start in default state
+    function setActiveInfoItem(activeIndex) {
+        if (activeIndex === activeInfoIndex) return;
+        if (activeIndex < 0 || activeIndex >= infoItems.length) return;
+
+        if (activeInfoIndex !== -1 && infoItems[activeInfoIndex]) {
+            infoItems[activeInfoIndex].classList.remove('is-active');
+        }
+
+        infoItems[activeIndex].classList.add('is-active');
+        activeInfoIndex = activeIndex;
+    }
+
+    function setCursorLabelForProject(projectIndex) {
+        if (!cursorEl) return;
+        cursorEl.innerText = (projectIndex >= 5) ? 'Coming soon' : 'view';
+    }
+
+    function getSlideHitFromPoint(x, y) {
+        var els = document.elementsFromPoint(x, y);
+        for (var k = 0; k < els.length; k++) {
+            if (els[k].classList && els[k].classList.contains('v2-stack-slide')) {
+                return parseInt(els[k].getAttribute('data-slide'), 10);
+            }
+        }
+        return -1;
+    }
+
+    function syncHoveredProjectFromPointerNow() {
+        if (lastPointerX === null || lastPointerY === null) return;
+
+        var rect = imgStack.getBoundingClientRect();
+        var isInsideStack =
+            lastPointerX >= rect.left &&
+            lastPointerX <= rect.right &&
+            lastPointerY >= rect.top &&
+            lastPointerY <= rect.bottom;
+
+        if (!isInsideStack) return;
+
+        var hit = getSlideHitFromPoint(lastPointerX, lastPointerY);
+        if (hit === -1) return;
+
+        if (!hasInteracted) hasInteracted = true;
+
+        if (hit !== hoveredProject) {
+            hoveredProject = hit;
+            setActiveInfoItem(hoveredProject);
+            updateGlobalTags(hoveredProject);
+            setCursorLabelForProject(hoveredProject);
+        }
+    }
+
+    function scheduleHoverSync(force) {
+        if (!force && !pointerInStack) return;
+        if (hoverSyncRaf) return;
+        hoverSyncRaf = requestAnimationFrame(function () {
+            hoverSyncRaf = null;
+            syncHoveredProjectFromPointerNow();
+        });
+    }
 
     /* ── 1. Lenis Smooth Scroll ────────────────────────────────────────── */
     gsap.registerPlugin(ScrollTrigger);
@@ -91,22 +168,18 @@
     });
 
     ScrollTrigger.addEventListener('refresh', function () { lenis.resize(); });
-    ScrollTrigger.refresh();
 
-    /* ── 2. Layout ─────────────────────────────────────────────────────── */
-    var stickyRect = sticky.getBoundingClientRect();
-    var stickyTop = stickyRect.top;
+    /* ── 2. Layout & Stage Metrics ─────────────────────────────────────── */
+    var stickyTop = 0;
+    var startYPercent = 0;
 
-    main.style.display = 'block';
-    main.style.minHeight = '';
-    main.style.paddingBottom = '0';
-    sticky.style.marginTop = stickyTop + 'px';
-
-    /* ── 3. Start Position: Deep Hide ──────────────────────────────────── */
-    var stackRect = imgStack.getBoundingClientRect();
-    var distToVpBottom = window.innerHeight - stackRect.top;
-    var exactBottomPct = (distToVpBottom / stackRect.height) * 100;
-    var startYPercent = exactBottomPct + 15;
+    var VH = window.innerHeight;
+    var SCROLL_PER_ITEM = VH * 1.5;
+    var HOLD_DIST = SCROLL_PER_ITEM * 0.40;
+    var TRANS_DIST = SCROLL_PER_ITEM - Math.max(0, HOLD_DIST);
+    var totalScrollDist = NUM_TRANSITIONS * SCROLL_PER_ITEM;
+    var END_LINGER_DIST = VH * 2.5;
+    var pinDist = totalScrollDist + END_LINGER_DIST;
 
     var ySetters = Array.prototype.map.call(slides, function (slide) {
         return gsap.quickSetter(slide, 'yPercent');
@@ -115,47 +188,103 @@
     var currentY = new Array(slides.length);
     var targetY = new Array(slides.length);
 
-    slides.forEach(function (slide, i) {
-        currentY[i] = i === 0 ? 0 : startYPercent;
-        targetY[i] = i === 0 ? 0 : startYPercent;
-        ySetters[i](currentY[i]);
-        gsap.set(slide, { force3D: true });
-    });
+    function calcBase() {
+        var h = imgStack.getBoundingClientRect().height;
+        var textH = infoTop0 ? infoTop0.offsetHeight : 80;
+        return (h * 0.35) - (textH * 0.5);
+    }
 
-    /* ── 4. Scroll Stage ───────────────────────────────────────────────── */
-    var VH = window.innerHeight;
-    var SCROLL_PER_ITEM = VH * 1.5;
-    var HOLD_DIST = SCROLL_PER_ITEM * 0.40;
-    var TRANS_DIST = SCROLL_PER_ITEM - Math.max(0, HOLD_DIST);
-    var totalScrollDist = NUM_TRANSITIONS * SCROLL_PER_ITEM;
-    var END_LINGER_DIST = VH * 2.5; // Hold the last project for 250% viewport height before unpinning
-    var pinDist = totalScrollDist + END_LINGER_DIST;
+    function seedSlidesAtStart() {
+        for (var i = 0; i < slides.length; i++) {
+            currentY[i] = (i === 0) ? 0 : startYPercent;
+            targetY[i] = (i === 0) ? 0 : startYPercent;
+            ySetters[i](currentY[i]);
+            gsap.set(slides[i], { force3D: true });
+        }
+    }
 
-    var hasInteracted = false;
+    function preserveSlideProgress(prevStartYPercent) {
+        if (!prevStartYPercent || prevStartYPercent <= 0) return;
 
+        for (var i = 0; i < slides.length; i++) {
+            if (i === 0) {
+                currentY[i] = 0;
+                targetY[i] = 0;
+                ySetters[i](0);
+                continue;
+            }
+
+            var currentProgress = clampValue(1 - (currentY[i] / prevStartYPercent), 0, 1);
+            var targetProgress = clampValue(1 - (targetY[i] / prevStartYPercent), 0, 1);
+
+            currentY[i] = startYPercent * (1 - currentProgress);
+            targetY[i] = startYPercent * (1 - targetProgress);
+            ySetters[i](currentY[i]);
+        }
+    }
+
+    function recomputeMetrics(preserveSlides) {
+        var prevStart = startYPercent;
+
+        /*
+         * Measure sticky's natural flow position first (CSS-driven flex layout),
+         * then re-apply runtime pin layout. This preserves the original lower-on-screen anchor.
+         */
+        main.style.display = '';
+        main.style.minHeight = '';
+        main.style.paddingBottom = '';
+        sticky.style.marginTop = '';
+        stickyTop = sticky.getBoundingClientRect().top;
+
+        main.style.display = 'block';
+        main.style.minHeight = '';
+        main.style.paddingBottom = '0';
+        sticky.style.marginTop = stickyTop + 'px';
+
+        var stackRect = imgStack.getBoundingClientRect();
+        var distToVpBottom = window.innerHeight - stackRect.top;
+        var exactBottomPct = stackRect.height ? (distToVpBottom / stackRect.height) * 100 : 100;
+        startYPercent = exactBottomPct + 15;
+
+        VH = window.innerHeight;
+        SCROLL_PER_ITEM = VH * 1.5;
+        HOLD_DIST = SCROLL_PER_ITEM * 0.40;
+        TRANS_DIST = SCROLL_PER_ITEM - Math.max(0, HOLD_DIST);
+        totalScrollDist = NUM_TRANSITIONS * SCROLL_PER_ITEM;
+        END_LINGER_DIST = VH * 2.5;
+        pinDist = totalScrollDist + END_LINGER_DIST;
+
+        if (preserveSlides) {
+            preserveSlideProgress(prevStart);
+        }
+    }
+
+    recomputeMetrics(false);
+    seedSlidesAtStart();
+
+    /* ── 3. Scroll Stage Trigger ───────────────────────────────────────── */
     ScrollTrigger.create({
         scroller: document.documentElement,
         trigger: sticky,
-        start: 'top ' + stickyTop + 'px',
-        end: '+=' + pinDist,
+        start: function () { return 'top ' + stickyTop + 'px'; },
+        end: function () { return '+=' + pinDist; },
         pin: true,
         pinSpacing: true,
         onUpdate: function (self) {
             if (hoveredProject !== -1) return;
+
             var scrolled = self.progress * pinDist;
             var rawPos = scrolled / SCROLL_PER_ITEM;
             var active = Math.min(NUM_TRANSITIONS, Math.max(0, Math.round(rawPos)));
-            infoItems.forEach(function (item, i) {
-                item.classList.toggle('is-active', i === active);
-            });
-            // Update tags only after interaction
+            setActiveInfoItem(active);
+
             if (hasInteracted) {
                 updateGlobalTags(active);
             }
         },
     });
 
-    /* ── 5. Velocity Tracker & Nav ─────────────────────────────────────── */
+    /* ── 4. Velocity Tracker & Nav ─────────────────────────────────────── */
     var scrollVelocity = 0;
     var lastScroll = 0;
     var lastTime = performance.now();
@@ -164,24 +293,25 @@
     lenis.on('scroll', function (e) {
         var now = performance.now();
         var dt = now - lastTime;
-        if (dt > 0) {
-            var raw = (e.scroll - lastScroll) * (1000 / dt);
-            scrollVelocity = scrollVelocity * 0.8 + raw * 0.2;
 
-            // Register interaction on actual scroll movement (not just lenis setup)
+        if (dt > 0) {
+            var dtClamped = clampValue(dt, 8, 48);
+            var raw = (e.scroll - lastScroll) * (1000 / dtClamped);
+            scrollVelocity = scrollVelocity * (1 - VELOCITY_SMOOTHING) + raw * VELOCITY_SMOOTHING;
+
             if (Math.abs(e.scroll - lastScroll) > 1 && !hasInteracted) {
                 hasInteracted = true;
             }
         }
 
-        // Use shared nav controller (from nav.js)
         lastNavScroll = updateNavOnScroll(e.scroll, lastNavScroll);
+        scheduleHoverSync();
 
         lastScroll = e.scroll;
         lastTime = now;
     });
 
-    /* ── 6. Physics Loop ───────────────────────────────────────────────── */
+    /* ── 5. Physics Loop ───────────────────────────────────────────────── */
     function animLoop() {
         var scrollPos = Math.max(0, lenis.scroll);
         var velAbs = Math.abs(scrollVelocity);
@@ -204,12 +334,21 @@
 
             targetY[i] = startYPercent * (1 - effectiveProgress);
 
-            var remaining = currentY[i] - targetY[i];
+            var delta = targetY[i] - currentY[i];
+            var remaining = -delta;
             var settleZone = startYPercent * SETTLE_FRACTION;
             var lerpRate = (remaining > 0 && currentY[i] < settleZone) ? SLOW_LERP : FAST_LERP;
 
-            currentY[i] += (targetY[i] - currentY[i]) * lerpRate;
-            ySetters[i](currentY[i]);
+            var prevY = currentY[i];
+            if (Math.abs(delta) < 0.01) {
+                currentY[i] = targetY[i];
+            } else {
+                currentY[i] += delta * lerpRate;
+            }
+
+            if (currentY[i] !== prevY) {
+                ySetters[i](currentY[i]);
+            }
         }
 
         requestAnimationFrame(animLoop);
@@ -217,21 +356,19 @@
 
     requestAnimationFrame(animLoop);
 
-    /* ── 7. Hover Parallax ─────────────────────────────────────────────── */
-    var row = document.querySelector('.v2-works-row');
-    var pRaf = null, pTargetY = 0, pCurrentY = 0, pBaseY = 0, pHovered = false;
-
-    function calcBase() {
-        var h = imgStack.getBoundingClientRect().height;
-        var el = document.getElementById('infoTop0');
-        var textH = el ? el.offsetHeight : 80;
-        return (h * 0.35) - (textH * 0.5);
-    }
+    /* ── 6. Hover Parallax ─────────────────────────────────────────────── */
+    var pRaf = null;
+    var pStopTimer = null;
+    var pTargetY = 0;
+    var pCurrentY = 0;
+    var pBaseY = 0;
+    var pHovered = false;
 
     function setAllInfoTops(y) {
-        document.querySelectorAll('.v2-works-info-top').forEach(function (el) {
-            el.style.transform = 'translateY(' + y.toFixed(2) + 'px)';
-        });
+        var transformValue = 'translateY(' + y.toFixed(2) + 'px)';
+        for (var i = 0; i < infoTopEls.length; i++) {
+            infoTopEls[i].style.transform = transformValue;
+        }
     }
 
     function parallaxTick() {
@@ -240,24 +377,37 @@
         pRaf = requestAnimationFrame(parallaxTick);
     }
 
-    if (row && imgStack) {
-        imgStack.addEventListener('mouseenter', function () {
+    if (row) {
+        imgStack.addEventListener('mouseenter', function (e) {
+            pointerInStack = true;
+            lastPointerX = e.clientX;
+            lastPointerY = e.clientY;
+
+            if (pStopTimer) {
+                clearTimeout(pStopTimer);
+                pStopTimer = null;
+            }
+
             pHovered = true;
             pBaseY = calcBase();
             pCurrentY = pBaseY + 30;
             pTargetY = pBaseY;
             row.classList.add('is-hovered');
+
+            scheduleHoverSync(true);
             if (!pRaf) pRaf = requestAnimationFrame(parallaxTick);
         });
 
         imgStack.addEventListener('mouseleave', function () {
+            pointerInStack = false;
             pHovered = false;
             hoveredProject = -1;
             row.classList.remove('is-hovered');
             pTargetY = pBaseY + 30;
-            setTimeout(function () {
+
+            pStopTimer = setTimeout(function () {
                 if (!pHovered) {
-                    cancelAnimationFrame(pRaf);
+                    if (pRaf) cancelAnimationFrame(pRaf);
                     pRaf = null;
                     setAllInfoTops(pBaseY + 30);
                 }
@@ -265,93 +415,112 @@
         });
 
         imgStack.addEventListener('mousemove', function (e) {
+            lastPointerX = e.clientX;
+            lastPointerY = e.clientY;
+
             var rect = imgStack.getBoundingClientRect();
             var normalized = (e.clientY - rect.top) / rect.height;
             pTargetY = pBaseY + (normalized - 0.5) * HOVER_RANGE * 2;
 
-            var els = document.elementsFromPoint(e.clientX, e.clientY);
-            var hit = -1;
-            for (var k = 0; k < els.length; k++) {
-                if (els[k].classList && els[k].classList.contains('v2-stack-slide')) {
-                    hit = parseInt(els[k].getAttribute('data-slide'), 10);
-                    break;
-                }
-            }
-            if (hit !== -1) {
-                if (!hasInteracted) hasInteracted = true;
-                if (hit !== hoveredProject) {
-                    hoveredProject = hit;
-                    infoItems.forEach(function (item, i) {
-                        item.classList.toggle('is-active', i === hoveredProject);
-                    });
-                    updateGlobalTags(hoveredProject);
-
-                    var cursorEl = document.getElementById('viewCursor');
-                    if (cursorEl) {
-                        cursorEl.innerText = (hoveredProject >= 5) ? 'Coming soon' : 'view';
-                    }
-                }
-            }
+            scheduleHoverSync(true);
         });
     }
 
-    /* ── 8. /VIEW Cursor ───────────────────────────────────────────────── */
-    var cursor = document.getElementById('viewCursor');
-    if (cursor) {
-        var mx = 0, my = 0, cx = 0, cy = 0, cRaf = null;
+    /* ── 7. /VIEW Cursor ───────────────────────────────────────────────── */
+    if (cursorEl) {
+        var mx = 0;
+        var my = 0;
+        var cx = 0;
+        var cy = 0;
+        var cRaf = null;
+        var cursorVisible = false;
         var worksBody = document.body;
 
         function animCursor() {
+            if (!cursorVisible) {
+                cRaf = null;
+                return;
+            }
+
             cx = lerp(cx, mx, CURSOR_LERP);
             cy = lerp(cy, my, CURSOR_LERP);
-            cursor.style.left = cx + 'px';
-            cursor.style.top = cy + 'px';
+            cursorEl.style.left = cx + 'px';
+            cursorEl.style.top = cy + 'px';
             cRaf = requestAnimationFrame(animCursor);
         }
 
+        function ensureCursorLoop() {
+            if (!cRaf) {
+                cRaf = requestAnimationFrame(animCursor);
+            }
+        }
+
+        function stopCursorLoop() {
+            if (cRaf) {
+                cancelAnimationFrame(cRaf);
+                cRaf = null;
+            }
+        }
+
         function showCustomCursorAt(x, y) {
-            mx = x; my = y; cx = x; cy = y;
-            cursor.style.left = cx + 'px';
-            cursor.style.top = cy + 'px';
-            cursor.classList.add('is-visible');
+            mx = x;
+            my = y;
+            cx = x;
+            cy = y;
+            cursorVisible = true;
+
+            cursorEl.style.left = cx + 'px';
+            cursorEl.style.top = cy + 'px';
+            cursorEl.classList.add('is-visible');
+
             if (worksBody) worksBody.classList.add('v2-view-cursor-active');
-            if (!cRaf) animCursor();
+            ensureCursorLoop();
         }
 
         function hideCustomCursor() {
-            cursor.classList.remove('is-visible');
+            cursorVisible = false;
+            cursorEl.classList.remove('is-visible');
             if (worksBody) worksBody.classList.remove('v2-view-cursor-active');
+            stopCursorLoop();
         }
 
         document.addEventListener('mousemove', function (e) {
-            mx = e.clientX; my = e.clientY;
-            if (!cRaf) animCursor();
+            mx = e.clientX;
+            my = e.clientY;
+            lastPointerX = e.clientX;
+            lastPointerY = e.clientY;
+
+            if (cursorVisible) ensureCursorLoop();
         });
 
-        if (imgStack) {
-            imgStack.addEventListener('mouseenter', function (e) {
-                showCustomCursorAt(e.clientX, e.clientY);
-            });
-            imgStack.addEventListener('mouseleave', hideCustomCursor);
+        imgStack.addEventListener('mouseenter', function (e) {
+            pointerInStack = true;
+            lastPointerX = e.clientX;
+            lastPointerY = e.clientY;
+            showCustomCursorAt(e.clientX, e.clientY);
+            scheduleHoverSync(true);
+        });
 
-            // ── Click: navigate to the active project page ──────────────────────
-            imgStack.addEventListener('click', function () {
-                if (hoveredProject === 0) {
-                    window.location.href = 'project-sonix.html';
-                } else if (hoveredProject === 1) {
-                    window.location.href = 'project-imessage.html';
-                } else if (hoveredProject === 2) {
-                    window.location.href = 'project-sealove.html';
-                } else if (hoveredProject === 3) {
-                    window.location.href = 'project-nest.html';
-                } else if (hoveredProject === 4) {
-                    window.location.href = 'project-kroger.html';
-                }
-                // Indices 5+:  "Coming soon" — already shown in cursor label
-            });
-        }
+        imgStack.addEventListener('mouseleave', function () {
+            pointerInStack = false;
+            hideCustomCursor();
+        });
 
-        // Failsafes: restore native cursor if focus or pointer state is lost.
+        imgStack.addEventListener('click', function () {
+            if (hoveredProject === 0) {
+                window.location.href = 'project-sonix.html';
+            } else if (hoveredProject === 1) {
+                window.location.href = 'project-imessage.html';
+            } else if (hoveredProject === 2) {
+                window.location.href = 'project-sealove.html';
+            } else if (hoveredProject === 3) {
+                window.location.href = 'project-nest.html';
+            } else if (hoveredProject === 4) {
+                window.location.href = 'project-kroger.html';
+            }
+            // Indices 5+: "Coming soon" — already shown in cursor label
+        });
+
         document.addEventListener('mouseleave', hideCustomCursor);
         window.addEventListener('blur', hideCustomCursor);
         document.addEventListener('visibilitychange', function () {
@@ -359,17 +528,14 @@
         });
     }
 
-    /* ── 9. Footer Transition Animation ────────────────────────────────── */
+    /* ── 8. Footer Transition Animation ────────────────────────────────── */
     var footer = document.getElementById('contact');
-    var worksRow = document.querySelector('.v2-works-row');
 
-    if (footer && worksRow) {
-        gsap.to(worksRow, {
+    if (footer && row) {
+        gsap.to(row, {
             scrollTrigger: {
                 scroller: document.documentElement,
                 trigger: footer,
-                // Start fading when the top of the footer is 80% down the viewport (instead of bottom)
-                // This gives the last project a moment to sit fully overlapping before it fades out
                 start: 'top 80%',
                 end: 'top center',
                 scrub: true,
@@ -381,4 +547,20 @@
         });
     }
 
+    /* ── 9. Resize / Reflow Safety ─────────────────────────────────────── */
+    function handleResize() {
+        if (resizeTimer) clearTimeout(resizeTimer);
+
+        resizeTimer = setTimeout(function () {
+            recomputeMetrics(true);
+            pBaseY = calcBase();
+            ScrollTrigger.refresh();
+            scheduleHoverSync(true);
+        }, 120);
+    }
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('orientationchange', handleResize, { passive: true });
+
+    ScrollTrigger.refresh();
 })();

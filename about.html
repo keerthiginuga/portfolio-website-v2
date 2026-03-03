@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/device-gate.css">
+    <script src="js/device-gate.js" defer></script>
     <title>About Me — Keerthi Ginuga</title>
     <meta name="description"
         content="About Keerthi Ginuga — Architect and User Experience Designer passionate about designing seamless technology that understands, not interrupts.">
@@ -11,12 +13,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=17">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 
 <body class="v2-about-page">
-    <!-- Shared layout (logo, nav, SVG filter) injected by js/components.js -->
+    <!-- Shared layout (logo, nav, SVG filter) injected by js/components.js?v=2 -->
     <div id="shared-layout"></div>
 
     <main>
@@ -70,10 +72,10 @@
                             <div class="v2-process-item" data-process-item="0">
                                 <div class="v2-process-row">
                                     <div class="v2-process-row-left">
-                                        <span class="v2-process-heading">I start with curiosity.</span>
                                         <div class="v2-process-thumb">
                                             <img src="assets/images/How I Enjoy the Process/1.jpg" alt="Curiosity">
                                         </div>
+                                        <span class="v2-process-heading">I start with curiosity.</span>
                                     </div>
                                     <span class="v2-process-index">
                                         <span class="v2-process-index-num">1</span>
@@ -92,10 +94,10 @@
                             <div class="v2-process-item" data-process-item="1">
                                 <div class="v2-process-row">
                                     <div class="v2-process-row-left">
-                                        <span class="v2-process-heading">I collect stories, not just data.</span>
                                         <div class="v2-process-thumb">
                                             <img src="assets/images/How I Enjoy the Process/2.jpg" alt="Stories">
                                         </div>
+                                        <span class="v2-process-heading">I collect stories, not just data.</span>
                                     </div>
                                     <span class="v2-process-index">
                                         <span class="v2-process-index-num">2</span>
@@ -114,10 +116,10 @@
                             <div class="v2-process-item" data-process-item="2">
                                 <div class="v2-process-row">
                                     <div class="v2-process-row-left">
-                                        <span class="v2-process-heading">I learn by listening.</span>
                                         <div class="v2-process-thumb">
                                             <img src="assets/images/How I Enjoy the Process/3.png" alt="Listening">
                                         </div>
+                                        <span class="v2-process-heading">I learn by listening.</span>
                                     </div>
                                     <span class="v2-process-index">
                                         <span class="v2-process-index-num">3</span>
@@ -136,10 +138,10 @@
                             <div class="v2-process-item" data-process-item="3">
                                 <div class="v2-process-row">
                                     <div class="v2-process-row-left">
-                                        <span class="v2-process-heading">I think best with a pen and a timer.</span>
                                         <div class="v2-process-thumb">
                                             <img src="assets/images/How I Enjoy the Process/4.jpg" alt="Pen and Timer">
                                         </div>
+                                        <span class="v2-process-heading">I think best with a pen and a timer.</span>
                                     </div>
                                     <span class="v2-process-index">
                                         <span class="v2-process-index-num">4</span>
@@ -158,10 +160,10 @@
                             <div class="v2-process-item" data-process-item="4">
                                 <div class="v2-process-row">
                                     <div class="v2-process-row-left">
-                                        <span class="v2-process-heading">I trust testing to shape the work.</span>
                                         <div class="v2-process-thumb">
                                             <img src="assets/images/How I Enjoy the Process/5.png" alt="Testing">
                                         </div>
+                                        <span class="v2-process-heading">I trust testing to shape the work.</span>
                                     </div>
                                     <span class="v2-process-index">
                                         <span class="v2-process-index-num">5</span>
@@ -180,10 +182,10 @@
                             <div class="v2-process-item" data-process-item="5">
                                 <div class="v2-process-row">
                                     <div class="v2-process-row-left">
-                                        <span class="v2-process-heading">I believe design is a team sport.</span>
                                         <div class="v2-process-thumb">
                                             <img src="assets/images/How I Enjoy the Process/6.jpg" alt="Team Sport">
                                         </div>
+                                        <span class="v2-process-heading">I believe design is a team sport.</span>
                                     </div>
                                     <span class="v2-process-index">
                                         <span class="v2-process-index-num">6</span>
@@ -260,8 +262,8 @@
     <!-- Shared modules -->
     <script src="js/utils.js"></script>
     <script src="js/data.js"></script>
-    <script src="js/nav.js"></script>
-    <script src="js/components.js"></script>
+    <script src="js/nav.js?v=10"></script>
+    <script src="js/components.js?v=2"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             injectSharedLayout();
@@ -392,6 +394,16 @@
                         if (!wasOpen) {
                             item.classList.add('is-open');
                             procAccordion.classList.add('has-active');
+
+                            // Scroll down minimally if the expanded content overflows the bottom
+                            setTimeout(() => {
+                                const rect = item.getBoundingClientRect();
+                                const viewportHeight = window.innerHeight;
+                                if (rect.bottom > viewportHeight) {
+                                    const distanceToScroll = rect.bottom - viewportHeight + 40;
+                                    window.scrollBy({ top: distanceToScroll, behavior: 'smooth' });
+                                }
+                            }, 450);
                         } else {
                             procAccordion.classList.remove('has-active');
                         }

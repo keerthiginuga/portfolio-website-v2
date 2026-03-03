@@ -4,17 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keerthi Ginuga - Portfolio</title>
+    <link rel="stylesheet" href="css/device-gate.css">
+    <script src="js/device-gate.js" defer></script>
+    <title>Keerthi Ginuga - Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=17">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 
 <body class="v2-home">
-  <!-- Shared layout (logo, nav, SVG filter) injected by js/components.js -->
+  <!-- Shared layout (logo, nav, SVG filter) injected by js/components.js?v=2 -->
   <div id="shared-layout"></div>
 
   <main>
@@ -268,7 +270,7 @@
             <span class="v2-quote-word">like</span>
             <span class="v2-quote-word">to</span>
             <span class="v2-quote-word">be</span>
-            <span class="v2-quote-word">inspired.</span>
+            <span class="v2-quote-word v2-quote-word--italic">inspired."</span>
           </p>
           <div class="v2-quote-photo" id="quotePhoto">
             <a href="about.html" class="v2-quote-photo-link" aria-label="About Keerthi">
@@ -305,8 +307,8 @@
   <!-- Shared modules (order matters: utils → data → nav → components → page script) -->
   <script src="js/utils.js"></script>
   <script src="js/data.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/components.js"></script>
+  <script src="js/nav.js?v=10"></script>
+  <script src="js/components.js?v=2"></script>
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
   <script src="script.js"></script>
 </body>

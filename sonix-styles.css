@@ -145,6 +145,7 @@ body {
 }
 
 @keyframes ps-scroll-outline {
+
     0%,
     100% {
         opacity: 1;
@@ -256,7 +257,7 @@ body {
     top: 90px;
 }
 
-.ps-detail-group + .ps-detail-group {
+.ps-detail-group+.ps-detail-group {
     margin-top: clamp(2rem, 3.5vw, 3.7rem);
 }
 
@@ -493,6 +494,174 @@ body {
     outline-offset: 4px;
 }
 
+.ps-more-projects {
+    position: relative;
+    z-index: 3;
+    background: #000;
+    padding: clamp(20px, 3vw, 30px) clamp(20px, 5vw, 72px) clamp(34px, 4vw, 56px);
+}
+
+.ps-more-projects-inner {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.ps-more-projects-header {
+    padding: 0 0 12px;
+    margin-bottom: clamp(14px, 2vw, 24px);
+}
+
+.ps-more-projects-header-text {
+    margin: 0;
+    font-size: clamp(15px, 1.2vw, 18px);
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.ps-more-projects-header-text sup {
+    font-size: 0.65em;
+    vertical-align: super;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.ps-more-carousel {
+    position: relative;
+    margin-right: calc(-1 * clamp(20px, 5vw, 72px));
+}
+
+.ps-more-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #f7f7f7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.ps-more-control--prev {
+    left: clamp(6px, 1vw, 14px);
+}
+
+.ps-more-control--next {
+    right: clamp(6px, 1vw, 14px);
+}
+
+.ps-more-control svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    display: block;
+}
+
+.ps-more-projects-viewport {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 0 0 clamp(52px, 4.8vw, 84px);
+}
+
+.ps-more-projects-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.ps-more-projects-track {
+    display: flex;
+    align-items: stretch;
+    gap: clamp(14px, 1.3vw, 20px);
+    width: max-content;
+    padding-right: 0;
+}
+
+.ps-more-card {
+    flex: 0 0 calc(((100vw - (clamp(20px, 5vw, 72px) * 2) - clamp(52px, 4.8vw, 84px) - clamp(14px, 1.3vw, 20px)) / 2.08) * 0.8);
+    max-width: 512px;
+    min-width: 232px;
+    text-decoration: none;
+    color: inherit;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 29px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    padding: 16px;
+}
+
+.ps-more-card-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    border-radius: 21px;
+    margin: 0;
+    position: relative;
+}
+
+.ps-more-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ps-more-card-body {
+    padding: 16px 0 0 0;
+}
+
+.ps-more-card-title {
+    margin: 0;
+    color: #ffffff;
+    font-family: "NeueHaasGrotText", sans-serif;
+    font-size: clamp(10.47px, 1.03vw, 14.17px);
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.ps-more-card-tags {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ps-more-card-tag {
+    border-radius: 999px;
+    border: 0;
+    background: #ffffff;
+    color: #000000;
+    font-family: "NeueHaasGrotText", sans-serif;
+    font-size: clamp(8.86px, 0.684vw, 11.27px);
+    letter-spacing: 0;
+    padding: 6px 13px;
+    line-height: 1;
+    text-transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .pk-carousel-track {
         animation: none;
@@ -578,6 +747,52 @@ body {
     .ps-footer-links {
         justify-content: flex-start;
         gap: 20px;
+    }
+
+    .ps-more-projects {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .ps-more-projects-header-text {
+        font-size: 15px;
+    }
+
+    .ps-more-control {
+        width: 34px;
+        height: 34px;
+    }
+
+    .ps-more-control svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .ps-more-control--prev {
+        left: 4px;
+    }
+
+    .ps-more-control--next {
+        right: 4px;
+    }
+
+    .ps-more-projects-viewport {
+        padding: 0 0 0 40px;
+    }
+
+    .ps-more-card {
+        flex-basis: min(60.8vw, 336px);
+        min-width: min(60.8vw, 336px);
+        border-radius: 23px;
+        padding: 12px;
+    }
+
+    .ps-more-card-media {
+        border-radius: 17px;
+    }
+
+    .ps-more-card-body {
+        padding: 12px 0 0 0;
     }
 
     .pk-carousel {

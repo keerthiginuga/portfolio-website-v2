@@ -38,6 +38,7 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    isolation: isolate;
 }
 
 /* Improve touch interactions */
@@ -79,7 +80,8 @@ body {
     transition: opacity 0.3s ease, color 0.25s ease;
     text-decoration: none;
     display: inline-block;
-    color: var(--color-white);
+    color: #ffffff;
+    mix-blend-mode: difference;
 }
 
 .k-logo:hover {
@@ -104,9 +106,10 @@ body {
     display: flex;
     align-items: center;
     gap: 18px;
+    mix-blend-mode: difference;
     transition: transform 0.3s ease, opacity 0.3s ease;
     --nav-fg: var(--color-white);
-    --nav-muted: #6d6d6d;
+    --nav-muted: #d0d0d0;
     --nav-resume-fg: var(--color-black);
     --nav-resume-bg: var(--color-white);
 }
@@ -127,37 +130,41 @@ body {
     overflow: hidden;
     transition: max-width 0.35s ease, opacity 0.3s ease, transform 0.35s ease, margin-right 0.35s ease;
     transform-origin: right center;
+    color: #ffffff;
 }
 
 .nav-link {
-    color: var(--nav-muted);
+    color: #ffffff;
+    mix-blend-mode: normal;
+    opacity: 0.72;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.02em;
     font-family: var(--font-primary);
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, opacity 0.2s ease;
     text-transform: uppercase;
 }
 
 .nav-link:hover {
-    color: var(--nav-fg);
+    opacity: 1;
 }
 
 .nav-link.active {
-    color: var(--nav-fg);
+    opacity: 1;
 }
 
 .nav-resume {
-    color: var(--nav-resume-fg);
+    color: #000000;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0;
     padding: 8px 20px;
     border-radius: 999px;
-    border: none;
-    background: var(--nav-resume-bg);
+    border: 1px solid #ffffff;
+    background: #ffffff;
+    mix-blend-mode: normal;
     white-space: nowrap;
     transition: transform 0.3s ease, max-width 0.35s ease, opacity 0.3s ease, padding 0.35s ease;
     max-width: 130px;
@@ -172,7 +179,7 @@ body {
 .index-toggle {
     background: transparent;
     border: none;
-    color: var(--nav-fg);
+    color: #ffffff;
     font-size: 16px;
     font-family: var(--font-primary);
     cursor: pointer;
@@ -195,24 +202,55 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    color: #ffffff;
 }
 
 .menu-icon span {
     width: 25px;
     height: 2px;
-    background-color: var(--nav-fg);
+    background-color: #ffffff;
+    mix-blend-mode: normal;
     transition: all 0.3s ease;
 }
 
 .k-logo.contrast-dark {
-    color: var(--color-black);
+    color: #ffffff;
 }
 
 .top-nav.contrast-dark {
-    --nav-fg: var(--color-black);
-    --nav-muted: #4f4f4f;
-    --nav-resume-fg: var(--color-white);
-    --nav-resume-bg: var(--color-black);
+    --nav-fg: var(--color-white);
+    --nav-muted: #d0d0d0;
+    --nav-resume-fg: var(--color-black);
+    --nav-resume-bg: var(--color-white);
+}
+
+/* Keep adaptive blend active across responsive overrides and nav states */
+.top-nav .nav-link {
+    color: #ffffff !important;
+    mix-blend-mode: normal !important;
+    opacity: 0.72;
+}
+
+.top-nav .nav-link:hover,
+.top-nav .nav-link.active {
+    opacity: 1 !important;
+}
+
+.top-nav .nav-resume {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+    mix-blend-mode: normal !important;
+}
+
+.top-nav .menu-icon span {
+    background-color: #ffffff !important;
+    mix-blend-mode: normal !important;
+}
+
+.top-nav .index-toggle,
+.top-nav .menu-icon {
+    color: #ffffff !important;
 }
 
 .top-nav.nav-collapsed .nav-links {
@@ -4351,4 +4389,56 @@ img {
     .project-image {
         border: 2px solid #ffffff;
     }
+}
+
+/* Compact nav sizing + aligned insets (logo/nav/hamburger) */
+:root {
+    --project-nav-offset: clamp(18px, 2.25vw, 30px);
+    --project-nav-link-size-compact: clamp(10px, 0.92vw, 12px);
+    --project-nav-gap-compact: clamp(14px, 2.2vw, 32px);
+    --project-nav-resume-size-compact: clamp(10px, 0.92vw, 12px);
+    --project-nav-toggle-size-compact: 34px;
+    --project-nav-hamburger-line-w-compact: 18px;
+    --project-nav-hamburger-line-h-compact: 2px;
+}
+
+.k-logo {
+    top: var(--project-nav-offset);
+    left: var(--project-nav-offset);
+}
+
+.top-nav {
+    padding: var(--project-nav-offset) var(--project-nav-offset);
+}
+
+.nav-links {
+    gap: var(--project-nav-gap-compact);
+}
+
+.nav-link {
+    font-size: var(--project-nav-link-size-compact);
+}
+
+.nav-resume {
+    font-size: var(--project-nav-resume-size-compact);
+    padding: 6px 14px;
+}
+
+.top-nav.nav-collapsed .index-toggle {
+    width: var(--project-nav-toggle-size-compact);
+}
+
+.menu-icon {
+    gap: 3px;
+}
+
+.menu-icon span {
+    width: var(--project-nav-hamburger-line-w-compact);
+    height: var(--project-nav-hamburger-line-h-compact);
+}
+
+
+/* 0.8x logo scale */
+.k-letter {
+    width: calc(clamp(24px, 3vw, 32px) * 0.8);
 }

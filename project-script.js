@@ -140,9 +140,9 @@ function median(values) {
 }
 
 function setUnifiedContrast(useDarkForeground) {
+    if (!kLogo) return;
     const method = useDarkForeground ? 'add' : 'remove';
-    topNav.classList[method]('contrast-dark');
-    if (kLogo) kLogo.classList[method]('contrast-dark');
+    kLogo.classList[method]('contrast-dark');
 }
 
 function resolveContrastDecision(rawLuminance) {
@@ -265,6 +265,168 @@ function resetNav() {
     collapseNav();
 }
 
+function renderMoreProjectsSection() {
+    if (typeof getAllProjects !== 'function') return;
+
+    const footer = document.querySelector('.ps-footer');
+    if (!footer) return;
+
+    const currentFile = window.location.pathname.split('/').pop() || '';
+    const moreProjects = getAllProjects().filter((project) => {
+        if (!project || typeof project.projectUrl !== 'string') return false;
+        if (!project.projectUrl.startsWith('project-')) return false;
+        return project.projectUrl !== currentFile;
+    });
+
+    if (!moreProjects.length) return;
+
+    const section = document.createElement('section');
+    section.className = 'ps-more-projects';
+    section.setAttribute('aria-labelledby', 'ps-more-projects-title');
+
+    section.innerHTML = `
+        <div class="ps-more-projects-inner">
+            <header class="ps-more-projects-header">
+                <h2 class="ps-more-projects-header-text" id="ps-more-projects-title">
+                    VIEW MORE PROJECTS<sup>'</sup>
+                </h2>
+            </header>
+            <div class="ps-more-carousel">
+                <button type="button" class="ps-more-control ps-more-control--prev" data-more-prev aria-label="Previous projects">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M14.5 6.5L9 12l5.5 5.5"></path>
+                    </svg>
+                </button>
+                <div class="ps-more-projects-viewport" data-more-viewport>
+                    <div class="ps-more-projects-track" data-more-track></div>
+                </div>
+                <button type="button" class="ps-more-control ps-more-control--next" data-more-next aria-label="Next projects">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M9.5 6.5L15 12l-5.5 5.5"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    `;
+
+    const track = section.querySelector('[data-more-track]');
+    if (!track) return;
+
+    const loopProjects = [...moreProjects, ...moreProjects, ...moreProjects];
+
+    loopProjects.forEach((project) => {
+        const card = document.createElement('a');
+        card.className = 'ps-more-card';
+        card.href = project.projectUrl;
+        card.setAttribute('aria-label', `View ${project.title}`);
+
+        const tags = Array.isArray(project.tags) ? project.tags : [];
+        const imageSrc = project.heroImage || (Array.isArray(project.images) && project.images[0]) || '';
+        const tagsMarkup = tags.map((tag) => `<li class="ps-more-card-tag">${tag}</li>`).join('');
+
+        card.innerHTML = `
+            <div class="ps-more-card-media">
+                <img src="${imageSrc}" alt="${project.title} cover image" loading="lazy">
+            </div>
+            <div class="ps-more-card-body">
+                <h3 class="ps-more-card-title">${project.title}</h3>
+                <ul class="ps-more-card-tags">${tagsMarkup}</ul>
+            </div>
+        `;
+
+        track.appendChild(card);
+    });
+
+    footer.parentNode.insertBefore(section, footer);
+
+    const viewport = section.querySelector('[data-more-viewport]');
+    const prevBtn = section.querySelector('[data-more-prev]');
+    const nextBtn = section.querySelector('[data-more-next]');
+    if (!viewport || !prevBtn || !nextBtn) return;
+
+    const cards = Array.from(track.querySelectorAll('.ps-more-card'));
+    const sourceCount = moreProjects.length;
+    let middleSetStart = 0;
+    let singleSetWidth = 0;
+    let autoRaf = 0;
+    let lastTs = 0;
+    let pauseAutoUntil = 0;
+    const autoSpeedPxPerSecond = 26;
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function getScrollStep() {
+        const firstCard = track.querySelector('.ps-more-card');
+        if (!firstCard) return viewport.clientWidth;
+        const gap = parseFloat(window.getComputedStyle(track).columnGap || window.getComputedStyle(track).gap || '0') || 0;
+        return firstCard.getBoundingClientRect().width + gap;
+    }
+
+    function measureLoop() {
+        if (cards.length < sourceCount * 3) return;
+        middleSetStart = cards[sourceCount].offsetLeft;
+        const thirdSetStart = cards[sourceCount * 2].offsetLeft;
+        singleSetWidth = thirdSetStart - middleSetStart;
+        if (!singleSetWidth) return;
+
+        if (viewport.scrollLeft === 0) {
+            viewport.scrollLeft = middleSetStart;
+            return;
+        }
+
+        while (viewport.scrollLeft < middleSetStart) viewport.scrollLeft += singleSetWidth;
+        while (viewport.scrollLeft >= (middleSetStart + singleSetWidth)) viewport.scrollLeft -= singleSetWidth;
+    }
+
+    function normalizeLoopPosition() {
+        if (!singleSetWidth) return;
+        while (viewport.scrollLeft < middleSetStart) viewport.scrollLeft += singleSetWidth;
+        while (viewport.scrollLeft >= (middleSetStart + singleSetWidth)) viewport.scrollLeft -= singleSetWidth;
+    }
+
+    function scrollByStep(direction) {
+        pauseAutoUntil = performance.now() + 2500;
+        viewport.scrollBy({
+            left: getScrollStep() * direction,
+            behavior: 'smooth'
+        });
+        window.setTimeout(normalizeLoopPosition, 420);
+    }
+
+    function loopTick(ts) {
+        if (!lastTs) lastTs = ts;
+        const dt = Math.min(0.05, (ts - lastTs) / 1000);
+        lastTs = ts;
+
+        if (!reduceMotionQuery.matches && ts >= pauseAutoUntil && singleSetWidth) {
+            viewport.scrollLeft += autoSpeedPxPerSecond * dt;
+            normalizeLoopPosition();
+        }
+
+        autoRaf = window.requestAnimationFrame(loopTick);
+    }
+
+    function pauseAutoTemporarily() {
+        pauseAutoUntil = performance.now() + 1800;
+    }
+
+    prevBtn.addEventListener('click', () => scrollByStep(-1));
+    nextBtn.addEventListener('click', () => scrollByStep(1));
+    viewport.addEventListener('scroll', pauseAutoTemporarily, { passive: true });
+    viewport.addEventListener('wheel', pauseAutoTemporarily, { passive: true });
+    section.addEventListener('mouseenter', () => {
+        pauseAutoUntil = Number.POSITIVE_INFINITY;
+    });
+    section.addEventListener('mouseleave', () => {
+        pauseAutoUntil = performance.now() + 1000;
+    });
+    window.addEventListener('resize', measureLoop);
+    measureLoop();
+    autoRaf = window.requestAnimationFrame(loopTick);
+    window.addEventListener('beforeunload', () => {
+        if (autoRaf) window.cancelAnimationFrame(autoRaf);
+    }, { once: true });
+}
+
 function updateNavOnScroll() {
     if (!topNav) return;
     scheduleNavContrastUpdate();
@@ -333,12 +495,12 @@ navLinks.forEach((link) => {
 projectLinks.forEach(link => {
     link.addEventListener('mouseenter', () => {
         const projectId = link.getAttribute('data-project');
-        
+
         // Hide about me section
         if (indexRight) {
             indexRight.classList.add('hide');
         }
-        
+
         // Show corresponding thumbnail
         projectThumbs.forEach(thumb => {
             if (thumb.getAttribute('data-project') === projectId) {
@@ -348,13 +510,13 @@ projectLinks.forEach(link => {
             }
         });
     });
-    
+
     link.addEventListener('mouseleave', () => {
         // Show about me section
         if (indexRight) {
             indexRight.classList.remove('hide');
         }
-        
+
         // Hide all thumbnails
         projectThumbs.forEach(thumb => {
             thumb.classList.remove('active');
@@ -412,14 +574,14 @@ if (kLogo) {
 // Tilt based on scroll
 function updateLogoTilt() {
     if (!kLetter) return;
-    
+
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercent = scrollTop / maxScroll;
-    
+
     // Rotate from 0 to 360 degrees based on scroll percentage
     const rotation = scrollPercent * 360;
-    
+
     kLetter.style.transform = `rotate(${rotation}deg)`;
 }
 
@@ -429,6 +591,7 @@ window.addEventListener('scroll', updateNavOnScroll, { passive: true });
 window.addEventListener('resize', scheduleNavContrastUpdate);
 
 // Initial nav state
+renderMoreProjectsSection();
 updateToggleState();
 collapseNav();
 updateNavOnScroll();

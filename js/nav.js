@@ -93,9 +93,9 @@ function _median(values) {
 }
 
 function _setUnifiedContrast(nav, logo, useDarkForeground) {
+    if (!logo) return;
     const method = useDarkForeground ? 'add' : 'remove';
-    nav.classList[method]('v2-contrast-dark');
-    if (logo) logo.classList[method]('v2-contrast-dark');
+    logo.classList[method]('v2-contrast-dark');
 }
 
 function _resolveContrastDecision(rawLuminance) {

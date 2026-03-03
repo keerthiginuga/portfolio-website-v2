@@ -1,0 +1,313 @@
+@font-face {
+  font-family: 'Neue Haas Grotesk Text';
+  src: url('../assets/fonts/NeueHaasGrotText-55Roman-Trial.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --v2-device-gate-font: 'Neue Haas Grotesk Text', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html.v2-device-gated,
+body.v2-device-gated {
+  overflow: hidden;
+}
+
+.v2-device-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  color: #f2f2f2;
+  font-family: var(--v2-device-gate-font);
+  background: #000000;
+  overflow: hidden;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+
+.v2-device-gate__stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 22% 15%, rgba(244, 244, 244, 0.68) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 74% 22%, rgba(244, 244, 244, 0.56) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 61% 42%, rgba(244, 244, 244, 0.48) 0 1.2px, transparent 1.6px),
+    radial-gradient(circle at 18% 54%, rgba(244, 244, 244, 0.58) 0 1.1px, transparent 1.6px),
+    radial-gradient(circle at 83% 67%, rgba(244, 244, 244, 0.44) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 35% 74%, rgba(244, 244, 244, 0.46) 0 1.2px, transparent 1.7px);
+  opacity: 0.9;
+}
+
+.v2-device-gate__frame {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: min(38px, 8vw);
+  border: 1px solid rgba(243, 243, 243, 0.17);
+  background: linear-gradient(180deg, rgba(60, 60, 60, 0.1) 0%, rgba(12, 12, 12, 0.32) 100%);
+  box-shadow: inset 0 0 0 1px rgba(244, 244, 244, 0.07);
+  overflow: hidden;
+}
+
+.v2-device-gate__frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 105%, rgba(222, 222, 222, 0.38), rgba(222, 222, 222, 0) 56%);
+  pointer-events: none;
+}
+
+.v2-device-gate__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(24px, 8vw, 64px) clamp(14px, 4.2vw, 36px) clamp(20px, 7vh, 56px);
+  gap: clamp(12px, 2.5vh, 28px);
+}
+
+.v2-device-gate__message {
+  max-width: min(520px, 88vw);
+}
+
+.v2-device-gate__pixel-icon {
+  width: 66px;
+  height: 40px;
+  margin-bottom: 8px;
+  color: rgba(244, 244, 244, 0.94);
+}
+
+.v2-device-gate__pixel-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.v2-device-gate__message h1 {
+  margin: 0;
+  font-size: clamp(36px, 9vw, 62px);
+  line-height: 0.94;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+  color: #f8f8f8;
+}
+
+.v2-device-gate__message p {
+  margin: 12px 0 0;
+  font-family: var(--v2-device-gate-font);
+  font-size: clamp(14px, 3.5vw, 18px);
+  line-height: 1.55;
+  color: rgba(238, 238, 238, 0.9);
+}
+
+.v2-device-gate__message .v2-device-gate__try {
+  margin-top: 14px;
+  font-size: clamp(13px, 3.2vw, 16px);
+  color: rgba(247, 247, 247, 0.96);
+}
+
+.v2-device-gate__message ul {
+  margin: 6px 0 0 17px;
+  padding: 0;
+  font-family: var(--v2-device-gate-font);
+  color: rgba(223, 223, 223, 0.88);
+  font-size: clamp(12px, 3vw, 15px);
+  line-height: 1.55;
+}
+
+.v2-device-gate__game {
+  position: relative;
+  width: min(780px, 100%);
+}
+
+.v2-device-gate__playfield {
+  position: relative;
+}
+
+.v2-device-gate__hud {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 8px;
+  font-family: var(--v2-device-gate-font);
+  color: rgba(240, 240, 240, 0.96);
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.v2-device-gate__hud b {
+  margin-left: 6px;
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.v2-device-gate__canvas {
+  width: 100%;
+  height: clamp(160px, 28vh, 260px);
+  border: 1px solid rgba(244, 244, 244, 0.2);
+  border-radius: 16px;
+  background: rgba(20, 20, 20, 0.4);
+  backdrop-filter: blur(2px);
+  display: block;
+}
+
+.v2-device-gate__hint {
+  margin: 9px 0 0;
+  font-family: var(--v2-device-gate-font);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(231, 231, 231, 0.75);
+}
+
+.v2-device-gate__game-over {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 6px;
+  justify-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 16px;
+  padding: 12px;
+  backdrop-filter: blur(5px);
+  z-index: 3;
+}
+
+.v2-device-gate__game-over[hidden] {
+  display: none !important;
+}
+
+.v2-device-gate__game-over p {
+  margin: 0;
+  font-family: var(--v2-device-gate-font);
+  font-size: clamp(11px, 3vw, 13px);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(246, 246, 246, 0.94);
+  text-align: center;
+}
+
+.v2-device-gate__game-over button {
+  min-height: 28px;
+  min-width: 104px;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 244, 244, 0.24);
+  padding: 0 10px;
+  font-size: clamp(10px, 2.6vw, 11px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(244, 244, 244, 0.12);
+  color: #f5f5f5;
+  cursor: pointer;
+}
+
+.v2-device-gate__game-over button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .v2-device-gate__content {
+    padding-top: clamp(18px, 8vw, 30px);
+    padding-bottom: clamp(16px, 6vh, 34px);
+  }
+
+  .v2-device-gate__message {
+    max-width: 94%;
+  }
+
+  .v2-device-gate__game {
+    max-width: 100%;
+  }
+
+  .v2-device-gate__canvas {
+    height: clamp(150px, 24vh, 210px);
+  }
+
+  .v2-device-gate__game-over {
+    padding: 10px;
+  }
+
+  .v2-device-gate__game-over button {
+    min-height: 27px;
+    min-width: 98px;
+  }
+
+}
+
+@media (max-height: 720px) {
+  .v2-device-gate__content {
+    padding-top: 58px;
+    padding-bottom: 20px;
+    gap: 20px;
+  }
+
+  .v2-device-gate__message h1 {
+    font-size: clamp(30px, 8vw, 44px);
+  }
+
+  .v2-device-gate__message p,
+  .v2-device-gate__message ul {
+    font-size: clamp(12px, 2.8vw, 14px);
+  }
+
+  .v2-device-gate__canvas {
+    height: 150px;
+  }
+
+  .v2-device-gate__game-over {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .v2-device-gate {
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  }
+
+  .v2-device-gate__frame {
+    border-radius: 22px;
+  }
+
+  .v2-device-gate__message {
+    max-width: 100%;
+  }
+
+  .v2-device-gate__message h1 {
+    font-size: clamp(28px, 8.8vw, 40px);
+    line-height: 0.96;
+  }
+
+  .v2-device-gate__message p {
+    font-size: clamp(13px, 3.7vw, 15px);
+  }
+
+  .v2-device-gate__message ul {
+    font-size: clamp(11px, 3.4vw, 13px);
+  }
+
+  .v2-device-gate__hud {
+    font-size: 11px;
+    gap: 12px;
+  }
+
+  .v2-device-gate__hud b {
+    font-size: 13px;
+  }
+
+  .v2-device-gate__game-over button {
+    min-width: 94px;
+    padding: 0 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-device-gate__game-over button {
+    transition: none;
+  }
+}

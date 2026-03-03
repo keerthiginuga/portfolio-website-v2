@@ -27,7 +27,8 @@ const SELECT_WORKS_CONFIG = {
 
 const QUOTE_CURSOR_CONFIG = {
   size: 120,
-  lerp: 0.14
+  // Keep a subtle smoothing effect without noticeable lag.
+  lerp: 0.35
 };
 
 /* ── Hero parallax state ──────────────────────────────────────────────── */
@@ -217,6 +218,11 @@ function initSelectWorksCard() {
 
   /* ── Project data from shared source ── */
   const projects = getSelectWorksProjects();
+  const OUT_END_DEG = 83;
+  const IN_START_DEG = 97;
+  const DEAD_ZONE_START = OUT_END_DEG;
+  const DEAD_ZONE_END = IN_START_DEG;
+  const fullExitSafetyPx = 8;
 
   const { leadSegments, holdSegments, exitSegments } = SELECT_WORKS_CONFIG;
   const stickyEl = section.querySelector('.v2-select-works-sticky');
@@ -236,6 +242,8 @@ function initSelectWorksCard() {
   let activeBackKey = '';
   let activeMarqueeKey = '';
   let activeClickableIndex = 0;
+  let displayedMarqueeIndex = 0;
+  let marqueeFullExitPx = 0;
 
   const isReducedMotion = prefersReducedMotion();
   const motionScale = getMotionScale(SELECT_WORKS_CONFIG.touchScale);
@@ -311,6 +319,16 @@ function initSelectWorksCard() {
     ).join('');
   };
 
+  const updateMarqueeTravelDistance = () => {
+    if (!marqueeEl || !marqueeTracks.length) return;
+    const marqueeHeight = marqueeEl.getBoundingClientRect().height;
+    const trackHeight = marqueeTracks.reduce((maxHeight, track) => {
+      const h = track.getBoundingClientRect().height;
+      return Math.max(maxHeight, h);
+    }, 0);
+    marqueeFullExitPx = (marqueeHeight / 2) + (trackHeight / 2) + fullExitSafetyPx;
+  };
+
   const setMarquee = (projectIndex) => {
     const project = projects[projectIndex] || projects[0];
     const key = project.marqueeKey.trim().toUpperCase();
@@ -318,6 +336,7 @@ function initSelectWorksCard() {
     activeMarqueeKey = key;
     const markup = marqueeMarkup(key);
     marqueeTracks.forEach(track => { track.innerHTML = markup; });
+    updateMarqueeTravelDistance();
   };
 
   setMarquee(0);
@@ -337,11 +356,15 @@ function initSelectWorksCard() {
 
   /* ── Layout sync ── */
   const syncFlipHeight = () => {
-    const height = Math.ceil(frontFace.getBoundingClientRect().height);
+    // Use layout height (not transformed visual bounds) to avoid
+    // temporary height jumps while the flip is mid-rotation.
+    const height = Math.ceil(frontFace.offsetHeight);
     if (!height) return;
     flip.style.height = `${height}px`;
     tilt.style.height = `${height}px`;
   };
+
+  updateMarqueeTravelDistance();
 
   /* ── Mouse tilt ── */
   card.addEventListener('mousemove', e => {
@@ -385,6 +408,7 @@ function initSelectWorksCard() {
     const t = scrollProgress;
     const maxStepsForOverscroll = holdSegments + (projects.length - 1) + exitSegments;
     const overScroll = Math.max(0, currentRawSteps - maxStepsForOverscroll);
+    let baseMarqueeOpacity = 1;
 
     let segmentIndex = 0;
     let localProgress = 0;
@@ -410,7 +434,7 @@ function initSelectWorksCard() {
         const eased = exitProgress * exitProgress * (3 - 2 * exitProgress);
         section.style.setProperty('--v2-card-scale', (1 - eased * 0.18).toFixed(4));
         section.style.setProperty('--v2-card-opacity', (1 - eased).toFixed(4));
-        section.style.setProperty('--v2-marquee-opacity', (1 - eased).toFixed(4));
+        baseMarqueeOpacity = (1 - eased);
 
         // Lock the final card flat during exit.
         // localProgress MUST be 0 here: setting it to 1 would tell the data layer
@@ -423,7 +447,7 @@ function initSelectWorksCard() {
         /* Normal rotation phase: fully visible */
         section.style.setProperty('--v2-card-scale', '1');
         section.style.setProperty('--v2-card-opacity', '1');
-        section.style.setProperty('--v2-marquee-opacity', '1');
+        baseMarqueeOpacity = 1;
       }
     }
 
@@ -449,27 +473,55 @@ function initSelectWorksCard() {
     }
 
     if (didUpdateFront || didUpdateBack) syncFlipHeight();
-    if (marqueeTracks.length) setMarquee(visibleProjectIndex);
+    /* ── Flip geometry ── */
+    const effectiveAngle = (isReducedMotion || !rotationStarted) ? 0 : angle;
+
+    let marqueeTargetIndex = displayedMarqueeIndex;
+    let marqueePhaseOpacity = 1;
+
+    if (rotationStarted) {
+      const curIdx = segmentIndex % projects.length;
+      const incomingIdx = (curIdx + 1) % projects.length;
+      if (effectiveAngle < DEAD_ZONE_START) {
+        marqueeTargetIndex = curIdx;
+      } else if (effectiveAngle < DEAD_ZONE_END) {
+        marqueeTargetIndex = curIdx;
+        marqueePhaseOpacity = 0;
+      } else {
+        marqueeTargetIndex = incomingIdx;
+      }
+    } else {
+      marqueeTargetIndex = 0;
+    }
+
+    if (marqueeTracks.length && marqueeTargetIndex !== displayedMarqueeIndex) {
+      displayedMarqueeIndex = marqueeTargetIndex;
+      setMarquee(displayedMarqueeIndex);
+    }
+
     if (activeClickableIndex !== visibleProjectIndex) {
       activeClickableIndex = visibleProjectIndex;
       updateCardAccessibility(activeClickableIndex);
     }
 
-    /* ── Flip geometry ── */
-    const effectiveAngle = (isReducedMotion || !rotationStarted) ? 0 : angle;
-
     /* ── Marquee Vertical Slide ── */
-    let translateYPercent = 0;
-    if (effectiveAngle <= 90) {
-      translateYPercent = -((effectiveAngle / 90) * 150);
+    let translateYPx = 0;
+    if (effectiveAngle <= OUT_END_DEG) {
+      const progress = OUT_END_DEG > 0 ? (effectiveAngle / OUT_END_DEG) : 1;
+      translateYPx = -(progress * marqueeFullExitPx);
+    } else if (effectiveAngle < IN_START_DEG) {
+      translateYPx = -marqueeFullExitPx;
     } else {
-      translateYPercent = (1 - ((effectiveAngle - 90) / 90)) * 150;
+      const span = Math.max(1, 180 - IN_START_DEG);
+      const progress = (effectiveAngle - IN_START_DEG) / span;
+      translateYPx = marqueeFullExitPx * (1 - progress);
     }
-    section.style.setProperty('--v2-marquee-y', `${translateYPercent.toFixed(2)}%`);
+    section.style.setProperty('--v2-marquee-y', `${translateYPx.toFixed(2)}px`);
 
     if (marqueeEl) {
       marqueeEl.style.transformOrigin = '';
       marqueeEl.style.transform = '';
+      marqueeEl.style.opacity = (baseMarqueeOpacity * marqueePhaseOpacity).toFixed(4);
     }
 
     /* ── Tilt + drift transforms ── */
@@ -514,6 +566,7 @@ function initSelectWorksCard() {
     if (isVisible) {
       updateScrollProgress();
       syncFlipHeight();
+      updateMarqueeTravelDistance();
     }
   });
 
@@ -642,6 +695,7 @@ function initSeeAllAnimation() {
    ══════════════════════════════════════ */
 
 function initQuoteCursor() {
+  const quoteSection = document.querySelector('.v2-quote');
   const photoLink = document.querySelector('.v2-quote-photo-link');
   const quoteText = document.getElementById('quoteText');
   const cursor = document.getElementById('quoteCursor');
@@ -654,6 +708,7 @@ function initQuoteCursor() {
   /* ── Works-page cursor interaction model ── */
   let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
   let rafId = null;
+  let layoutTicking = false;
   const body = document.body;
 
   const animateCursor = () => {
@@ -681,30 +736,58 @@ function initQuoteCursor() {
     body.classList.remove('v2-view-cursor-active');
   };
 
-  document.addEventListener('mousemove', e => {
+  const isPointerOverTarget = () => {
+    const el = document.elementFromPoint(mouseX, mouseY);
+    if (!el) return false;
+    return targets.some(target => target === el || target.contains(el));
+  };
+
+  const syncCursorVisibilityOnLayoutChange = () => {
+    if (layoutTicking) return;
+    layoutTicking = true;
+    requestAnimationFrame(() => {
+      layoutTicking = false;
+      if (!cursor.classList.contains('is-visible')) return;
+      if (!isPointerOverTarget()) hideCursor();
+    });
+  };
+
+  document.addEventListener('pointermove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     if (!rafId) animateCursor();
   });
 
   targets.forEach(target => {
-    target.addEventListener('mouseenter', e => {
+    target.addEventListener('pointerenter', e => {
       showCursorAt(e.clientX, e.clientY);
     });
 
-    target.addEventListener('mousemove', e => {
+    target.addEventListener('pointermove', e => {
       mouseX = e.clientX;
       mouseY = e.clientY;
     });
 
-    target.addEventListener('mouseleave', hideCursor);
+    target.addEventListener('pointerleave', hideCursor);
   });
 
   document.addEventListener('mouseleave', hideCursor);
+  document.addEventListener('pointercancel', hideCursor);
   window.addEventListener('blur', hideCursor);
+  window.addEventListener('scroll', syncCursorVisibilityOnLayoutChange, { passive: true });
+  window.addEventListener('resize', syncCursorVisibilityOnLayoutChange);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) hideCursor();
   });
+
+  if (quoteSection) {
+    const quoteObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) hideCursor();
+      });
+    }, { threshold: 0.01 });
+    quoteObserver.observe(quoteSection);
+  }
 
   if (quoteText) {
     quoteText.addEventListener('click', (e) => {

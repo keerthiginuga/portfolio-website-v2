@@ -30,6 +30,21 @@ const NAV_GLASS_SVG_FILTER = `<svg style="position:absolute;width:0;height:0;ove
   </defs>
 </svg>`;
 
+const AI_CODED_FAB = `
+<div class="v2-ai-fab-wrap">
+  <a class="v2-ai-fab" href="https://github.com/keerthiginuga/portfolio-website-v2" target="_blank" rel="noopener"
+    aria-label="AI Coded! View GitHub profile">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="currentColor"
+        d="M12 2C6.48 2 2 6.58 2 12.23c0 4.51 2.87 8.34 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.38-3.37-1.38-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.74-1.05 2.74-1.05.56 1.42.21 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.95-2.33 4.81-4.56 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.27 10.27 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z" />
+    </svg>
+    <span>AI Coded!</span>
+  </a>
+  <div class="v2-ai-fab-tooltip" role="note">
+    Designed and coded end-to-end by me with AI collaboration, not no-code builders like Framer.
+  </div>
+</div>`;
+
 /**
  * Detect the current page from pathname and return the active nav link href.
  * @returns {string}
@@ -60,7 +75,8 @@ function _buildNavLinks() {
  * Also works by prepending to body if placeholder is missing.
  */
 function injectSharedLayout() {
-  const logoHref = _getActiveHref() === 'index.html' ? '#' : 'index.html';
+  const activeHref = _getActiveHref();
+  const logoHref = activeHref === 'index.html' ? '#' : 'index.html';
 
   const html = `
 <a class="v2-logo" id="mainLogo" href="${logoHref}" aria-label="Keerthi home">
@@ -87,4 +103,16 @@ function injectSharedLayout() {
     // Fallback: prepend to body
     document.body.insertAdjacentHTML('afterbegin', html);
   }
+
+  const showAiFab = activeHref === 'index.html' || activeHref === 'about.html';
+  if (showAiFab && !document.querySelector('.v2-ai-fab-wrap')) {
+    document.body.insertAdjacentHTML('beforeend', AI_CODED_FAB);
+  }
+
+  window.addEventListener('pageshow', () => {
+    const fab = document.querySelector('.v2-ai-fab');
+    if (fab && document.activeElement === fab) {
+      fab.blur();
+    }
+  });
 }
