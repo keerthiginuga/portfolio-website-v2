@@ -1,0 +1,11 @@
+.v2-sonix-media::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 200px; /* Increased from 120px for smoother fade */
+  background: linear-gradient(to bottom, transparent 0%, #111 80%, #111 100%);
+  z-index: 5;
+  pointer-events: none;
+}

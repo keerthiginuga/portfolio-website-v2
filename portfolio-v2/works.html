@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/device-gate.css">
+    <script src="js/device-gate.js" defer></script>
+    <title>Works — Keerthi Ginuga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=18">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+
+<body class="v2-home v2-works-page">
+    <!-- Shared layout (logo, nav, SVG filter) injected by js/components.js?v=2 -->
+    <div id="shared-layout"></div>
+
+    <div class="v2-view-cursor" id="viewCursor" aria-hidden="true">view</div>
+
+    <main class="v2-works-main" id="worksMain">
+
+        <!-- This wrapper is what GSAP will pin at its current bottom position -->
+        <div class="v2-works-sticky" id="worksSticky">
+
+            <header class="v2-works-header">
+                <span class="v2-works-header-text">ALL WORKS<sup>"</sup></span>
+            </header>
+
+            <div class="v2-works-row">
+
+                <!-- Left: All project images stacked in the same space -->
+                <div class="v2-works-img-stack" id="imgStack">
+                    <div class="v2-stack-slide" data-slide="0">
+                        <img class="v2-stack-img" src="assets/images/autonomous-vehicle.jpg" alt="SONIX">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="1">
+                        <img class="v2-stack-img" src="assets/images/imessage.jpg" alt="iMessage">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="2">
+                        <img class="v2-stack-img" src="assets/images/sea-love.jpg" alt="SeaLove">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="3">
+                        <img class="v2-stack-img" src="assets/images/google-nest.jpg" alt="Google Nest">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="4">
+                        <img class="v2-stack-img" src="assets/images/kroger.jpg" alt="Kroger">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="5">
+                        <img class="v2-stack-img" src="assets/images/kohler-scadpro.jpg" alt="Kohler">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="6">
+                        <img class="v2-stack-img" src="assets/images/sync.jpg" alt="Sync">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="7">
+                        <img class="v2-stack-img" src="assets/images/7west.jpg" alt="7WEST">
+                    </div>
+                    <div class="v2-stack-slide" data-slide="8">
+                        <img class="v2-stack-img" src="assets/images/zillow.jpg" alt="Zillow">
+                    </div>
+                </div>
+
+                <!-- Right: Info panel — one item per project, absolute-stacked, JS controls active -->
+                <div class="v2-works-info" id="worksInfo">
+
+                    <div class="v2-stack-info-item" data-info="0" data-tags="UX Research,UX Design,Branding">
+                        <div class="v2-works-info-top" id="infoTop0">
+                            <h2 class="v2-works-title">SONIX — YOUR PERSONAL SPACE ON WHEELS</h2>
+                            <p class="v2-works-desc">Sonix reimagines urban mobility through fully autonomous vehicles
+                                that deliver hyper-personalized, luxury-grade experiences for everyone.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="1" data-tags="UX Research,UX Design,Design Strategy">
+                        <div class="v2-works-info-top" id="infoTop1">
+                            <h2 class="v2-works-title">IMESSAGE - A RELATIONAL WELLNESS UPDATE</h2>
+                            <p class="v2-works-desc">A hypothetical iMessage update centered around relational wellness,
+                                empowering users to maintain their relationships through outreach, context, and
+                                organizational support.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="2"
+                        data-tags="UX Research,UX Design,Information Architecture">
+                        <div class="v2-works-info-top" id="infoTop2">
+                            <h2 class="v2-works-title">SEALOVE CANDLE BAR WEBSITE REDESIGN</h2>
+                            <p class="v2-works-desc">A strategic redesign of Sea Love’s website, focused on improving
+                                Information Architecture and UI to create a seamless, intuitive shopping and booking
+                                experience.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="3"
+                        data-tags="UX Research,UX Design,Branding,Design Systems">
+                        <div class="v2-works-info-top" id="infoTop3">
+                            <h2 class="v2-works-title">GOOGLE NEST THERMOSTAT FOR OFFICE SPACE</h2>
+                            <p class="v2-works-desc">Redesigned the Nest thermostat for cheerful office spaces,
+                                introducing a collaborative temperature-setting feature that empowers employees to
+                                contribute, fostering a collaborative, comfortable, and inclusive environment.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="4"
+                        data-tags="UX Research,Service Design,Systems Thinking">
+                        <div class="v2-works-info-top" id="infoTop4">
+                            <h2 class="v2-works-title">RETHINKING THE SELF-CHECKOUT EXPERIENCE AT KROGER</h2>
+                            <p class="v2-works-desc">An in-depth service design investigation addressing the rising
+                                theft, employee stress, and customer frustration surrounding Kroger’s self-checkout
+                                systems.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="5"
+                        data-tags="UX Research,Product Design,Product Strategy,Systems Thinking">
+                        <div class="v2-works-info-top" id="infoTop5">
+                            <h2 class="v2-works-title">KOHLER X SCADPRO - THE FUTURE OF HYDROTHERAPY</h2>
+                            <p class="v2-works-desc">A collaborative industry project with Kohler through SCADpro
+                                focused on reimagining the future of hydrotherapy through human-centered research,
+                                concept development, and immersive experience design.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="6"
+                        data-tags="UX Research,Interaction Design,Prototyping,Electronics">
+                        <div class="v2-works-info-top" id="infoTop6">
+                            <h2 class="v2-works-title">SYNC - THE REAL-TIME COACHING</h2>
+                            <p class="v2-works-desc">An intelligent smart sneaker system that translates gait sensor
+                                data into real-time haptic feedback and immersive visual insights to prevent running
+                                injuries.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="7" data-tags="UX Design,Branding,Design Strategy">
+                        <div class="v2-works-info-top" id="infoTop7">
+                            <h2 class="v2-works-title">7WEST — YOUR ALL-IN-ONE STUDENT ECOSYSTEM</h2>
+                            <p class="v2-works-desc">7WEST is an AI-first student ecosystem that connects every layer of
+                                university life from organizations and events to housing, jobs, and student discounts
+                                into a single, unified platform.</p>
+                        </div>
+                    </div>
+
+                    <div class="v2-stack-info-item" data-info="8" data-tags="UX Research,UX Design,User Testing">
+                        <div class="v2-works-info-top" id="infoTop8">
+                            <h2 class="v2-works-title">ZILLOW - SIMPLIFYING SEARCH FOR HOME</h2>
+                            <p class="v2-works-desc">A usability redesign of Zillow's mobile app to streamline search,
+                                filters, and saved listings for renters navigating high-stakes housing decisions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Global tags — always visible, dims/highlights based on active project -->
+                    <p class="v2-global-tags" id="globalTags">
+                        <span data-tag="UX Research">UX Research</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="UX Design">UX Design</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Interaction Design">Interaction Design</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Service Design">Service Design</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Product Design">Product Design</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Design Strategy">Design Strategy</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Product Strategy">Product Strategy</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Systems Thinking">Systems Thinking</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Information Architecture">Information Architecture</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Branding">Branding</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Design Systems">Design Systems</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="User Testing">User Testing</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Prototyping">Prototyping</span>
+                        <span class="v2-tag-sep">/</span>
+                        <span data-tag="Electronics">Electronics</span>
+                    </p>
+
+                </div>
+
+            </div><!-- .v2-works-row -->
+        </div><!-- .v2-works-sticky -->
+    </main>
+
+    <!-- Spacer for breathing room before footer -->
+    <div style="height: 5vh;" aria-hidden="true"></div>
+
+    <!-- ── Section C: CTA / Footer ── -->
+    <footer class="v2-footer" id="contact">
+        <div class="v2-footer-inner">
+            <h2 class="v2-footer-headline">
+                <span>LET'S CREATE</span>
+                <span>WHAT'S NEXT,</span>
+                <em>Together.</em>
+            </h2>
+        </div>
+        <nav class="v2-footer-links" aria-label="Footer">
+            <a href="https://linkedin.com/in/keerthiginuga" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+            <a href="mailto:kginug20@student.scad.edu">Email</a>
+        </nav>
+    </footer>
+
+    <!-- Shared modules -->
+    <script src="js/utils.js?v=2"></script>
+    <script src="js/data.js?v=2"></script>
+    <script src="js/nav.js?v=10"></script>
+    <script src="js/components.js?v=2"></script>
+
+    <!-- Works page dependencies -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Works needs shared layout injected before its own script runs -->
+    <script>injectSharedLayout();</script>
+    <script src="works-script.js?v=3"></script>
+
+</body>
+
+</html>

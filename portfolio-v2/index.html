@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/device-gate.css">
+    <script src="js/device-gate.js" defer></script>
+    <title>Keerthi Ginuga - Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+
+<body class="v2-home">
+  <!-- Shared layout (logo, nav, SVG filter) injected by js/components.js?v=2 -->
+  <div id="shared-layout"></div>
+
+  <main>
+    <section id="home" class="v2-hero" data-motion-enabled="true">
+      <div class="v2-hero-bg" aria-hidden="true"></div>
+
+      <div class="v2-hero-cards" data-parallax-group="hero">
+        <article class="v2-hero-card" data-depth="0.7"><img src="assets/images/sync.jpg" alt="Sync project preview">
+        </article>
+        <article class="v2-hero-card" data-depth="0.45"><img src="assets/images/7west.jpg" alt="7WEST project preview">
+        </article>
+        <article class="v2-hero-card" data-depth="0.55"><img src="assets/images/word-clock.jpg"
+            alt="Word Clock project preview"></article>
+        <article class="v2-hero-card" data-depth="0.4"><img src="assets/images/zillow.jpg" alt="Zillow project preview">
+        </article>
+        <article class="v2-hero-card" data-depth="0.5"><img src="assets/images/sea-love.jpg"
+            alt="SeaLove project preview"></article>
+        <article class="v2-hero-card" data-depth="0.6"><img src="assets/images/google-nest.jpg"
+            alt="Google Nest project preview"></article>
+        <article class="v2-hero-card" data-depth="0.65"><img src="assets/images/autonomous-vehicle.jpg"
+            alt="SONIX project preview"></article>
+        <article class="v2-hero-card" data-depth="0.35"><img src="assets/images/kohler-scadpro.jpg"
+            alt="Kohler project preview"></article>
+        <article class="v2-hero-card" data-depth="0.52"><img src="assets/images/kroger.jpg"
+            alt="Kroger project preview"></article>
+      </div>
+
+      <div class="v2-hero-content">
+        <h1 class="v2-hero-name">Keerthi Ginuga</h1>
+        <p class="v2-hero-title">Architect &amp; User Experience Designer</p>
+      </div>
+
+      <div class="v2-selected-works-cue">
+        <span class="v2-cue-line" aria-hidden="true"></span>
+        <span>SELECTED WORKS</span>
+      </div>
+    </section>
+
+    <section class="v2-select-works" id="select-works">
+      <!-- Panel is now the outer scroll wrapper (grey bg + rounded corners) -->
+      <div class="v2-select-works-panel">
+
+        <!-- Spacer: pushes heading down from white edge without touching header offsetHeight -->
+        <div class="v2-select-works-top-spacer" aria-hidden="true"></div>
+        <!-- Header sits in normal document flow at the top of the grey panel -->
+        <header class="v2-select-works-header">
+          <h2 class="v2-select-works-title">
+            <span>Selected</span>
+            <span>Works</span>
+          </h2>
+          <p class="v2-select-works-intro">I love to learn by making and experimenting.<br>/here's some of my works
+          </p>
+        </header>
+
+        <!-- Sticky container follows the header — holds ONLY the marquee and card -->
+        <div class="v2-select-works-sticky">
+          <div class="v2-select-works-marquee" aria-hidden="true">
+            <div class="v2-select-works-marquee-track">
+              <span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span><span>SONIX</span>
+            </div>
+          </div>
+
+          <div class="v2-sonix-card-wrap" data-card-wrap>
+            <article class="v2-sonix-card" data-parallax-card>
+              <div class="v2-sonix-content" data-card-content>
+                <div class="v2-sonix-glare" data-card-glare></div>
+                <div class="v2-sonix-media v2-sonix-3d-stage" data-card-stage>
+                  <img data-layer="0" src="assets/images/autonomous-vehicle.jpg" alt="SONIX feature mockup 1">
+                  <img data-layer="1" src="assets/images/sync.jpg" alt="SONIX feature mockup 2">
+                  <img data-layer="2" src="assets/images/google-nest.jpg" alt="SONIX feature mockup 3">
+                  <img data-layer="3" src="assets/images/7west.jpg" alt="SONIX feature mockup 4">
+                </div>
+                <div class="v2-sonix-copy">
+                  <h3 data-project-title>SONIX — YOUR PERSONAL SPACE ON WHEELS</h3>
+                  <div class="v2-sonix-tags" data-project-tags>
+                    <span>UXD</span>
+                    <span>UXR</span>
+                    <span>Branding</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Scroll spacer: provides exactly maxSteps*100svh of post-pin scroll room -->
+        <div class="v2-select-works-scroll-space" aria-hidden="true"></div>
+
+      </div>
+    </section>
+
+    <!-- ── See All Works Link & Divider ── -->
+    <div class="v2-see-all-container">
+      <div class="v2-see-all-link-mask">
+        <a href="works.html" class="v2-see-all-link">SEE ALL WORKS</a>
+      </div>
+      <div class="v2-section-divider" aria-hidden="true"></div>
+    </div>
+
+    <!-- ── Section A: What I'm Good At ── -->
+    <section class="v2-skills" id="skills">
+      <div class="v2-skills-accordion">
+        <p class="v2-skills-eyebrow">What I'm Good At *</p>
+
+        <!-- 1 — expanded by default -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb">
+                <img src="assets/images/brand-thinking.jpeg" alt="">
+              </div>
+              <span class="v2-skills-heading">Brand Thinking</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">1</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I design with brand in mind. Building visual systems that feel cohesive, recognizable, and emotionally
+                resonant, so nothing looks accidental and everything feels intentional.</p>
+              <div class="v2-skills-pills">
+                <span>Logo Design</span>
+                <span>Design Systems</span>
+                <span>Brand Guidelines</span>
+                <span>Typography & Color Systems</span>
+                <span>UX Writing</span>
+                <span>Brand Positioning</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/human-centered-strategy.jpg" alt=""></div>
+              <span class="v2-skills-heading">Human-Centered Strategy</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">2</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>People first. Always. Real behaviors over assumptions. Real context over personas that sit in slides.
+                Strategy grounded in how life actually works.</p>
+              <div class="v2-skills-pills">
+                <span>User Research</span><span>Information Architecture</span>
+                <span>Journey Mapping</span><span>Service Design</span>
+                <span>Design Strategy</span><span>Systems Thinking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/interaction-design.png" alt=""></div>
+              <span class="v2-skills-heading">Interaction Design</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">3</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I obsess over the tiny moments. The taps, swipes, and transitions that make something feel effortless
+                instead of exhausting.</p>
+              <div class="v2-skills-pills">
+                <span>User Flows</span><span>Wireframing</span>
+                <span>Prototyping</span><span>Microinteractions</span>
+                <span>Usability Testing</span><span>Accessibility</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/insight-to-impact.png" alt=""></div>
+              <span class="v2-skills-heading">Insight to Impact</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">4</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I design beyond sticky notes. Turning messy research into sharp decisions and ideas that don’t just
+                look good, they move things forward.</p>
+              <div class="v2-skills-pills">
+                <span>Interviews</span><span>Surveys</span>
+                <span>Affinity Mapping</span><span>Thematic Analysis</span>
+                <span>Persona Development</span><span>Data-Driven Solutions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="v2-skills-item" data-skill>
+          <div class="v2-skills-row">
+            <div class="v2-skills-row-left">
+              <div class="v2-skills-thumb"><img src="assets/images/collaboration-facilitation.jpeg" alt=""></div>
+              <span class="v2-skills-heading">Collaboration &amp; Facilitation</span>
+            </div>
+            <span class="v2-skills-index">
+              <span class="v2-skills-index-num">5</span>
+              <span class="v2-skills-index-icon">+</span>
+            </span>
+          </div>
+          <div class="v2-skills-detail">
+            <div class="v2-skills-detail-inner">
+              <p>I turn group chaos into shared clarity. Different voices, aligned direction, forward motion.</p>
+              <div class="v2-skills-pills">
+                <span>Design Workshops</span><span>Stakeholder Alignment</span>
+                <span>Cross-Functional Collaboration</span><span>Co-Creation</span>
+                <span>Sprint Facilitation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Section B: Quote / Bio ── -->
+    <section class="v2-quote" id="about">
+      <div class="v2-quote-sticky">
+        <div class="v2-quote-inner">
+          <p class="v2-quote-text" id="quoteText">
+            <span class="v2-quote-word">I</span>
+            <span class="v2-quote-word">love</span>
+            <span class="v2-quote-word">to</span>
+            <span class="v2-quote-word v2-quote-word--italic">inspire,</span>
+            <span class="v2-quote-word">because</span>
+            <span class="v2-quote-word">I</span>
+            <span class="v2-quote-word">know</span>
+            <span class="v2-quote-word">what</span>
+            <span class="v2-quote-word">it's</span>
+            <span class="v2-quote-word">like</span>
+            <span class="v2-quote-word">to</span>
+            <span class="v2-quote-word">be</span>
+            <span class="v2-quote-word v2-quote-word--italic">inspired."</span>
+          </p>
+          <div class="v2-quote-photo" id="quotePhoto">
+            <a href="about.html" class="v2-quote-photo-link" aria-label="About Keerthi">
+              <img src="assets/images/my-quote-photo.jpg" alt="Keerthi Ginuga Quote Photo"
+                onerror="this.closest('.v2-quote-photo').classList.add('v2-quote-photo--placeholder')">
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section C: CTA / Footer ── -->
+    <footer class="v2-footer" id="contact">
+      <div class="v2-footer-inner">
+        <h2 class="v2-footer-headline">
+          <span>LET'S CREATE</span>
+          <span>WHAT'S NEXT,</span>
+          <em>Together.</em>
+        </h2>
+      </div>
+      <nav class="v2-footer-links" aria-label="Footer">
+        <a href="https://linkedin.com/in/keerthiginuga" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="KeerthiGinuga_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+        <a href="mailto:kginug20@student.scad.edu">Email</a>
+      </nav>
+    </footer>
+
+  </main>
+
+  <div class="v2-quote-cursor" id="quoteCursor" aria-hidden="true">
+    <span>About me</span>
+  </div>
+
+  <!-- Shared modules (order matters: utils → data → nav → components → page script) -->
+  <script src="js/utils.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/nav.js?v=10"></script>
+  <script src="js/components.js?v=2"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
